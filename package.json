@@ -1,0 +1,30 @@
+{
+  "name": "cbnv-website",
+  "version": "1.0.0",
+  "description": "12o Congresso Brasileiro de Neurociências da Visão",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "build": "tailwindcss --input src/input.css --output static/css/output.css --minify",
+    "watch": "tailwindcss --input src/input.css --output static/css/output.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LAPAN-HUGODEPAULA/cbnv-website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/LAPAN-HUGODEPAULA/cbnv-website/issues"
+  },
+  "homepage": "https://github.com/LAPAN-HUGODEPAULA/cbnv-website#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.2.4",
+    "tailwindcss": "^4.2.4"
+  }
+}

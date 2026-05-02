@@ -3,7 +3,7 @@
 ## Requirements
 
 ### Requirement: Django project structure
-O sistema SHALL ser um projeto Django 5.x com módulo de settings dividido em `settings/base.py`, `settings/development.py`, `settings/test.py` e `settings/production.py`. O `manage.py` SHALL usar `DJANGO_SETTINGS_MODULE` para selecionar o ambiente.
+O sistema SHALL ser um projeto Django 6.0.x com módulo de settings dividido em `settings/base.py`, `settings/development.py`, `settings/test.py` e `settings/production.py`. O `manage.py` SHALL usar `DJANGO_SETTINGS_MODULE` para selecionar o ambiente.
 
 #### Scenario: Project created with correct structure
 - **WHEN** um desenvolvedor clona o repositório e inspeciona a estrutura

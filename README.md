@@ -4,11 +4,11 @@ Website e plataforma digital do **XII Congresso Brasileiro de Neurociências da 
 
 ## Stack
 
-Django 5.x + Wagtail 7.x + PostgreSQL 16 + Tailwind CSS 4 + Docker Compose
+Django 6.0.4 + Wagtail 7.x + PostgreSQL 18 + Tailwind CSS 4 + Docker Compose
 
 ## Pré-requisitos
 
-- Python 3.10+
+- Python 3.13+
 - Node.js 18+
 - Docker e Docker Compose (opcional, para ambiente containerizado)
 
@@ -45,7 +45,7 @@ uv run python manage.py runserver
 docker compose up
 
 # Criar superusuário (em outro terminal)
-docker compose exec web python manage.py createsuperuser
+docker compose exec web uv run python manage.py createsuperuser
 ```
 
 ## Dependências (uv)

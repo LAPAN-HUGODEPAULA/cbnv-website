@@ -9,10 +9,10 @@ Este documento detalha o funcionamento técnico da infraestrutura do projeto, fo
 O projeto utiliza **Docker Compose** para orquestrar o ambiente de desenvolvimento e garantir paridade com a produção. A configuração base está no arquivo `docker-compose.yml`.
 
 ### 1.1 Serviços
-- **db**: Instância PostgreSQL 16 (Alpine).
+- **db**: Instância PostgreSQL 18 (Alpine).
     - **Healthcheck**: O serviço `web` só inicia após o banco estar pronto para receber conexões (`pg_isready`).
     - **Persistência**: Dados são salvos no volume `postgres_data`.
-- **web**: Aplicação Django 5.x.
+- **web**: Aplicação Django 6.0.4.
     - **Porta**: Mapeada internamente na 8000. Por padrão, exposta na porta **8001** do host para evitar conflitos com outros serviços locais.
     - **Volumes**: O código fonte é montado em `/app` para permitir *live reload* durante o desenvolvimento.
 
@@ -38,7 +38,7 @@ docker compose logs -f web
 O build do projeto ocorre em duas camadas: a imagem do container e os ativos de frontend.
 
 ### 2.1 Build da Imagem (Dockerfile)
-A imagem utiliza `python:3.12-slim` e o gerenciador de pacotes **uv**. O processo de build:
+A imagem utiliza `python:3.13-slim` e o gerenciador de pacotes **uv**. O processo de build:
 1. Instala o `uv` no container.
 2. Sincroniza dependências via `pyproject.toml` e `uv.lock`.
 3. Copia o código para o container.
@@ -70,20 +70,20 @@ O Django utiliza o sistema de migrações para sincronizar o modelo de dados Pyt
 ### 3.1 Aplicando Migrações
 Sempre que iniciar o ambiente pela primeira vez ou baixar mudanças de código que alterem modelos:
 ```bash
-docker compose exec web python manage.py migrate
+docker compose exec web uv run python manage.py migrate
 ```
 
 ### 3.2 Criando Novas Migrações
 Se você alterar um arquivo `models.py`:
 ```bash
-docker compose exec web python manage.py makemigrations
+docker compose exec web uv run python manage.py makemigrations
 ```
 As migrações geradas aparecerão na sua pasta local (devido ao volume montado) e devem ser commitadas no repositório.
 
 ### 3.3 Inicialização (Superusuário)
 Para acessar o admin (`/admin/`), você precisa de um usuário administrador:
 ```bash
-docker compose exec web python manage.py createsuperuser
+docker compose exec web uv run python manage.py createsuperuser
 ```
 
 ---
@@ -95,8 +95,8 @@ Se ao acessar o `/admin/` você encontrar um erro de banco de dados mencionando 
 
 **Solução:** Force a criação e aplicação da migração específica:
 ```bash
-docker compose exec web python manage.py makemigrations wagtailcore
-docker compose exec web python manage.py migrate
+docker compose exec web uv run python manage.py makemigrations wagtailcore
+docker compose exec web uv run python manage.py migrate
 ```
 
 ---

@@ -1,0 +1,43 @@
+project:
+  name: "XII CBNV 2026"
+  description: "Website e plataforma digital do Congresso Brasileiro de Neurociências da Visão"
+  version: "1.0.0"
+
+stack:
+  backend: "Django"
+  cms: "Wagtail"
+  database: "PostgreSQL"
+  frontend:
+    css: "Tailwind CSS"
+    interactions: ["HTMX", "Alpine.js"]
+  infrastructure:
+    containers: "Docker Compose"
+    proxy: ["Caddy", "Nginx"]
+
+architecture:
+  type: "Modular Monolith"
+  apps:
+    - core
+    - pages
+    - program
+    - submissions
+    - reviews
+    - proceedings
+    - videos
+    - sponsors
+    - accounts
+    - reports
+    - notifications
+
+constraints:
+  accessibility: "WCAG 2.2 AA"
+  language: "pt-BR"
+  security: "Protected submission files"
+  video_hosting: "YouTube links only"
+  submission_flow: "Two-phase (Bifásico)"
+
+openspec:
+  strict_requirements: true
+  use_given_when_then: true
+  proposal_before_implementation: true
+  delta_keywords: ["ADDED", "MODIFIED", "REMOVED", "RENAMED"]

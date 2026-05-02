@@ -19,15 +19,8 @@ Django 5.x + Wagtail 7.x + PostgreSQL 16 + Tailwind CSS 4 + Docker Compose
 git clone <repo-url>
 cd cbnv-website
 
-# Criar ambiente virtual
-python3 -m venv .venv
-source .venv/bin/activate
-
-# Instalar dependências Python
-pip install -r requirements.txt
-
-# Instalar dependências frontend
-npm install
+# Instalar dependências e criar venv (automaticamente pelo uv)
+uv sync
 
 # Copiar variáveis de ambiente
 cp .env.example .env
@@ -36,13 +29,13 @@ cp .env.example .env
 npm run build
 
 # Criar banco (requer PostgreSQL rodando)
-python manage.py migrate
+uv run python manage.py migrate
 
 # Criar superusuário
-python manage.py createsuperuser
+uv run python manage.py createsuperuser
 
 # Servidor de desenvolvimento
-python manage.py runserver
+uv run python manage.py runserver
 ```
 
 ## Docker
@@ -53,6 +46,19 @@ docker compose up
 
 # Criar superusuário (em outro terminal)
 docker compose exec web python manage.py createsuperuser
+```
+
+## Dependências (uv)
+
+```bash
+# Adicionar pacote
+uv add <package>
+
+# Adicionar pacote de desenvolvimento
+uv add --dev <package>
+
+# Sincronizar ambiente
+uv sync
 ```
 
 ## Tailwind CSS
@@ -69,10 +75,10 @@ npm run watch
 
 ```bash
 # Executar testes (usa SQLite in-memory)
-pytest
+uv run pytest
 
 # Com verbose
-pytest -v
+uv run pytest -v
 ```
 
 ## Estrutura de Apps

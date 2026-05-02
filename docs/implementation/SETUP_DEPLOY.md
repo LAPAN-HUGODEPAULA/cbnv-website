@@ -38,13 +38,19 @@ docker compose logs -f web
 O build do projeto ocorre em duas camadas: a imagem do container e os ativos de frontend.
 
 ### 2.1 Build da Imagem (Dockerfile)
-A imagem utiliza `python:3.12-slim`. O processo de build:
-1. Instala dependências do sistema (libpq-dev, gcc para o driver do Postgres).
-2. Instala dependências Python via `requirements.txt`.
+A imagem utiliza `python:3.12-slim` e o gerenciador de pacotes **uv**. O processo de build:
+1. Instala o `uv` no container.
+2. Sincroniza dependências via `pyproject.toml` e `uv.lock`.
 3. Copia o código para o container.
 
 Para reconstruir a imagem após mudar dependências:
 ```bash
+docker compose build
+```
+
+Para adicionar uma nova dependência Python:
+```bash
+uv add <nome-do-pacote>
 docker compose build
 ```
 

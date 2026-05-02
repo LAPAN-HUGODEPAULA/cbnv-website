@@ -26,11 +26,16 @@ No Next.js, no Strapi, no full SPA, no React required.
 
 ```bash
 docker compose up                    # Start app + PostgreSQL + dependencies
-python manage.py migrate             # Run migrations
-python manage.py createsuperuser     # Create admin user
-python manage.py runserver           # Dev server (outside Docker)
-python manage.py collectstatic       # Collect static files
-pytest                               # Run tests
+uv sync                              # Sync Python dependencies
+uv add <package>                     # Add a new Python package
+uv add --group dev <package>         # Add a dev dependency
+uv run python manage.py migrate      # Run migrations
+uv run python manage.py createsuperuser  # Create admin user
+uv run python manage.py runserver    # Dev server (outside Docker)
+uv run python manage.py collectstatic    # Collect static files
+uv run pytest                        # Run tests
+npm run build                        # Build CSS
+npm run watch                        # Watch CSS
 ```
 
 ## OpenSpec Workflow
@@ -118,6 +123,7 @@ Target: WCAG 2.2 AA. Keyboard accessible, visible focus, semantic headings, high
 
 ## Coding Guidelines
 
+- Use **uv** for all Python dependency management. Never use `pip` or `pip install`.
 - Django idiomatic patterns, incremental migrations
 - Custom user model must be created before any domain models (Proposal 01)
 - Templates server-side, readable, no heavy SPA patterns

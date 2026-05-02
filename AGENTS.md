@@ -7,11 +7,15 @@
 - `README.md` is a short project identifier and should remain brief.
 
 ## Build, Test, and Development Commands
-This repository currently has no formal build pipeline (`package.json`, `Makefile`, and Python project files are absent).
-Use these commands for local validation:
-- `rg --files docs` lists tracked documentation/prototype files.
-- `find docs -type f | sort` audits generated assets and file naming.
-- `python -m http.server 8000` serves HTML prototypes locally for manual review.
+Use **uv** for ALL Python dependency and environment operations. **NEVER** use `pip`, `python -m pip`, or `pip install` in this repository.
+- `uv sync`: Sync Python environment with `pyproject.toml` / `uv.lock`.
+- `uv add <package>`: Add a runtime dependency.
+- `uv add --dev <package>`: Add a development/test dependency.
+- `uv run python manage.py migrate`: Apply Django migrations.
+- `uv run python manage.py runserver`: Start the Django dev server.
+- `uv run pytest`: Run the test suite.
+- `npm run build`: Build Tailwind CSS.
+- `npm run watch`: Watch Tailwind CSS for changes.
 
 ## Coding Style & Naming Conventions
 - Prefer Markdown for specs and decision records; keep sections scannable with short headings.
@@ -20,19 +24,19 @@ Use these commands for local validation:
 - Keep edits focused: do not reorganize `_legacy/` unless migration work explicitly requires it.
 
 ## Testing Guidelines
-- No automated test framework is configured yet.
-- For HTML prototype updates, validate by opening files in a browser and checking layout/content regressions.
-- For Markdown changes, verify links and headings manually before opening a PR.
+- **Framework:** `pytest` (with `pytest-django`).
+- Run all tests before any change proposal validation.
+- Every new feature or bug fix MUST include a new test case.
+- For UI changes, validate manually in the browser via `localhost:8001`.
 
 ## Commit & Pull Request Guidelines
-- Current history only has `Initial commit`; adopt Conventional Commits going forward.
-- Recommended format: `type(scope): summary` (example: `docs(program): update 12o CBNV agenda draft`).
+- Use Conventional Commits.
+- Recommended format: `type(scope): 🏷️ summary` (e.g., `feat(ui): 🎨 add scientific card component`).
 - PRs should include:
   - concise purpose and changed paths,
   - screenshots when UI/prototype files change,
-  - linked issue or planning note when applicable,
-  - explicit note if `_legacy/` data was modified.
+  - linked issue or planning note when applicable.
 
 ## Security & Configuration Tips
-- Do not commit secrets, personal attendee data, or private credentials in docs/assets.
-- Large binary additions (videos, high-res images, PDFs) should be intentional and justified in the PR description.
+- Do not commit secrets, personal attendee data, or private credentials.
+- Large binary additions should be intentional and justified.

@@ -17,6 +17,7 @@ The **XII Congresso Brasileiro de Neurociências da Visão (CBNV 2026)** digital
 *   **CMS:** Wagtail
 *   **Database:** PostgreSQL
 *   **Frontend:** Tailwind CSS + HTMX + Alpine.js (minimal micro-interactions)
+*   **Python Manager:** uv (NEVER use pip directly)
 *   **Rendering:** Server-Side Rendering (SSR) via Django Templates.
 *   **Environment:** Docker Compose (Caddy/Nginx as reverse proxy)
 *   **Prohibited:** Next.js, Strapi, complex SPAs. (Note: Ignore legacy `.gitignore` entries for Next.js; the project has transitioned to Django/Wagtail).
@@ -66,8 +67,11 @@ The project follows **Spec Driven Design (SDD)** using **OpenSpec**.
 
 ## 6. Commands (Inferred/Planned)
 *   **Setup:** `docker compose up --build`
-*   **Migrations:** `python manage.py migrate`
-*   **Test:** `pytest`
+*   **Local dependency sync:** `uv sync`
+*   **Add runtime dependency:** `uv add <package>`
+*   **Add development dependency:** `uv add --dev <package>`
+*   **Migrations:** `uv run python manage.py migrate`
+*   **Test:** `uv run pytest`
 *   **OpenSpec:** `openspec validate <change-id> --strict`
 
 ---

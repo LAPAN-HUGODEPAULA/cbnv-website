@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Programação - XII CBNV 2026</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&amp;family=Space+Grotesk:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "tertiary-fixed": "#d7e3fc",
+                "secondary-fixed-dim": "#20e385",
+                "on-secondary-container": "#005930",
+                "on-primary": "#001f90",
+                "on-error": "#690005",
+                "surface-tint": "#bac3ff",
+                "outline": "#8e8fa3",
+                "error-container": "#93000a",
+                "on-error-container": "#ffdad6",
+                "inverse-surface": "#d7e2ff",
+                "background": "#04132b",
+                "on-secondary": "#00391c",
+                "surface-dim": "#04132b",
+                "on-surface-variant": "#c4c5d9",
+                "surface-container": "#111f38",
+                "on-surface": "#d7e2ff",
+                "on-primary-fixed": "#00105b",
+                "on-secondary-fixed": "#00210e",
+                "tertiary": "#bbc7df",
+                "primary-fixed-dim": "#bac3ff",
+                "inverse-on-surface": "#23304a",
+                "on-primary-container": "#dcdfff",
+                "secondary": "#44f796",
+                "tertiary-container": "#596479",
+                "secondary-container": "#00da7d",
+                "surface-container-high": "#1c2a43",
+                "error": "#ffb4ab",
+                "surface-container-highest": "#27354e",
+                "tertiary-fixed-dim": "#bbc7df",
+                "secondary-fixed": "#5bffa1",
+                "on-tertiary-fixed-variant": "#3c475b",
+                "on-secondary-fixed-variant": "#00522c",
+                "on-primary-fixed-variant": "#002fc8",
+                "primary-container": "#214bff",
+                "on-tertiary-fixed": "#101c2e",
+                "surface-container-low": "#0c1b34",
+                "inverse-primary": "#1644fa",
+                "surface-bright": "#2b3953",
+                "surface-variant": "#27354e",
+                "primary-fixed": "#dee0ff",
+                "primary": "#bac3ff",
+                "outline-variant": "#444656",
+                "on-tertiary": "#263144",
+                "on-background": "#d7e2ff",
+                "surface-container-lowest": "#000e26",
+                "surface": "#04132b",
+                "on-tertiary-container": "#d6e1fb"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+        },
+        "spacing": {
+                "xs": "4px",
+                "xl": "40px",
+                "gutter": "24px",
+                "lg": "24px",
+                "unit": "4px",
+                "md": "16px",
+                "margin": "32px",
+                "sm": "8px"
+        },
+        "fontFamily": {
+                "headline-xl": [
+                        "Newsreader"
+                ],
+                "label-md": [
+                        "Space Grotesk"
+                ],
+                "headline-md": [
+                        "Newsreader"
+                ],
+                "body-lg": [
+                        "Inter"
+                ],
+                "headline-lg": [
+                        "Newsreader"
+                ],
+                "body-md": [
+                        "Inter"
+                ],
+                "label-sm": [
+                        "Space Grotesk"
+                ]
+        },
+        "fontSize": {
+                "headline-xl": [
+                        "48px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "label-md": [
+                        "14px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "headline-md": [
+                        "24px",
+                        {
+                                "lineHeight": "1.3",
+                                "fontWeight": "500"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "1.2",
+                                "fontWeight": "500"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                        }
+                ],
+                "label-sm": [
+                        "12px",
+                        {
+                                "lineHeight": "1.1",
+                                "fontWeight": "600"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        .glass-panel {
+            background: rgba(12, 27, 52, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(68, 247, 150, 0.2);
+        }
+        .neural-bg {
+            background-image: radial-gradient(circle at 10% 20%, rgba(68, 247, 150, 0.05) 0%, transparent 20%),
+                              radial-gradient(circle at 90% 80%, rgba(186, 195, 255, 0.05) 0%, transparent 20%);
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        .timeline-line {
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, #bac3ff 10%, #bac3ff 90%, transparent);
+        }
+        .active-session {
+            box-shadow: 0 0 20px rgba(68, 247, 150, 0.1);
+            border-color: rgba(68, 247, 150, 0.5);
+        }
+        .glow-hover:hover {
+            box-shadow: inset 0 0 15px rgba(186, 195, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen neural-bg flex flex-col">
+<!-- TopNavBar -->
+<nav class="bg-slate-950/80 backdrop-blur-xl docked full-width top-0 sticky z-50 border-b border-emerald-500/20 shadow-2xl shadow-blue-900/20">
+<div class="flex justify-between items-center px-8 py-4 w-full max-w-screen-2xl mx-auto">
+<div class="text-2xl font-serif font-bold text-slate-100 tracking-tighter"><img alt="XII CBNV 2026 Logo" class="h-10 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0uhMTzRdhNBHDj_SzI_TaitHx-UroMG038LoLifpK94Q-SDP1VRX4Cc7jFRfoPMN-mfsH6d_cNo28bkDkJ8L962rIujFpZbBb-s5UrFn_dIuLzl6T6S6pYMnLchSWKCpD8OcIxgRuZ_VL6jZm3rJ3QuDQTi2JoH8L0s3qHsmtfROSHZrzGpur4Vqk9m9xn7-kNyICNTAyN5qg5iDldcd7uh5SGTdVAq1cxgyO7bXj37hQQlNudo7nqMxNB3dVt8Plv5hPrgNGmm3Epk"/></div>
+<div class="hidden md:flex gap-6 items-center">
+<a class="text-slate-400 font-medium hover:text-blue-400 transition-colors duration-300 font-serif italic text-lg tracking-tight" href="#">Home</a>
+<a class="text-slate-400 font-medium hover:text-blue-400 transition-colors duration-300 font-serif italic text-lg tracking-tight" href="#">Sobre</a>
+<a class="text-emerald-400 border-b-2 border-emerald-400 pb-1 font-bold font-serif italic text-lg tracking-tight" href="#">Programação</a>
+<a class="text-slate-400 font-medium hover:text-blue-400 transition-colors duration-300 font-serif italic text-lg tracking-tight" href="#">Palestrantes</a>
+<a class="text-slate-400 font-medium hover:text-blue-400 transition-colors duration-300 font-serif italic text-lg tracking-tight" href="#">Submissões</a>
+<a class="text-slate-400 font-medium hover:text-blue-400 transition-colors duration-300 font-serif italic text-lg tracking-tight" href="#">Inscrição</a>
+<a class="text-slate-400 font-medium hover:text-blue-400 transition-colors duration-300 font-serif italic text-lg tracking-tight" href="#">Contato</a>
+</div>
+<a class="text-blue-600 dark:text-blue-400 font-serif italic text-lg tracking-tight hover:text-blue-400 transition-colors duration-300" href="#">Login</a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-grow w-full max-w-screen-2xl mx-auto px-margin py-xl relative z-10">
+<!-- Header Section -->
+<header class="mb-xl text-center">
+<h1 class="font-headline-xl text-headline-xl text-primary mb-sm">Scientific Program</h1>
+<p class="font-body-lg text-body-lg text-tertiary-fixed-dim max-w-2xl mx-auto">
+                Explore the latest advancements in neurovision, AI integration, and clinical applications.
+            </p>
+</header>
+<!-- Day Tabs -->
+<div class="flex justify-center gap-sm mb-lg border-b border-surface-container-high pb-xs">
+<button class="px-md py-sm font-label-md text-label-md text-secondary border-b-2 border-secondary">Dia 1 - 12 Nov</button>
+<button class="px-md py-sm font-label-md text-label-md text-outline hover:text-primary transition-colors">Dia 2 - 13 Nov</button>
+<button class="px-md py-sm font-label-md text-label-md text-outline hover:text-primary transition-colors">Dia 3 - 14 Nov</button>
+</div>
+<!-- Filters Section -->
+<div class="glass-panel rounded-xl p-md mb-xl flex flex-wrap gap-sm items-center justify-center">
+<span class="font-label-sm text-label-sm text-tertiary uppercase mr-sm">Filter by:</span>
+<button class="px-sm py-xs rounded-full border border-outline-variant font-label-sm text-label-sm text-on-surface hover:border-primary transition-colors bg-surface-container">Conferência</button>
+<button class="px-sm py-xs rounded-full border border-secondary font-label-sm text-label-sm text-secondary bg-secondary/10">Palestra</button>
+<button class="px-sm py-xs rounded-full border border-outline-variant font-label-sm text-label-sm text-on-surface hover:border-primary transition-colors bg-surface-container">Sessão Temática</button>
+<button class="px-sm py-xs rounded-full border border-outline-variant font-label-sm text-label-sm text-on-surface hover:border-primary transition-colors bg-surface-container">Pôsteres</button>
+<button class="px-sm py-xs rounded-full border border-outline-variant font-label-sm text-label-sm text-on-surface hover:border-primary transition-colors bg-surface-container">Apresentação Oral</button>
+<button class="px-sm py-xs rounded-full border border-outline-variant font-label-sm text-label-sm text-on-surface hover:border-primary transition-colors bg-surface-container">Mesa-redonda</button>
+</div>
+<!-- Timeline Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Timeline Column -->
+<div class="md:col-span-1 hidden md:flex flex-col items-center relative py-lg">
+<div class="timeline-line absolute h-full top-0"></div>
+<div class="w-3 h-3 rounded-full bg-secondary shadow-[0_0_10px_rgba(68,247,150,0.8)] z-10 mb-[250px] mt-xl"></div>
+<div class="w-3 h-3 rounded-full bg-outline z-10 mb-[220px]"></div>
+<div class="w-3 h-3 rounded-full bg-outline z-10"></div>
+</div>
+<!-- Content Column -->
+<div class="md:col-span-11 space-y-lg">
+<!-- Session Card 1: Active/Highlighted -->
+<article class="glass-panel active-session rounded-xl p-lg relative flex flex-col md:flex-row gap-lg group glow-hover transition-all">
+<!-- Mobile Time Indicator -->
+<div class="md:hidden font-label-md text-label-md text-secondary mb-sm">08:00 - 09:30</div>
+<!-- Desktop Time -->
+<div class="hidden md:block w-32 shrink-0 border-r border-surface-container-high pr-md">
+<div class="font-headline-md text-headline-md text-primary">08:00</div>
+<div class="font-label-sm text-label-sm text-outline mt-xs">09:30 AM</div>
+</div>
+<!-- Details -->
+<div class="flex-grow">
+<div class="flex justify-between items-start mb-sm">
+<span class="inline-flex items-center gap-xs px-2 py-1 rounded bg-secondary/15 text-secondary font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Palestra Magna
+                            </span>
+<span class="px-2 py-1 rounded border border-primary/30 text-primary font-label-sm text-label-sm">Hybrid</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Neural Networks in Early Glaucoma Detection</h2>
+<p class="font-body-md text-body-md text-tertiary-fixed-dim mb-md">An exploration of CNN architectures applied to OCT scans for predicting neuroretinal rim degradation before visual field loss occurs.</p>
+<div class="flex flex-wrap gap-md items-center pt-md border-t border-surface-container-high">
+<div class="flex items-center gap-sm">
+<img alt="Speaker Avatar" class="w-10 h-10 rounded-full border border-surface-container-high object-cover" data-alt="A professional portrait of an AI researcher in a brightly lit, modern clinical laboratory setting. The researcher, an adult with glasses, is looking directly at the camera with a confident, intelligent expression. The lighting is cool and clinical, with out-of-focus medical imaging equipment in the background. The mood is authoritative and scientific." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQboC35U8b5qby9jNWYqmTCriTCTl8bZ6cyop_aHrktFZfKDRg5Afce3JqZ334hBVDl7hjEJEDHC4LURaQgKPx_2TeMUgKx9BkK4V0i5911qwIHa-SvHCGw3Z9fvxxO1Ew-3W23rNNaW4DO6DkBhwveMPSHlOVsBXxG7m1A_2L-IRLWmRWXK7F6lSDmND55nSiG2W4DOLaCrfT9ncIQMPOXeBxvcKpKj0ZqZ70hyZmsGg7EOgsS8U6HI9elEEIVz51b7CohpbbrSTW"/>
+<div>
+<div class="font-label-md text-label-md text-on-surface">Dr. Elena Rostova</div>
+<div class="font-label-sm text-label-sm text-outline">Stanford AI Lab</div>
+</div>
+</div>
+<div class="ml-auto flex items-center gap-xs text-outline font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-base">location_on</span> Auditório Principal
+                            </div>
+</div>
+</div>
+</article>
+<!-- Session Card 2 -->
+<article class="glass-panel rounded-xl p-lg relative flex flex-col md:flex-row gap-lg group glow-hover transition-all opacity-80">
+<div class="md:hidden font-label-md text-label-md text-primary mb-sm">10:00 - 11:30</div>
+<div class="hidden md:block w-32 shrink-0 border-r border-surface-container-high pr-md">
+<div class="font-headline-md text-headline-md text-primary">10:00</div>
+<div class="font-label-sm text-label-sm text-outline mt-xs">11:30 AM</div>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start mb-sm">
+<span class="inline-flex items-center gap-xs px-2 py-1 rounded bg-surface-container-high border border-outline-variant text-on-surface-variant font-label-sm text-label-sm">
+                                Mesa-redonda
+                            </span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-xs">Ethical Implications of AI-Driven Diagnostics</h2>
+<p class="font-body-md text-body-md text-tertiary-fixed-dim mb-md">Panel discussion on data privacy, algorithmic bias, and the changing role of the clinician in automated environments.</p>
+<div class="flex flex-wrap gap-md items-center pt-md border-t border-surface-container-high">
+<div class="flex -space-x-2">
+<img alt="Panelist" class="w-8 h-8 rounded-full border border-surface" data-alt="A headshot of a mature male medical professional with a beard, wearing a lab coat. The lighting is soft and neutral. The background is a clean, dark gray wall. The mood is serious and contemplative." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDisQ4mafyGJCW3xks4t33HsF4IUaKl3pHGyQBwnYmLD8jhQnWwcFM3cwjAq5T1bRDDpmM4LQEHZo73LkNaSp8ovCFvDS-A_Ud7dfdAoTnEEayoLo3zg7NfVw0F72G4N2GQSlqCkjTUwL3B1Hcrxnowp9tf9GkzypBaO_0C8U7kkRD_D8U39sm-mqE547rquZWuCFlBUJcsmQ4TWUJGWwQvxZAa3xZWSl9CNMoajEQ68tycmNURr5EtHm1Ejsfsr--0um0XWCcVMe59"/>
+<img alt="Panelist" class="w-8 h-8 rounded-full border border-surface" data-alt="A portrait of a young female clinician in a blue scrub top. The setting is a hospital corridor with blurred fluorescent lights. The lighting is bright and even. The mood is professional and focused." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC95fQm231tlil0bV4VacRkGehJZcSwm0rc3D35T9ZXGhsBZmdGtqsyMGcG42kCYjee-FPMRdIDGcYJS1xM2-VTvh4pWzncn6mN1zJwTw7PbH7iKDKesUbilk5R0u5-eBoZMjszZPTVglNo7w_8axzmFDQJuc2XVf_8JnqqsScviD9YbSiZBfq1TKdK1rgb35t5aXWhMuAGj4L5czBbOUtKWySpWgRb1tyjSP0pI8tZ4_v19vR5nr0IIZjGvrRyJHKkDkdRnBr2dqrh"/>
+<div class="w-8 h-8 rounded-full border border-surface bg-surface-container-high flex items-center justify-center font-label-sm text-label-sm text-on-surface">+2</div>
+</div>
+<div class="ml-auto flex items-center gap-xs text-outline font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-base">location_on</span> Sala 3B
+                            </div>
+</div>
+</div>
+</article>
+<!-- Session Card 3 -->
+<article class="glass-panel rounded-xl p-lg relative flex flex-col md:flex-row gap-lg group glow-hover transition-all opacity-80">
+<div class="md:hidden font-label-md text-label-md text-primary mb-sm">13:00 - 15:00</div>
+<div class="hidden md:block w-32 shrink-0 border-r border-surface-container-high pr-md">
+<div class="font-headline-md text-headline-md text-primary">13:00</div>
+<div class="font-label-sm text-label-sm text-outline mt-xs">15:00 PM</div>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start mb-sm">
+<span class="inline-flex items-center gap-xs px-2 py-1 rounded bg-surface-container-high border border-outline-variant text-on-surface-variant font-label-sm text-label-sm">
+                                Sessão Temática
+                            </span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-xs">Advanced Cortical Mapping Techniques</h2>
+<p class="font-body-md text-body-md text-tertiary-fixed-dim mb-md">Interactive workshop focusing on functional MRI data interpretation and visual pathway tracing.</p>
+<div class="flex flex-wrap gap-md items-center pt-md border-t border-surface-container-high">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-label-md">
+                                    MJ
+                                </div>
+<div>
+<div class="font-label-md text-label-md text-on-surface">Dr. Marcus Jensen</div>
+<div class="font-label-sm text-label-sm text-outline">NeuroVision Institute</div>
+</div>
+</div>
+<div class="ml-auto flex items-center gap-xs text-outline font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-base">location_on</span> Lab 1
+                            </div>
+</div>
+</div>
+</article>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-950 full-width border-t border-slate-800 flex flex-col md:flex-row justify-between items-center px-12 py-10 gap-6 w-full z-10">
+<div class="font-sans text-xs uppercase tracking-widest text-slate-500"><img alt="XII CBNV 2026 Logo" class="h-8 w-auto object-contain mb-4" src="https://lh3.googleusercontent.com/aida/ADBb0uhMTzRdhNBHDj_SzI_TaitHx-UroMG038LoLifpK94Q-SDP1VRX4Cc7jFRfoPMN-mfsH6d_cNo28bkDkJ8L962rIujFpZbBb-s5UrFn_dIuLzl6T6S6pYMnLchSWKCpD8OcIxgRuZ_VL6jZm3rJ3QuDQTi2JoH8L0s3qHsmtfROSHZrzGpur4Vqk9m9xn7-kNyICNTAyN5qg5iDldcd7uh5SGTdVAq1cxgyO7bXj37hQQlNudo7nqMxNB3dVt8Plv5hPrgNGmm3Epk"/>
+            © 2026 XII Congresso Brasileiro de Neurovisão. Realização: UFMG, FUNDEP, FAPEMIG.
+        </div>
+<div class="flex gap-4">
+<a class="font-sans text-xs uppercase tracking-widest text-slate-600 hover:text-blue-400" href="#">Privacidade</a>
+<a class="font-sans text-xs uppercase tracking-widest text-slate-600 hover:text-blue-400" href="#">Termos</a>
+<a class="font-sans text-xs uppercase tracking-widest text-slate-600 hover:text-blue-400" href="#">Suporte</a>
+</div>
+</footer>
+</body></html>

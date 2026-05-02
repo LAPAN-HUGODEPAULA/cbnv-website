@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dashboard do Autor - XII CBNV 2026</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Newsreader:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary": "#bbc7df",
+                      "inverse-surface": "#d7e2ff",
+                      "on-tertiary-container": "#d6e1fb",
+                      "on-primary-fixed": "#00105b",
+                      "primary-fixed": "#dee0ff",
+                      "on-error": "#690005",
+                      "on-surface-variant": "#c4c5d9",
+                      "on-primary-container": "#dcdfff",
+                      "tertiary-container": "#596479",
+                      "surface": "#04132b",
+                      "on-tertiary-fixed": "#101c2e",
+                      "surface-tint": "#bac3ff",
+                      "on-tertiary": "#263144",
+                      "tertiary-fixed-dim": "#bbc7df",
+                      "inverse-on-surface": "#23304a",
+                      "surface-container-lowest": "#000e26",
+                      "on-secondary-container": "#005930",
+                      "surface-dim": "#04132b",
+                      "tertiary-fixed": "#d7e3fc",
+                      "on-primary": "#001f90",
+                      "surface-container-highest": "#27354e",
+                      "on-secondary": "#00391c",
+                      "on-primary-fixed-variant": "#002fc8",
+                      "error-container": "#93000a",
+                      "secondary": "#44f796",
+                      "error": "#ffb4ab",
+                      "on-tertiary-fixed-variant": "#3c475b",
+                      "primary-fixed-dim": "#bac3ff",
+                      "outline-variant": "#444656",
+                      "surface-container": "#111f38",
+                      "primary": "#bac3ff",
+                      "primary-container": "#214bff",
+                      "surface-bright": "#2b3953",
+                      "on-error-container": "#ffdad6",
+                      "inverse-primary": "#1644fa",
+                      "background": "#04132b",
+                      "surface-container-high": "#1c2a43",
+                      "surface-container-low": "#0c1b34",
+                      "on-surface": "#d7e2ff",
+                      "on-secondary-fixed": "#00210e",
+                      "surface-variant": "#27354e",
+                      "secondary-fixed-dim": "#20e385",
+                      "outline": "#8e8fa3",
+                      "secondary-fixed": "#5bffa1",
+                      "on-secondary-fixed-variant": "#00522c",
+                      "secondary-container": "#00da7d",
+                      "on-background": "#d7e2ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "xl": "40px",
+                      "unit": "4px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "xs": "4px",
+                      "lg": "24px",
+                      "gutter": "24px",
+                      "margin": "32px"
+              },
+              "fontFamily": {
+                      "label-sm": [
+                              "Space Grotesk"
+                      ],
+                      "label-md": [
+                              "Space Grotesk"
+                      ],
+                      "headline-xl": [
+                              "Newsreader"
+                      ],
+                      "headline-lg": [
+                              "Newsreader"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Newsreader"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-xl": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex selection:bg-primary-container selection:text-on-primary-container">
+<!-- Neural Background Accent -->
+<div aria-hidden="true" class="fixed inset-0 pointer-events-none z-0 opacity-20 overflow-hidden mix-blend-screen">
+<svg class="absolute inset-0 w-full h-full text-secondary" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern height="40" id="neural-grid" patternunits="userSpaceOnUse" width="40">
+<path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" stroke-opacity="0.3" stroke-width="0.5"></path>
+<circle cx="0" cy="0" fill="currentColor" fill-opacity="0.5" r="1"></circle>
+</pattern>
+</defs>
+<rect fill="url(#neural-grid)" height="100%" width="100%"></rect>
+</svg>
+</div>
+<!-- SideNavBar Component -->
+<nav class="bg-[#081426] h-screen w-72 fixed left-0 top-0 border-r border-white/10 shadow-2xl flex flex-col h-full py-6 z-40 hidden md:flex">
+<div class="px-6 mb-8 flex flex-col gap-4">
+<h1 class="font-headline-lg text-headline-lg text-[#214BFF] font-black tracking-tighter">Scientific Portal</h1>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center overflow-hidden border border-outline-variant/30">
+<span aria-label="User Profile" class="material-symbols-outlined text-outline">person</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Authored Session</span>
+</div>
+</div>
+</div>
+<div class="px-4 mb-6">
+<button class="w-full bg-primary-container text-white py-3 px-4 rounded font-label-md text-label-md flex items-center justify-center gap-2 hover:bg-inverse-primary transition-colors duration-300">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+                New Submission
+            </button>
+</div>
+<ul class="flex flex-col w-full divide-y divide-white/5 mt-2 flex-grow overflow-y-auto">
+<li class="w-full">
+<a class="flex items-center gap-4 px-6 py-4 font-['Space_Grotesk'] text-sm uppercase tracking-widest bg-[#214BFF]/10 text-[#00FF00] border-r-2 border-[#00FF00] font-bold focus:ring-2 focus:ring-[#214BFF] outline-none" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                    Dashboard
+                </a>
+</li>
+<li class="w-full">
+<a class="flex items-center gap-4 px-6 py-4 font-['Space_Grotesk'] text-sm uppercase tracking-widest text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors focus:ring-2 focus:ring-[#214BFF] outline-none" href="#">
+<span class="material-symbols-outlined">description</span>
+                    My Submissions
+                </a>
+</li>
+<li class="w-full">
+<a class="flex items-center gap-4 px-6 py-4 font-['Space_Grotesk'] text-sm uppercase tracking-widest text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors focus:ring-2 focus:ring-[#214BFF] outline-none" href="#">
+<span class="material-symbols-outlined">assignment_turned_in</span>
+                    Review Tasks
+                </a>
+</li>
+<li class="w-full">
+<a class="flex items-center gap-4 px-6 py-4 font-['Space_Grotesk'] text-sm uppercase tracking-widest text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors focus:ring-2 focus:ring-[#214BFF] outline-none" href="#">
+<span class="material-symbols-outlined">library_books</span>
+                    Committee Docs
+                </a>
+</li>
+<li class="w-full mt-auto">
+<a class="flex items-center gap-4 px-6 py-4 font-['Space_Grotesk'] text-sm uppercase tracking-widest text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors focus:ring-2 focus:ring-[#214BFF] outline-none" href="#">
+<span class="material-symbols-outlined">settings</span>
+                    Settings
+                </a>
+</li>
+</ul>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-72 flex flex-col relative z-10 w-full">
+<!-- Top App Bar (Mobile Fallback for Branding if needed, but per instructions, SideNav is primary for auth portal. Keeping clean padding instead) -->
+<header class="w-full px-gutter md:px-margin pt-margin pb-lg flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/5 backdrop-blur-sm">
+<div class="flex flex-col gap-2">
+<h2 class="font-headline-xl text-headline-xl text-on-surface">Bem-vindo, Dr. Silva</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Portal do Autor - XII Congresso Brasileiro de Visão e Neurociência</p>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-primary-container text-white px-6 py-3 rounded flex items-center gap-2 font-label-md text-label-md shadow-[inset_0_0_10px_rgba(33,75,255,0.5)] hover:shadow-[inset_0_0_20px_rgba(33,75,255,0.8)] transition-all">
+<span class="material-symbols-outlined">add_circle</span>
+                    Nova Submissão
+                </button>
+</div>
+</header>
+<div class="p-gutter md:p-margin flex flex-col gap-xl max-w-[1600px] w-full mx-auto">
+<!-- Summary Cards Bento Grid -->
+<section aria-label="Status Summary">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Card: Draft -->
+<div class="bg-primary-container/10 border border-primary-container/30 rounded-xl p-6 flex flex-col gap-4 backdrop-blur-md relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary-container/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="flex justify-between items-start">
+<div class="w-10 h-10 rounded bg-surface-container flex items-center justify-center border border-outline-variant/30 text-tertiary">
+<span class="material-symbols-outlined">edit_document</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface">2</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Draft</span>
+<span class="font-body-sm text-body-sm text-outline text-xs">Rascunhos não enviados</span>
+</div>
+</div>
+<!-- Card: Submitted -->
+<div class="bg-primary-container/10 border border-primary-container/30 rounded-xl p-6 flex flex-col gap-4 backdrop-blur-md relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary-container/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="flex justify-between items-start">
+<div class="w-10 h-10 rounded bg-surface-container flex items-center justify-center border border-outline-variant/30 text-inverse-surface">
+<span class="material-symbols-outlined">send</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface">1</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Submitted</span>
+<span class="font-body-sm text-body-sm text-outline text-xs">Aguardando alocação</span>
+</div>
+</div>
+<!-- Card: Under Review -->
+<div class="bg-primary-container/10 border border-primary-container/30 rounded-xl p-6 flex flex-col gap-4 backdrop-blur-md relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary-container/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="flex justify-between items-start">
+<div class="w-10 h-10 rounded bg-surface-container flex items-center justify-center border border-outline-variant/30 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">hourglass_top</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface">3</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Under Review</span>
+<span class="font-body-sm text-body-sm text-outline text-xs">Em avaliação por pares</span>
+</div>
+</div>
+<!-- Card: Approved -->
+<div class="bg-secondary/10 border border-secondary/30 rounded-xl p-6 flex flex-col gap-4 backdrop-blur-md relative overflow-hidden group shadow-[inset_0_0_15px_rgba(68,247,150,0.05)]">
+<div class="absolute inset-0 bg-gradient-to-br from-secondary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="flex justify-between items-start">
+<div class="w-10 h-10 rounded bg-secondary-container/20 flex items-center justify-center border border-secondary/30 text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<span class="font-headline-md text-headline-md text-secondary">1</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Approved</span>
+<span class="font-body-sm text-body-sm text-outline text-xs">Prontos para publicação</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Banner / Promotional Area using Available Image -->
+<section class="w-full h-auto rounded-xl overflow-hidden border border-white/10 relative">
+<img alt="A high-tech digital banner for a scientific portal, featuring glowing neural pathways and abstract data visualizations. The aesthetic is deep navy with bright electric blue and neon green accents, suggesting artificial intelligence processing complex optical data in a dark mode environment. The overall feel is futuristic, precise, and authoritative." class="w-full h-auto object-cover opacity-80 mix-blend-lighten" data-alt="A high-tech digital banner for a scientific portal, featuring glowing neural pathways and abstract data visualizations. The aesthetic is deep navy with bright electric blue and neon green accents, suggesting artificial intelligence processing complex optical data in a dark mode environment. The overall feel is futuristic, precise, and authoritative." src="https://lh3.googleusercontent.com/aida/ADBb0uhMTzRdhNBHDj_SzI_TaitHx-UroMG038LoLifpK94Q-SDP1VRX4Cc7jFRfoPMN-mfsH6d_cNo28bkDkJ8L962rIujFpZbBb-s5UrFn_dIuLzl6T6S6pYMnLchSWKCpD8OcIxgRuZ_VL6jZm3rJ3QuDQTi2JoH8L0s3qHsmtfROSHZrzGpur4Vqk9m9xn7-kNyICNTAyN5qg5iDldcd7uh5SGTdVAq1cxgyO7bXj37hQQlNudo7nqMxNB3dVt8Plv5hPrgNGmm3Epk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest/90 via-surface-container-lowest/40 to-transparent flex items-end p-6 md:p-8">
+<div class="max-w-2xl">
+<h3 class="font-headline-lg text-headline-lg text-on-surface mb-2">Chamada Especial: IA na Retina</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Submissões abertas para o painel principal até 30 de Outubro. Explore novas fronteiras da neurociência computacional.</p>
+</div>
+</div>
+</section>
+<!-- Table Section -->
+<section aria-label="Minhas Submissões" class="flex flex-col gap-6">
+<div class="flex items-center justify-between border-b border-white/10 pb-4">
+<h3 class="font-headline-md text-headline-md text-on-surface">Minhas Submissões</h3>
+<div class="flex gap-2">
+<button class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center text-on-surface-variant hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+</button>
+</div>
+</div>
+<div class="bg-surface-container/50 border border-white/5 rounded-xl overflow-hidden backdrop-blur-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-white/5 bg-surface-container-low/50">
+<th class="py-4 px-6 font-label-sm text-label-sm text-tertiary uppercase tracking-widest font-semibold w-24">Código</th>
+<th class="py-4 px-6 font-label-sm text-label-sm text-tertiary uppercase tracking-widest font-semibold">Título</th>
+<th class="py-4 px-6 font-label-sm text-label-sm text-tertiary uppercase tracking-widest font-semibold w-40">Status</th>
+<th class="py-4 px-6 font-label-sm text-label-sm text-tertiary uppercase tracking-widest font-semibold w-32">Data</th>
+<th class="py-4 px-6 font-label-sm text-label-sm text-tertiary uppercase tracking-widest font-semibold w-32 text-right">Ação</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5 font-body-md text-body-md">
+<!-- Row 1 -->
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="py-4 px-6 font-mono text-sm text-outline-variant">CBNV-1042</td>
+<td class="py-4 px-6 text-on-surface font-medium group-hover:text-primary-container transition-colors">Mapeamento Cortical de Sinais Visuais Usando Redes Neurais Profundas</td>
+<td class="py-4 px-6">
+<div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-[#9AA8C7]/10 border border-[#9AA8C7]/30 text-[#9AA8C7] font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-[#9AA8C7]"></span>
+                                            Pending
+                                        </div>
+</td>
+<td class="py-4 px-6 text-on-surface-variant text-sm">12/08/2025</td>
+<td class="py-4 px-6 text-right">
+<button class="font-label-sm text-label-sm text-primary hover:text-white uppercase tracking-widest transition-colors flex items-center justify-end gap-1 w-full">
+                                            Ver Detalhes
+                                            <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="py-4 px-6 font-mono text-sm text-outline-variant">CBNV-0988</td>
+<td class="py-4 px-6 text-on-surface font-medium group-hover:text-primary-container transition-colors">Análise Preditiva de Glaucoma via Tomografia de Coerência Óptica</td>
+<td class="py-4 px-6">
+<div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-secondary/15 border border-secondary/20 text-secondary font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary shadow-[0_0_8px_rgba(68,247,150,0.8)]"></span>
+                                            Confirmed
+                                        </div>
+</td>
+<td class="py-4 px-6 text-on-surface-variant text-sm">05/08/2025</td>
+<td class="py-4 px-6 text-right">
+<button class="font-label-sm text-label-sm text-primary hover:text-white uppercase tracking-widest transition-colors flex items-center justify-end gap-1 w-full">
+                                            Ver Detalhes
+                                            <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="py-4 px-6 font-mono text-sm text-outline-variant">CBNV-1105</td>
+<td class="py-4 px-6 text-on-surface font-medium group-hover:text-primary-container transition-colors">Interface Cérebro-Máquina para Restauração Visual: Ensaios Clínicos</td>
+<td class="py-4 px-6">
+<div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-primary-container/10 border border-primary-container/30 text-primary-container font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span>
+                                            Under Review
+                                        </div>
+</td>
+<td class="py-4 px-6 text-on-surface-variant text-sm">15/08/2025</td>
+<td class="py-4 px-6 text-right">
+<button class="font-label-sm text-label-sm text-primary hover:text-white uppercase tracking-widest transition-colors flex items-center justify-end gap-1 w-full">
+                                            Ver Detalhes
+                                            <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

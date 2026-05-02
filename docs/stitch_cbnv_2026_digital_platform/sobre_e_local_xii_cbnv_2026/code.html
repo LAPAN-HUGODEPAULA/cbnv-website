@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>About / Location / Accessibility - XII CBNV 2026</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Newsreader:opsz,wght@6..72,400;500;600&amp;family=Space+Grotesk:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#bbc7df",
+                        "inverse-surface": "#d7e2ff",
+                        "on-tertiary-container": "#d6e1fb",
+                        "on-primary-fixed": "#00105b",
+                        "primary-fixed": "#dee0ff",
+                        "on-error": "#690005",
+                        "on-surface-variant": "#c4c5d9",
+                        "on-primary-container": "#dcdfff",
+                        "tertiary-container": "#596479",
+                        "surface": "#04132b",
+                        "on-tertiary-fixed": "#101c2e",
+                        "surface-tint": "#bac3ff",
+                        "on-tertiary": "#263144",
+                        "tertiary-fixed-dim": "#bbc7df",
+                        "inverse-on-surface": "#23304a",
+                        "surface-container-lowest": "#000e26",
+                        "on-secondary-container": "#005930",
+                        "surface-dim": "#04132b",
+                        "tertiary-fixed": "#d7e3fc",
+                        "on-primary": "#001f90",
+                        "surface-container-highest": "#27354e",
+                        "on-secondary": "#00391c",
+                        "on-primary-fixed-variant": "#002fc8",
+                        "error-container": "#93000a",
+                        "secondary": "#44f796",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed-variant": "#3c475b",
+                        "primary-fixed-dim": "#bac3ff",
+                        "outline-variant": "#444656",
+                        "surface-container": "#111f38",
+                        "primary": "#bac3ff",
+                        "primary-container": "#214bff",
+                        "surface-bright": "#2b3953",
+                        "on-error-container": "#ffdad6",
+                        "inverse-primary": "#1644fa",
+                        "background": "#04132b",
+                        "surface-container-high": "#1c2a43",
+                        "surface-container-low": "#0c1b34",
+                        "on-surface": "#d7e2ff",
+                        "on-secondary-fixed": "#00210e",
+                        "surface-variant": "#27354e",
+                        "secondary-fixed-dim": "#20e385",
+                        "outline": "#8e8fa3",
+                        "secondary-fixed": "#5bffa1",
+                        "on-secondary-fixed-variant": "#00522c",
+                        "secondary-container": "#00da7d",
+                        "on-background": "#d7e2ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "40px",
+                        "unit": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "gutter": "24px",
+                        "margin": "32px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Space Grotesk"],
+                        "label-md": ["Space Grotesk"],
+                        "headline-xl": ["Newsreader"],
+                        "headline-lg": ["Newsreader"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Newsreader"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1.1", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-xl": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(4, 19, 43, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(68, 247, 150, 0.2);
+        }
+        .glow-text {
+            text-shadow: 0 0 10px rgba(68, 247, 150, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col antialiased">
+<!-- TopAppBar -->
+<header class="bg-[#081426]/80 backdrop-blur-xl docked full-width top-0 z-50 border-b border-white/10 shadow-[0_0_15px_rgba(33,75,255,0.1)] flex justify-between items-center w-full px-8 h-20 fixed">
+<div class="text-2xl font-bold tracking-tighter text-white uppercase font-headline-md">
+            XII CBNV 2026
+        </div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-slate-400 font-medium hover:text-white transition-all duration-300 active:scale-95 cursor-pointer font-label-md" href="#">Program</a>
+<a class="text-slate-400 font-medium hover:text-white transition-all duration-300 active:scale-95 cursor-pointer font-label-md" href="#">Speakers</a>
+<a class="text-slate-400 font-medium hover:text-white transition-all duration-300 active:scale-95 cursor-pointer font-label-md" href="#">Submission</a>
+<a class="text-slate-400 font-medium hover:text-white transition-all duration-300 active:scale-95 cursor-pointer font-label-md" href="#">Archive</a>
+<a class="text-[#214BFF] border-b-2 border-[#214BFF] pb-1 transition-all duration-300 active:scale-95 cursor-pointer font-label-md" href="#">About</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="bg-primary-container text-white px-6 py-2 rounded font-label-md hover:bg-inverse-primary transition-colors active:scale-95">
+                Portal Login
+            </button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-[100px] px-gutter md:px-margin max-w-7xl mx-auto w-full pb-xl">
+<!-- Hero Section -->
+<section class="mb-xl relative overflow-hidden rounded-xl glass-panel p-lg">
+<div class="absolute inset-0 bg-gradient-to-r from-surface-container to-transparent opacity-80"></div>
+<div class="relative z-10 max-w-3xl">
+<h1 class="font-headline-xl text-on-surface mb-sm">O Congresso</h1>
+<p class="font-body-lg text-on-surface-variant mb-lg">XII Congresso Brasileiro de Neurovisão (CBNV 2026)</p>
+<div class="font-body-md text-tertiary-fixed-dim space-y-4">
+<p>
+                        O XII Congresso Brasileiro de Neurovisão se estabelece como o fórum científico preeminente para a convergência entre a oftalmologia clínica, a neurociência e a inteligência artificial. Desde sua fundação, o CBNV tem impulsionado a fronteira do conhecimento sobre o processamento visual humano e suas patologias associadas.
+                    </p>
+<p>
+                        Nesta décima segunda edição, sediada no Centro de Atividades Didáticas (CAD-1) da Universidade Federal de Minas Gerais (UFMG), o evento reunirá pesquisadores de renome internacional, inovadores em tecnologia médica e clínicos experientes para debater o tema central: "Sinais Visuais na Era da Inteligência Artificial: Da Célula Ganglionar aos Modelos Generativos".
+                    </p>
+</div>
+</div>
+</section>
+<!-- Bento Grid: Objectives & Info -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-gutter mb-xl">
+<!-- Objetivos Científicos -->
+<div class="md:col-span-8 glass-panel rounded-xl p-lg">
+<div class="flex items-center gap-sm mb-md pb-xs border-b border-outline-variant">
+<span class="material-symbols-outlined text-secondary">science</span>
+<h2 class="font-headline-lg text-on-surface">Objetivos Científicos</h2>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-md">
+<div class="p-md bg-surface-container-low rounded-lg border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary mb-xs">biotech</span>
+<h3 class="font-label-md text-on-surface mb-xs">Pesquisa Translacional</h3>
+<p class="font-body-md text-on-surface-variant">Promover a transição acelerada de descobertas neurovisuais do ambiente de laboratório para aplicações clínicas práticas e protocolos de diagnóstico.</p>
+</div>
+<div class="p-md bg-surface-container-low rounded-lg border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary mb-xs">memory</span>
+<h3 class="font-label-md text-on-surface mb-xs">Integração de IA</h3>
+<p class="font-body-md text-on-surface-variant">Explorar o uso de redes neurais profundas e aprendizado de máquina na análise de imagens de retina e padrões de movimento ocular.</p>
+</div>
+<div class="p-md bg-surface-container-low rounded-lg border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary mb-xs">psychology</span>
+<h3 class="font-label-md text-on-surface mb-xs">Reabilitação Neural</h3>
+<p class="font-body-md text-on-surface-variant">Apresentar inovações em neuroplasticidade e métodos não-invasivos para reabilitação de déficits visuais de origem cortical.</p>
+</div>
+<div class="p-md bg-surface-container-low rounded-lg border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary mb-xs">hub</span>
+<h3 class="font-label-md text-on-surface mb-xs">Redes de Colaboração</h3>
+<p class="font-body-md text-on-surface-variant">Fomentar consórcios multicêntricos de pesquisa que unam engenharia biomédica, ciência da computação e neuro-oftalmologia.</p>
+</div>
+</div>
+</div>
+<!-- Stats/Highlights -->
+<div class="md:col-span-4 flex flex-col gap-gutter">
+<div class="glass-panel rounded-xl p-lg flex-grow flex flex-col justify-center items-center text-center">
+<span class="font-headline-xl text-secondary glow-text">3</span>
+<span class="font-label-sm text-tertiary tracking-widest uppercase">Dias de Imersão</span>
+</div>
+<div class="glass-panel rounded-xl p-lg flex-grow flex flex-col justify-center items-center text-center">
+<span class="font-headline-xl text-primary">50+</span>
+<span class="font-label-sm text-tertiary tracking-widest uppercase">Palestrantes Globais</span>
+</div>
+<div class="glass-panel rounded-xl p-lg flex-grow flex flex-col justify-center items-center text-center">
+<span class="font-headline-xl text-inverse-surface">200+</span>
+<span class="font-label-sm text-tertiary tracking-widest uppercase">Trabalhos Científicos</span>
+</div>
+</div>
+</section>
+<!-- Location & Accessibility -->
+<section class="mb-xl">
+<div class="flex items-center gap-sm mb-lg border-b border-outline-variant pb-xs">
+<span class="material-symbols-outlined text-secondary">location_on</span>
+<h2 class="font-headline-lg text-on-surface">Local e Acessibilidade</h2>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+<!-- Venue Info -->
+<div class="glass-panel rounded-xl p-lg flex flex-col">
+<h3 class="font-headline-md text-on-surface mb-sm">CAD-1 UFMG</h3>
+<p class="font-body-md text-on-surface-variant mb-md">
+                        Centro de Atividades Didáticas de Ciências Exatas<br/>
+                        Av. Pres. Antônio Carlos, 6627 - Pampulha<br/>
+                        Belo Horizonte - MG, 31270-901
+                    </p>
+<div class="mt-auto space-y-md">
+<div class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-primary mt-1">accessible</span>
+<div>
+<h4 class="font-label-md text-on-surface">Acessibilidade Física</h4>
+<p class="font-body-md text-tertiary-fixed-dim text-sm">O edifício possui rampas de acesso, elevadores em todos os pavimentos, sanitários adaptados e espaços reservados nos auditórios principais para cadeirantes.</p>
+</div>
+</div>
+<div class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-primary mt-1">visibility</span>
+<div>
+<h4 class="font-label-md text-on-surface">Assistência Visual</h4>
+<p class="font-body-md text-tertiary-fixed-dim text-sm">Sinalização tátil em piso e corrimões, placas em Braille nas portas e opções de material de apoio em formato acessível sob demanda prévia.</p>
+</div>
+</div>
+<div class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-primary mt-1">sensors</span>
+<div>
+<h4 class="font-label-md text-on-surface">Transmissão Híbrida</h4>
+<p class="font-body-md text-tertiary-fixed-dim text-sm">O evento contará com infraestrutura de transmissão ao vivo de alta fidelidade para as sessões plenárias, permitindo participação remota interativa.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Map & Image -->
+<div class="flex flex-col gap-gutter">
+<!-- Map Placeholder -->
+<div class="glass-panel rounded-xl overflow-hidden h-64 relative flex items-center justify-center border border-outline-variant/50">
+<span class="material-symbols-outlined text-6xl text-surface-variant absolute z-0">map</span>
+<div class="relative z-10 text-center bg-surface/80 p-md rounded-lg border border-outline-variant/30 backdrop-blur-sm" data-location="Belo Horizonte" style="">
+<p class="font-label-md text-on-surface">Mapa do Local</p>
+<p class="font-body-md text-tertiary text-sm">Campus Pampulha, UFMG</p>
+</div>
+</div>
+<!-- Venue Image -->
+<div class="rounded-xl overflow-hidden border border-outline-variant/50">
+<img alt="A high-tech architectural rendering of the CAD-1 building at UFMG in Belo Horizonte. The modern structure features extensive glass facades reflecting a deep blue twilight sky. Subtle glowing green and blue accents suggest advanced technological infrastructure within. The aesthetic is clean, scientific, and authoritative, aligning with a premium digital UI style." class="w-full h-auto object-cover opacity-80 hover:opacity-100 transition-opacity duration-300" src="https://lh3.googleusercontent.com/aida/ADBb0uhMTzRdhNBHDj_SzI_TaitHx-UroMG038LoLifpK94Q-SDP1VRX4Cc7jFRfoPMN-mfsH6d_cNo28bkDkJ8L962rIujFpZbBb-s5UrFn_dIuLzl6T6S6pYMnLchSWKCpD8OcIxgRuZ_VL6jZm3rJ3QuDQTi2JoH8L0s3qHsmtfROSHZrzGpur4Vqk9m9xn7-kNyICNTAyN5qg5iDldcd7uh5SGTdVAq1cxgyO7bXj37hQQlNudo7nqMxNB3dVt8Plv5hPrgNGmm3Epk"/>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-[#040A14] w-full mt-auto border-t border-white/5 py-8 px-12">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-md">
+<div class="flex items-center gap-md">
+<!-- Logos Placeholder (Text based for now, adhering to instructions) -->
+<span class="font-headline-md text-on-surface-variant font-bold">UFMG</span>
+<span class="text-outline-variant">|</span>
+<span class="font-headline-md text-on-surface-variant font-bold">FUNDEP</span>
+<span class="text-outline-variant">|</span>
+<span class="font-headline-md text-on-surface-variant font-bold">FAPEMIG</span>
+</div>
+<div class="font-['Space_Grotesk'] text-xs font-light text-slate-500 text-center md:text-left">
+                © 2026 XII Brazilian Congress of Vision &amp; Neuroscience. All rights reserved.
+            </div>
+<nav class="flex gap-md font-['Space_Grotesk'] text-xs font-light">
+<a class="text-slate-500 hover:text-[#214BFF] transition-all" href="#">Privacy Policy</a>
+<a class="text-slate-500 hover:text-[#214BFF] transition-all" href="#">Institutional Site</a>
+<a class="text-slate-500 hover:text-[#214BFF] transition-all" href="#">Technical Support</a>
+<a class="text-slate-500 hover:text-[#214BFF] transition-all" href="#">Contact</a>
+</nav>
+</div>
+</footer>
+</body></html>

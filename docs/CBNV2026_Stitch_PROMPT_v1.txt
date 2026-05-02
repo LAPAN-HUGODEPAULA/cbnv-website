@@ -1,0 +1,191 @@
+PROMPT MESTRE PARA GOOGLE STITCH — XII CBNV 2026
+
+Use o arquivo anexado “XII CBNV 2026 — Documento de Requisitos e Arquitetura v1.0” como fonte principal e única de verdade. Não use como fonte o site Wix legado nem documentos de brainstorming antigos. Gere um protótipo visual de alta fidelidade para o website/plataforma digital do XII Congresso Brasileiro de Neurociências da Visão — CBNV 2026.
+
+Contexto do projeto:
+O CBNV 2026 é um congresso científico nacional, de médio porte, realizado em Belo Horizonte, no CAD-1 da UFMG, de 11 a 13 de novembro de 2026. O tema é “Neurovisão na Era da Inteligência Artificial”. O público inclui pesquisadores, docentes, estudantes de graduação e pós-graduação, profissionais da saúde, oftalmologistas, neurologistas, psicólogos, engenheiros biomédicos, cientistas de dados, desenvolvedores de tecnologia e público interessado em neurociências da visão. O formato é presencial com transmissão híbrida.
+
+Objetivo do design:
+Criar um website científico, moderno, responsivo, acessível e visualmente memorável, com estética de neurociência da visão + inteligência artificial responsável. O design deve ser centrado no usuário, com navegação clara para participantes, autores de trabalhos, revisores, palestrantes, patrocinadores e público geral. Deve parecer institucional, confiável e inovador, não genérico.
+
+Direção visual:
+Use como inspiração conceitual a identidade do CBNV 2026: fundo azul-marinho profundo, azul elétrico, verde/neon associado ao cérebro/onda visual, tipografia científica sóbria, aparência moderna e acessível. O design deve sugerir retina, sinais visuais, circuitos neurais, campos visuais, mapas corticais, grafos, IA e ciência translacional. Evite estética de startup genérica, excesso de gradientes, excesso de neon e animações pesadas. O visual deve ser bonito, limpo, legível e acadêmico.
+
+Paleta sugerida:
+- Azul-marinho profundo: #081426
+- Azul institucional escuro: #0E1E3A
+- Azul elétrico: #214BFF
+- Verde neuro/neon: #2FEA8B
+- Texto claro: #E7ECF7
+- Texto secundário: #9AA8C7
+- Fundo claro: #F5F7FB
+- Texto em fundo claro: #111827
+- Alerta/destaque: #F59E0B
+
+Tipografia:
+Use uma combinação elegante e legível. Títulos podem ter uma fonte serifada ou display sofisticada que transmita ciência e tradição acadêmica; textos de corpo e interface devem usar sans-serif legível. Priorize hierarquia tipográfica clara, boa legibilidade em mobile e contraste alto.
+
+Requisitos de acessibilidade:
+O protótipo deve respeitar contraste WCAG AA, navegação por teclado, foco visível, labels claros em formulários, textos legíveis, estrutura semântica, botões com nomes objetivos, estados de erro compreensíveis e suporte a usuários com baixa visão. Evite depender apenas de cor para comunicar status. Inclua opção visual compatível com redução de movimento.
+
+Crie primeiro estas telas em desktop e mobile:
+
+1. HOME
+Objetivo: comunicar rapidamente o evento e conduzir às ações principais.
+Conteúdo:
+- Hero com: “XII Congresso Brasileiro de Neurociências da Visão”, “CBNV 2026”, tema “Neurovisão na Era da Inteligência Artificial”, datas “11–13 de novembro de 2026”, local “CAD-1 UFMG · Belo Horizonte, MG”, formato “Presencial com transmissão híbrida”.
+- CTAs: “Ver programação”, “Submeter trabalho”, “Inscrição em breve” ou “Inscreva-se”.
+- Cards rápidos: Data, Local, Formato, Submissões, Anais/Vídeos.
+- Seção “Por que participar?” com três pilares: ciência translacional, inteligência artificial responsável, redes interdisciplinares.
+- Destaque da programação: três dias com títulos:
+  Dia 1 — Fundamentos e Fronteiras da Neurociência da Visão
+  Dia 2 — Neurovisão Clínica e Translacional
+  Dia 3 — Neurovisão, Inteligência Artificial e Inovação em Saúde
+- Destaque de palestrantes confirmados, mas sem obrigatoriedade de muitos nomes.
+- Chamada para submissões deixando claro que vídeo não é exigido na submissão inicial.
+- Rodapé institucional com UFMG, FUNDEP, FAPEMIG, CBNV, contato, redes e links de políticas.
+
+2. PROGRAMAÇÃO
+Objetivo: tornar a programação preliminar fácil de explorar.
+Formato:
+- Desktop: timeline por dia, com filtros por tipo de atividade.
+- Mobile: cards verticais empilhados, com horários grandes e legíveis.
+Conteúdo:
+- Tabs ou botões: Dia 1, Dia 2, Dia 3.
+- Filtros: Conferência, Palestra, Sessão Temática, Pôsteres, Apresentação Oral, Mesa-redonda, Intervalo.
+- Cards de sessão com horário, tipo, título, descrição curta, formato presencial/híbrido, palestrantes se confirmados.
+- Participantes pendentes devem aparecer como “participantes a confirmar” ou ficar ocultos.
+- Criar visual especial para plenárias e mesa-redonda.
+- Incluir estados: confirmado, híbrido, a confirmar.
+
+3. SUBMISSÕES
+Objetivo: orientar autores e reduzir dúvidas.
+Conteúdo:
+- Hero interno: “Submeta seu trabalho ao CBNV 2026”.
+- Explicação curta do fluxo bifásico:
+  1. Submissão inicial: dados, resumo e PDF.
+  2. Avaliação pela Comissão Científica.
+  3. Decisão: oral, pôster ou vídeo.
+  4. Material final: PDF final e link de vídeo quando aplicável.
+- Destaque: “O vídeo será solicitado apenas na etapa final para trabalhos aprovados, quando aplicável.”
+- Cards de eixos temáticos.
+- Lista de requisitos.
+- CTA: “Iniciar submissão”.
+- FAQ.
+
+4. ÁREA DO AUTOR / DASHBOARD
+Objetivo: permitir que autores acompanhem submissões.
+Conteúdo:
+- Cabeçalho simples.
+- Cards de status: Rascunho, Submetido, Em avaliação, Correções solicitadas, Aprovado, Material final pendente.
+- Lista de trabalhos com título, código, status, data, botão “ver detalhes”.
+- CTA “Nova submissão”.
+- Empty state para usuário sem submissões.
+- Alertas claros sobre prazos.
+
+5. FORMULÁRIO DE SUBMISSÃO
+Objetivo: criar uma experiência de submissão clara e confiável.
+Formato:
+- Stepper em 5 etapas:
+  1. Dados do trabalho
+  2. Autores
+  3. Resumo e palavras-chave
+  4. Upload do PDF
+  5. Revisão e envio
+- Campos com labels explícitos.
+- Validação visível.
+- Caixa de ajuda lateral ou abaixo com normas resumidas.
+- Confirmação final com checklist.
+- Não incluir upload de vídeo na submissão inicial.
+
+6. PALESTRANTES
+Objetivo: apresentar autoridade científica e interdisciplinaridade.
+Formato:
+- Grid de cards.
+- Foto, nome, instituição, país, área, sessão relacionada.
+- Filtros por dia/eixo.
+- Cards elegantes e legíveis.
+- Tratamento visual para “convidado”, “confirmado” e “a confirmar”, mas sem expor status interno desnecessário.
+
+7. SOBRE / LOCAL / ACESSIBILIDADE
+Objetivo: explicar o congresso e informar logística.
+Conteúdo:
+- Texto curto sobre o CBNV.
+- Objetivos científicos.
+- Blocos para UFMG, CAD-1, Belo Horizonte.
+- Como chegar.
+- Acessibilidade, transmissão híbrida e informações práticas.
+- Mapa placeholder.
+- Contato.
+
+8. EDIÇÕES ANTERIORES / ACERVO
+Objetivo: mostrar continuidade histórica.
+Conteúdo:
+- Cards por edição.
+- Links para anais.
+- Links para vídeos/playlist YouTube.
+- Destaque para acervo científico, sem copiar layout antigo do Wix.
+
+9. ÁREA DA COMISSÃO / REVISÃO — baixa prioridade visual, mas criar uma tela conceitual
+Objetivo: dar direção visual para painel administrativo científico.
+Conteúdo:
+- Dashboard com métricas: submissões, em avaliação, aceitas, rejeitadas, material final pendente.
+- Tabela de submissões com filtros.
+- Status badges.
+- Botões: atribuir revisor, registrar decisão, exportar CSV.
+- Visual funcional, limpo, administrativo.
+
+Componentes obrigatórios:
+- Header responsivo.
+- Hero com CTA.
+- Cards.
+- Timeline.
+- Badges.
+- Tabs.
+- Filtros.
+- Formulários acessíveis.
+- Stepper.
+- Tabelas.
+- Alertas.
+- Empty states.
+- Error states.
+- Footer institucional.
+- Breadcrumbs.
+- Modal ou drawer para detalhes da sessão.
+
+Tom textual:
+Português brasileiro. Estilo institucional, científico, claro e acessível. Evite slogans exagerados. Priorize informação útil. Use microcopy como:
+- “Submissões abertas em breve.”
+- “Vídeo solicitado apenas na etapa final para trabalhos aprovados.”
+- “Participantes a confirmar.”
+- “Inscrição realizada em plataforma externa.”
+- “Material final pendente.”
+- “Aguardando parecer da Comissão Científica.”
+
+Solicitação de variações:
+Gere 3 alternativas visuais iniciais:
+1. Variante A — Institucional científica: mais sóbria, forte em credibilidade.
+2. Variante B — Neurotech: mais moderna, com grafismos de IA e sinais neurais.
+3. Variante C — Editorial premium: mais elegante, com tipografia refinada e grandes áreas de respiro.
+
+Para cada variante, mantenha a mesma estrutura de conteúdo e compare:
+- clareza da Home;
+- legibilidade da programação;
+- força visual do tema;
+- acessibilidade;
+- facilidade de implementação em Django/Wagtail + Tailwind.
+
+Restrições:
+- Não criar app mobile nativo.
+- Não criar sistema de pagamento.
+- Não criar certificados ou QR code próprios.
+- Não hospedar vídeos.
+- Não exigir vídeo na submissão inicial.
+- Não usar Notion nem site Wix como fonte de verdade.
+- Não superlotar a Home.
+- Não esconder datas, local e CTAs.
+- Não usar fontes pequenas para horários da programação.
+- Não depender exclusivamente de animações ou imagens de fundo.
+
+Resultado esperado:
+Um conjunto de telas web responsivas, com alta fidelidade visual, sistema de componentes consistente e direção de design suficientemente clara para posterior implementação em Django/Wagtail + Tailwind CSS. O resultado deve poder orientar tanto designers quanto agentes de codificação.

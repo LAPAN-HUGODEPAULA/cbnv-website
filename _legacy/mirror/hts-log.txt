@@ -1,0 +1,28 @@
+HTTrack3.49-2+libhtsjava.so.2 launched on Fri, 01 May 2026 20:18:12 at https://congressoneurovisa.wixsite.com/cbnv +*.wixsite.com/* +*.wixstatic.com/* +*.parastorage.com/*
+(httrack https://congressoneurovisa.wixsite.com/cbnv -O ./mirror +*.wixsite.com/* +*.wixstatic.com/* +*.parastorage.com/* -s0 )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+20:19:32	Error: 	"Not Found" (404) at link https://congressoneurovisa.wixsite.com/ (from https://congressoneurovisa.wixsite.com/cbnv)
+20:19:32	Error: 	"Not Found" (404) at link https://congressoneurovisa.wixsite.com/t (from https://congressoneurovisa.wixsite.com/cbnv)
+20:19:32	Error: 	"Not Found" (404) at link https://congressoneurovisa.wixsite.com/o (from https://congressoneurovisa.wixsite.com/cbnv)
+20:20:22	Error: 	"Forbidden" (403) at link https://static.parastorage.com/services/wix-thunderbolt/dist/ (from https://congressoneurovisa.wixsite.com/cbnv)
+20:20:22	Error: 	"Forbidden" (403) at link https://static.wixstatic.com/media/ (from https://congressoneurovisa.wixsite.com/cbnv)
+20:20:22	Error: 	"Not Found" (404) at link https://congressoneurovisa.wixsite.com/window.location.href (from https://congressoneurovisa.wixsite.com/cbnv)
+20:20:22	Error: 	"Not Found" (404) at link https://congressoneurovisa.wixsite.com/api/ (from https://congressoneurovisa.wixsite.com/cbnv)
+20:20:22	Error: 	"Not Found" (404) at link https://congressoneurovisa.wixsite.com/envelope/ (from https://congressoneurovisa.wixsite.com/cbnv)
+20:20:22	Error: 	"Not Found" (404) at link https://congressoneurovisa.wixsite.com/sitemap.xml (from https://congressoneurovisa.wixsite.com/cbnv)
+20:20:22	Error: 	"Not Found" (404) at link https://congressoneurovisa.wixsite.com/feed.xml (from https://congressoneurovisa.wixsite.com/cbnv)
+20:20:22	Error: 	"Not Found" (404) at link https://congressoneurovisa.wixsite.com/decodeURIComponent(e (from https://congressoneurovisa.wixsite.com/cbnv)
+20:20:22	Error: 	"Not Found" (404) at link https://congressoneurovisa.wixsite.com/cbnv/t (from https://congressoneurovisa.wixsite.com/cbnv/general-4)
+20:20:22	Error: 	"Not Found" (404) at link https://congressoneurovisa.wixsite.com/cbnv/o (from https://congressoneurovisa.wixsite.com/cbnv/general-4)
+20:20:22	Error: 	"Bad Request" (400) at link https://congressoneurovisa.wixsite.com/cbnv/window.location.href (from https://congressoneurovisa.wixsite.com/cbnv/general-4)
+20:20:22	Error: 	"Bad Request" (400) at link https://congressoneurovisa.wixsite.com/cbnv/robots.txt (from https://congressoneurovisa.wixsite.com/cbnv/general-4)
+20:20:22	Error: 	"Not Found" (404) at link https://congressoneurovisa.wixsite.com/cbnv/feed.xml (from https://congressoneurovisa.wixsite.com/cbnv/general-4)
+20:20:22	Error: 	"Bad Request" (400) at link https://congressoneurovisa.wixsite.com/cbnv/decodeURIComponent(e (from https://congressoneurovisa.wixsite.com/cbnv/general-4)
+
+HTTrack Website Copier/3.49-2 mirror complete in 2 minutes 10 seconds : 127 links scanned, 109 files written (6857963 bytes overall) [3846450 bytes received at 29588 bytes/sec], 4229987 bytes transferred using HTTP compression in 33 files, ratio 24%, 3.7 requests per connection
+(17 errors, 0 warnings, 0 messages)

@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.13-slim
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
@@ -23,8 +23,8 @@ COPY . .
 # Ensure virtualenv is used for subsequent commands
 ENV PATH="/app/.venv/bin:$PATH"
 
-RUN python manage.py collectstatic --noinput 2>/dev/null || true
+RUN uv run python manage.py collectstatic --noinput 2>/dev/null || true
 
 EXPOSE 8000
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["uv", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]

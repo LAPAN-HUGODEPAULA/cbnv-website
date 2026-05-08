@@ -1,0 +1,14 @@
+Prezado(a) {{ corresponding_author.full_name }},
+
+A comissão científica do XII Congresso Brasileiro de Neurociências da Visão (CBNV 2026) validou os materiais finais da sua submissão {{ submission.submission_id }}.
+
+O seu trabalho está agora pronto para os anais. Aguarde a publicação oficial pela comissão.
+
+Dados da submissão:
+  ID: {{ submission.submission_id }}
+  Título: {{ submission.title }}
+  Status: Pronto para anais
+
+---
+XII Congresso Brasileiro de Neurociências da Visão — CBNV 2026
+11–13 de novembro de 2026 — CAD-1 UFMG, Belo Horizonte, MG

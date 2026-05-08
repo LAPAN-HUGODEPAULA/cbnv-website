@@ -1,0 +1,94 @@
+{% extends "submissions/wizard/base_wizard.html" %}
+
+{% block wizard_content %}
+<form method="post" id="metadata-form">
+    {% csrf_token %}
+    {{ formset.management_form }}
+
+    <div class="space-y-6">
+        {% include "components/form_field.html" with field=form.title %}
+        
+        <div class="relative">
+            {% include "components/form_field.html" with field=form.abstract %}
+            <span class="absolute bottom-8 right-2 text-xs text-gray-400">
+                <span id="char-count">0</span>/2500
+            </span>
+        </div>
+
+        {% include "components/form_field.html" with field=form.thematic_axis %}
+        {% include "components/form_field.html" with field=form.keywords_input %}
+
+        <fieldset class="mt-8">
+            <legend class="block text-sm font-medium text-gray-700 mb-3">Autores</legend>
+            <div id="authors-container" class="space-y-4">
+                {% for author_form in formset %}
+                <div class="p-4 rounded-lg border border-gray-200 relative author-row">
+                    {% if forloop.counter == 1 %}
+                    <span class="absolute top-2 right-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Autor correspondente</span>
+                    {% else %}
+                    <button type="button"
+                        class="absolute top-2 right-2 text-gray-400 hover:text-red-500 transition-colors"
+                        onclick="this.closest('.author-row').remove(); updateAuthorForms();"
+                        aria-label="Remover autor">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                    {% endif %}
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {% include "components/form_field.html" with field=author_form.first_name wrapper_class="" %}
+                        {% include "components/form_field.html" with field=author_form.last_name wrapper_class="" %}
+                        {% include "components/form_field.html" with field=author_form.email wrapper_class="" %}
+                        {% include "components/form_field.html" with field=author_form.institution wrapper_class="" %}
+                        {{ author_form.id }}
+                        {{ author_form.ORDER }}
+                        {{ author_form.DELETE }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            {% if submission.pk %}
+            <button type="button"
+                id="add-author-btn"
+                hx-get="{% url 'submissions:add_author_row' submission.pk %}"
+                hx-target="#authors-container"
+                hx-swap="beforeend"
+                class="mt-3 inline-flex items-center gap-1.5 text-sm text-cbnv-blue-600 hover:text-cbnv-blue-800 font-medium transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                Adicionar co-autor
+            </button>
+            {% endif %}
+            
+            {% if formset.non_form_errors %}
+            <p class="mt-1 text-sm text-red-600" aria-live="polite">{{ formset.non_form_errors.0 }}</p>
+            {% endif %}
+        </fieldset>
+    </div>
+
+    <div class="mt-8 flex justify-end">
+        <button type="submit" class="inline-flex items-center gap-2 rounded-lg bg-cbnv-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-cbnv-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-cbnv-blue-600 focus:ring-offset-2">
+            Próximo
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+    </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const abstract = document.getElementById('{{ form.abstract.id_for_label }}');
+    const counter = document.getElementById('char-count');
+    if (abstract && counter) {
+        counter.textContent = abstract.value.length;
+        abstract.addEventListener('input', () => {
+            counter.textContent = abstract.value.length;
+        });
+    }
+});
+
+function updateAuthorForms() {
+    // This function can be used to update management form if needed after manual row removal
+}
+</script>
+{% endblock %}

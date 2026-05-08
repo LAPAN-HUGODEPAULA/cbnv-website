@@ -1,0 +1,61 @@
+limit_req_zone $binary_remote_addr zone=cbnv_limit:10m rate=$NGINX_RATE_LIMIT;
+
+upstream django {
+    server web:8000;
+}
+
+server {
+    listen 80;
+    server_name _;
+
+    client_max_body_size 50m;
+
+    location /health/ {
+        limit_req zone=cbnv_limit burst=5 nodelay;
+        proxy_pass http://django;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location /static/ {
+        alias /app/staticfiles/;
+        expires 30d;
+        add_header Cache-Control "public, immutable";
+    }
+
+    location /media/ {
+        alias /app/media/;
+        expires 7d;
+    }
+
+    location /media/submissions/ {
+        return 404;
+    }
+
+    location /protected-media/ {
+        internal;
+        alias /app/protected_media/;
+    }
+
+    location / {
+        limit_req zone=cbnv_limit burst=$NGINX_BURST_LARGE nodelay;
+        proxy_pass http://django;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_redirect off;
+    }
+
+    error_page 503 /503.html;
+    location = /503.html {
+        root /usr/share/nginx/html;
+        internal;
+    }
+
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header Referrer-Policy "same-origin" always;
+}

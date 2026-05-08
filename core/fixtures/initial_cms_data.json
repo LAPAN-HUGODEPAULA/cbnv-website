@@ -1,0 +1,29 @@
+[
+{
+  "model": "proceedings.edition",
+  "pk": 1,
+  "fields": {
+    "edition_number": 11,
+    "year": 2024,
+    "theme": "Neurociência da Visão: Da Biologia à Clínica",
+    "dates": "20 a 22 de novembro de 2024",
+    "location": "UFMG — Belo Horizonte, MG",
+    "proceedings_url": "",
+    "playlist_url": "https://www.youtube.com/@congressoneurovis%C3%A3o"
+  }
+},
+{
+  "model": "videos.videoresource",
+  "pk": 1,
+  "fields": {
+    "title": "Canal da 11ª Edição — CBNV",
+    "description": "Canal oficial do Congresso Brasileiro de Neurociências da Visão com vídeos das edições anteriores.",
+    "youtube_url": "https://www.youtube.com/@congressoneurovis%C3%A3o",
+    "youtube_video_id": "",
+    "youtube_playlist_id": "",
+    "channel_handle": "congressoneurovis%C3%A3o",
+    "video_type": "channel",
+    "status": "public"
+  }
+}
+]

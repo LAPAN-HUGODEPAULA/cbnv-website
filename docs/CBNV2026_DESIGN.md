@@ -16,8 +16,17 @@ XII Congresso Brasileiro de Neurociências da Visão
 CBNV 2026  
 Neurovisão na Era da Inteligência Artificial  
 11–13 de novembro de 2026  
-CAD-1 UFMG · Belo Horizonte, MG  
-Presencial com transmissão híbrida
+Centro de Atividades Didáticas 1 (CAD-1), UFMG Campus Pampulha
+
+R. Prof. Baeta Viana, s/n - Pampulha, Belo Horizonte - MG, 31270-901
+Google maps location: https://maps.app.goo.gl/xzqJ2LCAHVP4hsFp6
+
+Google maps embed map code:
+```javascript
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3752.375224166495!2d-43.96900072425095!3d-19.86637168150776!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xa690f5cd6fa2db%3A0xa63066267bf8fe3f!2sCentro%20de%20Atividades%20Did%C3%A1ticas%201%20-%20CAD%201!5e0!3m2!1spt-BR!2sbr!4v1778262291254!5m2!1spt-BR!2sbr"
+ width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+</iframe>
+```
 
 ## Visual direction
 

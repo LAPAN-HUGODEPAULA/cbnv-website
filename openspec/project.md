@@ -9,10 +9,12 @@ This file defines the permanent context, architecture, and constraints for the *
 - **Tone:** Institutional, scientific, and clear.
 
 ## 2. Mandatory Tech Stack
-- **Backend:** Django (Monolithic modular)
-- **CMS:** Wagtail
-- **Database:** PostgreSQL
-- **Frontend:** Tailwind CSS + HTMX + Alpine.js (optional for micro-interactions)
+- **Python:** 3.14.x
+- **Backend:** Django 6.0.x (Monolithic modular)
+- **CMS:** Wagtail 7.4.x LTS
+- **Database:** PostgreSQL 18.3
+- **Frontend:** Tailwind CSS 4.x + HTMX + Alpine.js (optional for micro-interactions)
+- **Node.js:** 24 LTS when frontend tooling is required
 - **Infrastructure:** Docker Compose, Caddy or Nginx (Reverse Proxy)
 - **Email:** Transactional/Institutional SMTP
 
@@ -22,6 +24,7 @@ This file defines the permanent context, architecture, and constraints for the *
 - **Rendering:** Server-Side Rendering (SSR) via Django Templates. No complex SPAs.
 - **Accessibility:** Target WCAG 2.2 AA (high contrast, keyboard navigation).
 - **Security:** Submission files MUST be protected and never accessible via direct public URL.
+- **Authentication:** Django's default `auth.User` model with congress metadata stored in `accounts.UserProfile`.
 
 ## 4. Design Guidelines
 - **Direction:** Dark-mode first, Glassmorphism (moderated).
@@ -51,5 +54,20 @@ This file defines the permanent context, architecture, and constraints for the *
 - **Process:** No implementation before a proposal is validated and approved.
 - **Sequence:** Implementation follows sequential change proposals as defined in the Implementation Plan.
 
+## GitHub/OpenSpec workflow
+
+Every implementation task MUST follow this mapping:
+
+- GitHub issue title starts with `OpenSpec:`
+- Issue body contains `Change ID: <change-id>`
+- Branch name is `change/<change-id>`
+- OpenSpec change folder is `openspec/changes/<change-id>/`
+- PR title starts with `[<change-id>]`
+- PR body contains `Closes #<issue-number>`
+- PR body contains validation checklist
+- No code implementation before `openspec validate <change-id> --strict` passes
+- No PR merge before tests pass
+- Completed changes MUST be archived using `openspec archive <change-id> --yes`
+
 ---
-*Last updated: 2026-05-02*
+*Last updated: 2026-05-08*

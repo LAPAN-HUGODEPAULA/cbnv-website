@@ -9,7 +9,10 @@
   "scripts": {
     "build": "tailwindcss --input src/input.css --output static/css/output.css --minify",
     "watch": "tailwindcss --input src/input.css --output static/css/output.css --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:e2e": "playwright test",
+    "test:a11y": "playwright test --project=chromium --grep @a11y",
+    "audit:perf": "lighthouse http://localhost:8000 --output html --output-path ./reports/lighthouse.html"
   },
   "repository": {
     "type": "git",
@@ -24,7 +27,11 @@
   },
   "homepage": "https://github.com/LAPAN-HUGODEPAULA/cbnv-website#readme",
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.3",
+    "@playwright/test": "^1.59.1",
     "@tailwindcss/cli": "^4.2.4",
+    "lighthouse": "^13.2.0",
+    "playwright": "^1.59.1",
     "tailwindcss": "^4.2.4"
   }
 }

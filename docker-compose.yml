@@ -1,14 +1,15 @@
 services:
   db:
-    image: postgres:16-alpine
+    image: postgres:18-alpine
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-cbnv}
       POSTGRES_USER: ${POSTGRES_USER:-cbnv}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cbnv}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+      - postgres_data:/var/lib/postgresql
+      - backups:/backups
+    networks:
+      - cbnv_internal
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cbnv} -d ${POSTGRES_DB:-cbnv}"]
       interval: 5s
@@ -16,19 +17,93 @@ services:
       retries: 5
 
   web:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: gunicorn cbnv.wsgi:application --bind 0.0.0.0:8000 --workers ${GUNICORN_WORKERS:-4} --timeout 120 --access-logfile - --error-logfile -
     volumes:
       - .:/app
+      - /app/.venv
       - media_files:/app/media
-    ports:
-      - "8001:8000"
+      - protected_media:/app/protected_media
+      - staticfiles:/app/staticfiles
+    networks:
+      - cbnv_internal
+    expose:
+      - "8000"
     env_file:
       - .env
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "${NGINX_PORT_HTTP:-80}:80"
+      - "${NGINX_PORT_HTTPS:-443}:443"
+    volumes:
+      - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - media_files:/app/media:ro
+      - protected_media:/app/protected_media:ro
+      - staticfiles:/app/staticfiles:ro
+    networks:
+      - cbnv_internal
+    environment:
+      - SSL_CERT_PATH=${SSL_CERT_PATH:-/etc/nginx/ssl/cert.pem}
+      - SSL_KEY_PATH=${SSL_KEY_PATH:-/etc/nginx/ssl/key.pem}
+      - NGINX_RATE_LIMIT=${NGINX_RATE_LIMIT:-10r/s}
+      - NGINX_BURST_SMALL=${NGINX_BURST_SMALL:-5}
+      - NGINX_BURST_LARGE=${NGINX_BURST_LARGE:-20}
+    depends_on:
+      web:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:80/health/"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  backup:
+    image: postgres:18-alpine
+    volumes:
+      - backups:/backups
+      - ./scripts:/scripts:ro
+    networks:
+      - cbnv_internal
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_DB: ${POSTGRES_DB:-cbnv}
+      POSTGRES_USER: ${POSTGRES_USER:-cbnv}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cbnv}
+      BACKUP_RETENTION_DAYS: ${BACKUP_RETENTION_DAYS:-7}
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        while true; do
+          /scripts/backup.sh
+          sleep 86400
+        done
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
 
 volumes:
   postgres_data:
   media_files:
+  protected_media:
+  backups:
+  staticfiles:
+
+networks:
+  cbnv_internal:
+    driver: bridge

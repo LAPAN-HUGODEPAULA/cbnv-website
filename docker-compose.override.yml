@@ -3,8 +3,20 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: python manage.py runserver 0.0.0.0:8000
+    command: uv run python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
+      - staticfiles:/app/staticfiles
+    ports:
+      - "8001:8000"
     environment:
       - DJANGO_SETTINGS_MODULE=cbnv.settings.development
+
+  db:
+    ports:
+      - "5432:5432"
+
+  nginx:
+    depends_on:
+      web:
+        condition: service_healthy

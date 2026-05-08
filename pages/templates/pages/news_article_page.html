@@ -1,0 +1,42 @@
+{% extends "layouts/public.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-8">
+    <div class="space-y-3">
+        <a href="{{ news_index.url }}" class="text-sm text-cbnv-green-400 hover:text-white transition-colors">&larr; Notícias</a>
+        <h1 class="font-display text-4xl font-bold text-white">{{ page.title }}</h1>
+        <p class="text-sm text-cbnv-text-muted">Publicado em {{ page.first_published_at|date:"d/m/Y" }}</p>
+        {% if page.specific.summary %}
+        <p class="text-lg text-cbnv-text-muted">{{ page.specific.summary }}</p>
+        {% endif %}
+    </div>
+
+    {% if page.body %}
+    <div class="space-y-6">
+        {% for block in page.body %}
+        {% if block.block_type == "text" %}
+        <div class="prose max-w-none prose-invert text-cbnv-text-muted">
+            {% include_block block %}
+        </div>
+        {% elif block.block_type == "image" %}
+        <figure class="overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+            {% image block.value width-1600 as news_image %}
+            <img src="{{ news_image.url }}" alt="{{ page.title }}" class="h-auto w-full">
+        </figure>
+        {% elif block.block_type == "video" %}
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <a href="{{ block.value }}" target="_blank" rel="noopener noreferrer" class="text-cbnv-green-400 hover:text-white transition-colors">
+                Abrir vídeo associado
+            </a>
+        </div>
+        {% else %}
+        {% include_block block %}
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

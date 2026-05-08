@@ -185,3 +185,32 @@ O site publico SHALL exibir link para o Instagram oficial do congresso em local 
 - **WHEN** o visitante acessa o rodape ou outra area persistente de redes sociais
 - **THEN** SHALL ver um link para `https://www.instagram.com/cbnvufmg/`
 - **AND** o link SHALL abrir de forma segura com `rel="noopener noreferrer"` quando usar nova aba
+
+### Requirement: Responsive public header shell
+O layout base publico SHALL incluir header responsivo com identidade do site, navegacao primaria e area reservada para CTA.
+
+#### Scenario: Desktop header navigation
+- **WHEN** uma pagina publica e renderizada em viewport desktop
+- **THEN** a navegacao primaria SHALL estar visivel e utilizavel sem interacoes adicionais
+
+#### Scenario: Mobile header navigation
+- **WHEN** uma pagina publica e renderizada em viewport mobile
+- **THEN** o padrao de navegacao mobile SHALL estar disponivel e acessivel por teclado
+
+### Requirement: Public footer shell slots
+O layout base publico SHALL incluir footer reutilizavel com links essenciais e area institucional para reconhecimento de apoio.
+
+#### Scenario: Footer exposes essential navigation
+- **WHEN** o visitante alcanca o rodape de qualquer pagina publica
+- **THEN** o footer SHALL exibir links essenciais de navegacao
+
+#### Scenario: Footer includes institutional acknowledgement slot
+- **WHEN** houver necessidade de exibicao de apoio institucional
+- **THEN** o footer SHALL fornecer area dedicada para FAPEMIG ou equivalente
+
+### Requirement: Layout shell editorial neutrality
+Antes da aprovacao editorial final no CMS, o layout shell publico SHALL usar placeholders neutros e SHALL NOT incluir afirmacoes promocionais nao verificadas no proprio shell.
+
+#### Scenario: Placeholder usage in layout shell
+- **WHEN** o shell de layout precisar de conteudo temporario
+- **THEN** o texto SHALL usar placeholders neutros e delegar afirmacoes editoriais para blocos/conteudos gerenciados

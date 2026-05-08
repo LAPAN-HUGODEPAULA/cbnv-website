@@ -69,3 +69,10 @@ Templates SHALL use a strictly sequential heading hierarchy (H1 -> H2 -> H3) wit
 #### Scenario: Heading structure is valid
 - **WHEN** a page is rendered
 - **THEN** the first heading SHALL be an H1 and subsequent sub-headings SHALL be H2, H3, etc., in order
+
+### Requirement: Design system usage documentation
+The project SHALL maintain documentation for design-system primitives, including tokens, shared partials, and accessibility expectations, to support consistent template implementation.
+
+#### Scenario: Developer consults design-system documentation
+- **WHEN** a developer needs to create or update a public template
+- **THEN** they SHALL find documented token names, component usage examples, and accessibility rules in project documentation

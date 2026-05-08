@@ -1,0 +1,73 @@
+{% extends "layouts/public.html" %}
+{% load proceedings_tags %}
+
+{% block title %}{{ submission.title }} — Anais CBNV 2026{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-4xl px-4 py-12 sm:px-6">
+    <a href="/anais/" class="text-sm text-cbnv-green-400 hover:underline">&larr; Voltar aos anais</a>
+
+    <article class="mt-6 rounded-xl border border-white/10 bg-cbnv-navy-950/50 p-6 sm:p-8">
+        <div class="flex flex-wrap items-start gap-3 mb-4">
+            <h1 class="text-2xl font-bold text-cbnv-text-light">{{ submission.title }}</h1>
+        </div>
+
+        <div class="flex flex-wrap gap-2 mb-6">
+            <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-cbnv-green-400/10 text-cbnv-green-400">
+                {{ submission.get_final_modality_display }}
+            </span>
+            <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-white/10 text-cbnv-text-muted">
+                {{ submission.thematic_axis }}
+            </span>
+            <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-white/10 text-cbnv-text-muted">
+                {{ submission.submission_id }}
+            </span>
+        </div>
+
+        <div class="mb-6">
+            <h2 class="text-sm font-semibold text-cbnv-text-muted uppercase tracking-wide mb-2">Autores</h2>
+            <p class="text-sm text-cbnv-text-light">{{ submission.authors.all|join:", " }}</p>
+        </div>
+
+        <div class="mb-6">
+            <h2 class="text-sm font-semibold text-cbnv-text-muted uppercase tracking-wide mb-2">Resumo</h2>
+            <p class="text-sm text-cbnv-text-light/90 leading-relaxed">{{ submission.abstract }}</p>
+        </div>
+
+        {% if submission.keywords %}
+        <div class="mb-6">
+            <h2 class="text-sm font-semibold text-cbnv-text-muted uppercase tracking-wide mb-2">Palavras-chave</h2>
+            <div class="flex flex-wrap gap-2">
+                {% for kw in submission.keywords %}
+                <span class="rounded-full bg-white/10 px-3 py-1 text-xs text-cbnv-text-muted">{{ kw }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if material and material.video_url %}
+        <div class="mb-6">
+            <h2 class="text-sm font-semibold text-cbnv-text-muted uppercase tracking-wide mb-2">Vídeo</h2>
+            <div class="aspect-video rounded-lg overflow-hidden">
+                <iframe
+                    src="{{ material.video_url|youtube_embed_url }}"
+                    title="{{ submission.title }}"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    class="w-full h-full">
+                </iframe>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if material and material.final_pdf %}
+        <a href="{% url 'proceedings:proceedings_download_pdf' submission.submission_id %}"
+           class="inline-flex items-center gap-2 rounded-lg bg-cbnv-green-400 px-5 py-2.5 text-sm font-semibold text-cbnv-navy-950 hover:bg-cbnv-green-400/80 transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            Baixar PDF
+        </a>
+        {% endif %}
+    </article>
+</div>
+{% endblock %}

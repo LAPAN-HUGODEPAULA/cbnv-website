@@ -1,0 +1,13 @@
+{% comment %}
+Page shell — standard content container.
+Usage: {% include "components/page_shell.html" with width="normal" %}
+Width options: narrow (prose), normal (default max-w-7xl), wide (max-w-screen-2xl).
+{% endcomment %}
+<div class="
+    {% if width == 'narrow' %}max-w-3xl
+    {% elif width == 'wide' %}max-w-screen-2xl
+    {% else %}max-w-7xl
+    {% endif %}
+    mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+    {{ children|default:'' }}
+</div>

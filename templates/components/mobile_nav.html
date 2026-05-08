@@ -1,0 +1,36 @@
+{% comment %}
+Mobile navigation overlay — controlled by Alpine.js x-data in header.
+Requires parent element with x-data="{ mobileOpen: false }".
+Usage: {% include "components/mobile_nav.html" with menu_items=menu_items %}
+{% endcomment %}
+<nav
+    id="mobile-menu"
+    x-show="mobileOpen"
+    x-transition:enter="transition ease-out duration-200"
+    x-transition:enter-start="opacity-0 -translate-y-1"
+    x-transition:enter-end="opacity-100 translate-y-0"
+    x-transition:leave="transition ease-in duration-150"
+    x-transition:leave-start="opacity-100 translate-y-0"
+    x-transition:leave-end="opacity-0 -translate-y-1"
+    class="lg:hidden pb-6 pt-2 space-y-1"
+    @keydown.escape.window="mobileOpen = false"
+    aria-label="Menu mobile"
+    role="navigation">
+    {% for link in menu_items %}
+        <a
+            href="{{ link.url }}"
+            @click="mobileOpen = false"
+            class="block px-4 py-3 rounded-xl text-base font-medium text-cbnv-text-secondary hover:text-cbnv-white hover:bg-white/5 transition-colors
+                {% if link.active %}bg-white/5 text-cbnv-text-primary{% endif %}">
+            {{ link.label }}
+        </a>
+    {% endfor %}
+
+    {% if cta_url %}
+    <div class="pt-4 px-4">
+        <a href="{{ cta_url }}" class="block w-full text-center py-4 bg-cbnv-blue-600 text-white rounded-xl text-base font-bold shadow-cbnv-glow-blue hover:bg-cbnv-blue-500 transition-colors">
+            {{ cta_label|default:'Inscrição' }}
+        </a>
+    </div>
+    {% endif %}
+</nav>

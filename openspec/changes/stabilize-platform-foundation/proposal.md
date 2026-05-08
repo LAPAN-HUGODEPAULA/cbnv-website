@@ -48,3 +48,7 @@ Prefer Django defaults where they reduce custom code and operational risk. Keep 
 ## Impact
 
 This change may delete and regenerate early migrations. It should be completed before any user, submission, program, or CMS content data becomes authoritative.
+
+## Decision: direct dependency retention
+
+During dependency cleanup, `django-widget-tweaks`, `django-axes`, and `django-countries` were confirmed as direct project dependencies. They must remain declared in `pyproject.toml` rather than being treated as Wagtail/Django transitives.

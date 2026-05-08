@@ -2,6 +2,10 @@
 
 ## Version baseline
 
+- [x] Restore direct dependencies required by project settings/templates: django-widget-tweaks, django-axes, django-countries.
+- [x] Run Django system checks.
+- [x] Verify migrations are clean.
+- [x] Run test suite successfully.
 - [ ] Define approved baseline as Python 3.14.x, Django 6.0.x, Wagtail 7.4.x LTS, PostgreSQL 18.3, Tailwind CSS 4.x.
 - [ ] Update `README.md` to reflect the approved baseline.
 - [ ] Update `openspec/project.md` to reflect the approved baseline.

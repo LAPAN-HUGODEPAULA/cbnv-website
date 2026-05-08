@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:18-alpine
+    image: postgres:18.3
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-cbnv}
       POSTGRES_USER: ${POSTGRES_USER:-cbnv}
@@ -20,6 +20,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
     command: gunicorn cbnv.wsgi:application --bind 0.0.0.0:8000 --workers ${GUNICORN_WORKERS:-4} --timeout 120 --access-logfile - --error-logfile -
     volumes:
       - .:/app

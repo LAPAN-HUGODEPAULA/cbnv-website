@@ -2,9 +2,9 @@
 
 **Projeto:** Website e plataforma digital do XII Congresso Brasileiro de Neurociências da Visão  
 **Metodologia:** SDD — Spec Driven Design com OpenSpec  
-**Stack aprovada:** Django + Wagtail + PostgreSQL + Tailwind CSS + HTMX/Alpine.js  
-**Documento fonte:** `CBNV2026_Requisitos_Arquitetura_v1(2).md`  
-**Referência visual:** `stitch_cbnv_2026_digital_platform.zip`  
+**Stack aprovada:** Django 6.0.4 + Wagtail 7.3.1 + PostgreSQL 18 + Tailwind CSS 4.2.4 + HTMX/Alpine.js + uv  
+**Documento fonte:** `docs/CBNV2026_Requisitos_Arquitetura_v1.md`  
+**Referência visual:** `docs/stitch_cbnv_2026_digital_platform/`  
 **Data:** 2026-05-01  
 **Status:** Plano operacional para criação de change proposals OpenSpec
 
@@ -44,6 +44,8 @@ O resultado esperado é uma plataforma monolítica modular, simples de operar, s
 14. O vídeo/link de vídeo só deve entrar na fase de material final para trabalhos aprovados, quando aplicável.
 15. Os arquivos de submissão não podem ficar públicos por URL direta.
 16. O desenvolvimento deve privilegiar Django idiomático, templates legíveis, testes e migrations incrementais.
+17. Usar `uv` para todo gerenciamento Python (`uv sync`, `uv add`, `uv add --dev`, `uv run`); não usar `pip` diretamente.
+18. Usar Tailwind CSS 4.2.4 com configuração CSS-first em `src/input.css` (`@import`, `@source`, `@theme`); não criar `tailwind.config.js` por padrão.
 
 ---
 
@@ -147,7 +149,7 @@ Trate `docs/CBNV2026_Requisitos_Arquitetura_v1.md` como single source of truth. 
 Atualize `openspec/config.yaml` ou `openspec/project.md` com o seguinte contexto permanente:
 
 Projeto: plataforma pública e administrativa do XII CBNV 2026.
-Stack obrigatória: Django, Wagtail, PostgreSQL, Tailwind CSS, HTMX, Alpine.js opcional, Docker Compose, Caddy ou Nginx, SMTP transacional/institucional.
+Stack obrigatória: Django 6.0.4, Wagtail 7.3.1, PostgreSQL 18, Tailwind CSS 4.2.4, HTMX, Alpine.js opcional, Docker Compose, Caddy ou Nginx, SMTP transacional/institucional, uv para dependências Python.
 Arquitetura: monólito modular Django com apps por domínio: core, pages, program, submissions, reviews, proceedings, videos, sponsors, accounts, reports, notifications.
 Princípios: simplicidade, segurança, acessibilidade, responsividade, Django idiomático, templates server-side, sem SPA complexa.
 Fora de escopo: Next.js, Strapi, pagamento próprio, certificados próprios, QR code próprio, hospedagem de vídeos completos, RBAC editorial complexo, integração automática com Sympla/UFMG/FUNDEP além de link externo.
@@ -155,6 +157,8 @@ Conteúdo: português brasileiro, tom institucional, científico e claro.
 Design: dark-mode first, azul-marinho profundo, azul elétrico, verde neuro/neon, estética científica institucional, glassmorphism moderado, alta legibilidade e WCAG 2.2 AA como alvo.
 Regra de submissão: fluxo bifásico; vídeo não é exigido na submissão inicial; link de vídeo somente na fase final para trabalhos aprovados, quando aplicável.
 Regra de dados: arquivos de submissão protegidos, nunca públicos por URL direta.
+Regra de dependências Python: usar `uv` exclusivamente; não usar `pip` diretamente.
+Regra de Tailwind: usar Tailwind CSS 4.2.4 CSS-first em `src/input.css` com `@source` e `@theme`; não criar `tailwind.config.js` por padrão.
 Regra de specs: todos os delta specs devem usar ADDED/MODIFIED/REMOVED/RENAMED Requirements e cenários Given/When/Then.
 Regra de implementação: não implementar código antes de uma proposal validada e aprovada.
 
@@ -219,12 +223,13 @@ Inclui:
 4. custom user criado desde o início;
 5. apps Django vazios por domínio;
 6. settings separados para development/test/production;
-7. pipeline Tailwind mínimo;
+7. pipeline Tailwind CSS 4.2.4 mínimo com configuração CSS-first em `src/input.css`;
 8. templates base mínimos;
 9. pytest configurado;
 10. healthcheck simples;
 11. README de desenvolvimento;
-12. `.env.example`.
+12. `.env.example`;
+13. `pyproject.toml` e `uv.lock` como fonte de dependências Python.
 
 Não inclui:
 
@@ -237,7 +242,7 @@ Não inclui:
 ### Critérios de aceite
 
 1. `docker compose up` inicia aplicação, PostgreSQL e dependências.
-2. `python manage.py migrate` executa sem erro.
+2. `uv run python manage.py migrate` executa sem erro.
 3. Wagtail admin abre localmente.
 4. Superusuário pode ser criado.
 5. Custom user está definido antes das migrations de domínio.
@@ -254,12 +259,12 @@ Crie uma change proposal OpenSpec chamada `bootstrap-django-wagtail-platform`.
 Contexto obrigatório:
 - Leia `docs/CBNV2026_Requisitos_Arquitetura_v1.md`.
 - O projeto é uma plataforma monolítica modular para o XII CBNV 2026.
-- Stack obrigatória: Django + Wagtail + PostgreSQL + Tailwind CSS + HTMX/Alpine.js opcional + Docker Compose.
+- Stack obrigatória: Django 6.0.4 + Wagtail 7.3.1 + PostgreSQL 18 + Tailwind CSS 4.2.4 + HTMX/Alpine.js opcional + Docker Compose + uv.
 - Não usar Next.js nem Strapi.
 - Não implementar funcionalidades de negócio ainda.
 
 Objetivo da change:
-Criar a fundação técnica do projeto com Django/Wagtail, custom user inicial, estrutura de apps, PostgreSQL, Docker Compose, settings por ambiente, Tailwind mínimo, pytest e documentação de desenvolvimento.
+Criar a fundação técnica do projeto com Django/Wagtail, custom user inicial, estrutura de apps, PostgreSQL, Docker Compose, settings por ambiente, Tailwind mínimo, pytest, uv e documentação de desenvolvimento.
 
 Gere:
 1. `proposal.md` com problema, objetivo, escopo, fora de escopo, riscos e rollback.
@@ -293,7 +298,7 @@ Ao final, rode testes, migrations e validação OpenSpec. Marque as tasks conclu
 
 ### Objetivo
 
-Transformar a referência visual do Stitch em um design system implementável com Tailwind, templates Django e componentes reutilizáveis.
+Transformar a referência visual do Stitch em um design system implementável com Tailwind CSS 4.2.4 CSS-first, templates Django e componentes reutilizáveis.
 
 ### Dependências
 
@@ -325,7 +330,7 @@ Usar como referência, não como código final obrigatório:
 
 Inclui:
 
-1. tokens de cor e tipografia no Tailwind;
+1. tokens de cor e tipografia em `src/input.css` via `@theme`;
 2. base layout público;
 3. base layout autenticado/dashboard;
 4. header responsivo;
@@ -350,7 +355,7 @@ Não inclui:
 1. Existe biblioteca de componentes Django/Tailwind reutilizável.
 2. Header e footer aparecem em página demo.
 3. Layout público e dashboard shell funcionam em mobile e desktop.
-4. Tokens do Stitch foram traduzidos para Tailwind com nomes consistentes.
+4. Tokens do Stitch foram traduzidos para Tailwind CSS 4.2.4 com nomes consistentes e configuração CSS-first.
 5. Componentes usam HTML semântico e foco visível.
 6. Não há dependência de SPA.
 
@@ -383,6 +388,9 @@ Regras:
 - Não criar páginas públicas finais ainda.
 - Não implementar submissões.
 - Não criar lógica de negócio.
+- Usar Tailwind CSS 4.2.4 CSS-first em `src/input.css` com `@source` para templates Django e `@theme` para tokens.
+- Não criar `tailwind.config.js` por padrão.
+- Usar shells canônicos em `templates/layouts/public.html` e `templates/layouts/dashboard.html`.
 - Incluir componentes para header, footer, cards, timeline, badges, botões, formulários, dashboard shell, tabelas, empty/loading/error states.
 - Incluir validação de responsividade e navegação por teclado.
 ```
@@ -990,14 +998,12 @@ Inclui:
 
 1. FinalMaterial;
 2. PDF final;
-3. link de vídeo quando aplicável;
-4. arte/link de pôster quando aplicável;
-5. autorização de publicação;
-6. validação da comissão;
-7. página pública de anais ou link de anais;
-8. página de trabalhos aprovados;
-9. associação com VideoResource;
-10. e-mails de solicitação e confirmação de material final.
+3. link de vídeo;
+4. autorização de publicação;
+5. página pública de anais ou link de anais;
+6. página de trabalhos aprovados;
+7. associação com VideoResource;
+8. e-mails de solicitação e confirmação de material final.
 
 Não inclui:
 
@@ -1008,7 +1014,7 @@ Não inclui:
 ### Critérios de aceite
 
 1. Trabalho aprovado gera pendência de material final.
-2. Autor envia PDF final e link de vídeo, quando aplicável.
+2. Autor envia PDF final e link de vídeo.
 3. Comissão valida material final.
 4. Trabalho validado fica pronto para anais.
 5. Site publica anais ou link de anais.
@@ -1025,7 +1031,7 @@ Contexto obrigatório:
 - Vídeos completos não devem ser hospedados pelo sistema.
 - O sistema deve armazenar links YouTube/playlist.
 - Material final só é solicitado para trabalhos aprovados.
-- Modalidades finais possíveis: oral, pôster, vídeo.
+- Modalidades finais possíveis: oral, pôster.
 - Anais digitais e trabalhos aprovados devem poder ser publicados no site.
 
 Objetivo da change:

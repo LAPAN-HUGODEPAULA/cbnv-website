@@ -1,0 +1,51 @@
+{% if tag == "button" %}
+<button
+    type="{{ type|default:'button' }}"
+    class="
+        inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors cursor-pointer
+        {% if variant == 'primary' %}
+            bg-cbnv-blue-600 text-white hover:bg-cbnv-blue-500
+        {% elif variant == 'secondary' %}
+            bg-cbnv-navy-950 text-cbnv-text-light hover:bg-cbnv-navy-900
+        {% elif variant == 'outline' %}
+            border-2 border-cbnv-blue-600 text-cbnv-blue-600 hover:bg-cbnv-blue-600 hover:text-white
+        {% elif variant == 'ghost' %}
+            text-cbnv-blue-600 hover:bg-cbnv-blue-600/10
+        {% else %}
+            bg-cbnv-blue-600 text-white hover:bg-cbnv-blue-500
+        {% endif %}
+        {% if size == 'sm' %} px-3 py-1.5 text-sm
+        {% elif size == 'lg' %} px-6 py-3 text-lg
+        {% else %} px-4 py-2 text-sm
+        {% endif %}
+        disabled:opacity-50 disabled:cursor-not-allowed
+    "
+    {% if disabled %} disabled{% endif %}
+    {{ attrs|default:'' }}>
+    {{ label }}
+</button>
+{% else %}
+<a
+    href="{{ href|default:'#' }}"
+    class="
+        inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors
+        {% if variant == 'primary' %}
+            bg-cbnv-blue-600 text-white hover:bg-cbnv-blue-500
+        {% elif variant == 'secondary' %}
+            bg-cbnv-navy-950 text-cbnv-text-light hover:bg-cbnv-navy-900
+        {% elif variant == 'outline' %}
+            border-2 border-cbnv-blue-600 text-cbnv-blue-600 hover:bg-cbnv-blue-600 hover:text-white
+        {% elif variant == 'ghost' %}
+            text-cbnv-blue-600 hover:bg-cbnv-blue-600/10
+        {% else %}
+            bg-cbnv-blue-600 text-white hover:bg-cbnv-blue-500
+        {% endif %}
+        {% if size == 'sm' %} px-3 py-1.5 text-sm
+        {% elif size == 'lg' %} px-6 py-3 text-lg
+        {% else %} px-4 py-2 text-sm
+        {% endif %}
+    "
+    {{ attrs|default:'' }}>
+    {{ label }}
+</a>
+{% endif %}

@@ -1,0 +1,33 @@
+{% extends "accounts/base_auth.html" %}
+
+{% block title %}Entrar — {{ block.super }}{% endblock %}
+
+{% load i18n %}
+
+{% block auth_content %}
+<form method="post" action="{% url 'accounts:login' %}" class="space-y-4">
+    {% csrf_token %}
+    {% if form.errors %}
+        <div class="rounded-lg bg-red-900/50 px-4 py-3 text-sm text-red-300" role="alert">
+            {% trans "Usuário ou senha incorretos." %}
+        </div>
+    {% endif %}
+
+    {% include "components/input.html" with id="id_username" label="Usuário ou e-mail" name="username" type="text" required=True value=form.username.value|default:'' %}
+    {% include "components/input.html" with id="id_password" label="Senha" name="password" type="password" required=True %}
+
+    <button type="submit" class="w-full">
+        {% include "components/button.html" with label="Entrar" variant="primary" size="lg" tag="button" attrs='class="w-full"' %}
+    </button>
+</form>
+{% endblock %}
+
+{% block auth_footer %}
+    <a href="{% url 'accounts:password_reset' %}" class="text-cbnv-blue-400 hover:text-cbnv-blue-300 transition-colors">
+        Esqueceu a senha?
+    </a>
+    <span class="mx-2 text-cbnv-text-muted">·</span>
+    <a href="{% url 'accounts:register' %}" class="text-cbnv-blue-400 hover:text-cbnv-blue-300 transition-colors">
+        Criar conta
+    </a>
+{% endblock %}

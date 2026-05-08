@@ -1,0 +1,31 @@
+{% extends "layouts/dashboard.html" %}
+
+{% block title %}Indicadores — {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-cbnv-navy-950">Relatórios e Indicadores</h1>
+            <p class="mt-1 text-sm text-gray-500">Painel de acompanhamento para a comissão organizadora.</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <a href="{% url 'reports:export_indicators' %}?format=csv" class="inline-flex items-center gap-2 rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                CSV
+            </a>
+            <a href="{% url 'reports:export_indicators' %}?format=json" class="inline-flex items-center gap-2 rounded-lg bg-cbnv-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-cbnv-blue-700 transition-colors">
+                JSON
+            </a>
+        </div>
+    </div>
+
+    {% include "reports/_kpi_cards.html" %}
+    {% include "reports/_submissions_table.html" %}
+    {% include "reports/_reviews_table.html" %}
+    {% include "reports/_authors_table.html" %}
+    {% include "reports/_materials_table.html" %}
+
+</div>
+{% endblock %}

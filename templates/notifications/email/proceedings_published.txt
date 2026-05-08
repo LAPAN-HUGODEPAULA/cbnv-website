@@ -1,0 +1,17 @@
+Prezado(a) {{ corresponding_author.full_name }},
+
+O seu trabalho foi publicado nos anais digitais do XII Congresso Brasileiro de Neurociências da Visão (CBNV 2026).
+
+Dados da publicação:
+  ID: {{ submission.submission_id }}
+  Título: {{ submission.title }}
+  Modalidade: {{ submission.get_final_modality_display }}
+
+Acesse os anais do congresso:
+{{ proceedings_url }}
+
+Parabéns pela publicação!
+
+---
+XII Congresso Brasileiro de Neurociências da Visão — CBNV 2026
+11–13 de novembro de 2026 — CAD-1 UFMG, Belo Horizonte, MG

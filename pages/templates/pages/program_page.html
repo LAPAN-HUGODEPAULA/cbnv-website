@@ -1,0 +1,80 @@
+{% extends "layouts/public.html" %}
+{% load cache %}
+
+{% block title %}Programação{% endblock %}
+
+{% block content %}
+<div class="space-y-0">
+    <section class="border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+            <div class="max-w-3xl space-y-4">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-cbnv-green-400">Programação científica</p>
+                <h1 class="font-display text-4xl sm:text-5xl font-bold text-white">Programação</h1>
+                {% if page.intro %}
+                <p class="text-lg text-cbnv-text-muted">{{ page.intro }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {% if program_data %}
+        {% cache 3600 program_timeline page.id %}
+        <div class="space-y-8">
+            {% for day_data in program_data %}
+            <article class="rounded-2xl border border-white/10 bg-white/5 p-6 lg:p-8">
+                <div class="flex flex-col gap-2 pb-6 border-b border-white/10">
+                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-cbnv-green-400">
+                        {{ day_data.day.date|date:"d/m/Y" }}
+                    </p>
+                    <h2 class="font-display text-2xl font-semibold text-white">{{ day_data.day.title }}</h2>
+                    {% if day_data.day.subtitle %}
+                    <p class="text-cbnv-text-muted">{{ day_data.day.subtitle }}</p>
+                    {% endif %}
+                </div>
+
+                <div class="mt-6 space-y-4">
+                    {% for item in day_data.sessions %}
+                    <div class="rounded-xl border border-white/10 bg-cbnv-navy-900/70 p-4 lg:p-5">
+                        <div class="flex flex-wrap items-center gap-3 text-sm">
+                            <time class="font-mono text-cbnv-green-400">{{ item.session.time_range }}</time>
+                            {% if item.session.room %}
+                            <span class="text-cbnv-text-muted">{{ item.session.room }}</span>
+                            {% endif %}
+                            {% include "components/badge.html" with label=item.session.get_activity_type_display variant=item.session.badge_variant %}
+                        </div>
+
+                        {% if item.talks %}
+                        <div class="mt-4 space-y-4">
+                            {% for talk in item.talks %}
+                            <div class="space-y-2">
+                                <h3 class="text-white font-medium">{{ talk.title }}</h3>
+                                {% if talk.speaker %}
+                                <p class="text-sm text-cbnv-text-muted">
+                                    {{ talk.speaker }}{% if talk.speaker.institution %} - {{ talk.speaker.institution }}{% endif %}
+                                </p>
+                                {% if talk.speaker.bio %}
+                                <p class="text-sm text-cbnv-text-muted/80">{{ talk.speaker.bio|truncatewords:28 }}</p>
+                                {% endif %}
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% elif item.session.description %}
+                        <p class="mt-4 text-sm text-cbnv-text-muted">{{ item.session.description }}</p>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% endcache %}
+        {% else %}
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-8 text-cbnv-text-muted">
+            A programação será disponibilizada em breve.
+        </div>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

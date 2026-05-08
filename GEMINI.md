@@ -40,9 +40,10 @@ The **XII Congresso Brasileiro de Neurociências da Visão (CBNV 2026)** digital
 The project follows **Spec Driven Design (SDD)** using **OpenSpec**.
 
 1.  **Requirement First:** Consult `docs/CBNV2026_Requisitos_Arquitetura_v1.md` before any task.
-2.  **Proposal Phase:** Create/Validate a Change Proposal in `openspec/changes/`.
-3.  **Implementation:** Apply code ONLY after proposal validation.
-4.  **Verification:** Run tests and validate against OpenSpec requirements.
+2.  **OpenSpec Compliance:** All specification files MUST include `# Purpose` and `## Requirements` sections, using RFC 2119 keywords and Gherkin-style scenarios as defined in `AGENTS.md`.
+3.  **Proposal Phase:** Create/Validate a Change Proposal in `openspec/changes/`.
+4.  **Implementation:** Apply code ONLY after proposal validation.
+5.  **Verification:** Run tests and validate against OpenSpec requirements.
 
 ### Implementation Order (Sequential)
 1.  `bootstrap-django-wagtail-platform`

@@ -4,15 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{ page.search_description|default:'XII Congresso Brasileiro de Neurociências da Visão — CBNV 2026' }}">
-    <title>{% block title %}CBNV 2026{% endblock %}</title>
+    <meta name="description" content="{{ page.search_description|default:settings.core.CoreSettings.theme }}">
+    <title>{% block title %}{{ settings.core.CoreSettings.event_name }}{% endblock %}{% if page.title %} — {{ page.title }}{% endif %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
-<body class="min-h-screen bg-gray-50 text-gray-900">
+<body class="min-h-screen font-body text-cbnv-text-dark bg-cbnv-white">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-cbnv-blue-600 focus:text-white focus:px-4 focus:py-2 focus:rounded">
+        Pular para o conteúdo principal
+    </a>
     {% block body %}
-    {% block content %}{% endblock %}
+    <main id="main-content">
+        {% block content %}{% endblock %}
+    </main>
     {% endblock %}
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

@@ -28,6 +28,8 @@ Use **uv** for ALL Python dependency and environment operations. **NEVER** use `
 - Run all tests before any change proposal validation.
 - Every new feature or bug fix MUST include a new test case.
 - For UI changes, validate manually in the browser via `localhost:8001`.
+- For public-site shell or header changes, keep menu links as normal anchor navigation unless a specific view explicitly needs HTMX behavior; do not add `hx-boost` to the outer public layout by default.
+- After any change to shared layouts, confirm the top menu still navigates correctly on Home, Sobre, Programação and Edições Anteriores before merging.
 
 ## Commit & Pull Request Guidelines
 - Use Conventional Commits.
@@ -36,6 +38,21 @@ Use **uv** for ALL Python dependency and environment operations. **NEVER** use `
   - concise purpose and changed paths,
   - screenshots when UI/prototype files change,
   - linked issue or planning note when applicable.
+
+## OpenSpec Format & Standards
+Maintain a strict format for all specification files (`openspec/specs/**/*.md` and `openspec/changes/**/specs/**/*.md`).
+
+- **Mandatory Sections:**
+  - `# Title (capability-name)`
+  - `## Purpose`: A brief explanation of the capability's goal.
+  - `## Requirements`: (or `## ADDED Requirements`, `## MODIFIED Requirements`). This section **MUST** exist and contain at least one requirement.
+- **Requirement Structure:**
+  - `### Requirement: <Short Descriptive Title>`
+  - Use RFC 2119 keywords (**SHALL**, **MUST**, **SHOULD**) within the requirement description.
+- **Scenario Structure:**
+  - `#### Scenario: <Description of specific behavior>`
+  - Use Gherkin-style steps: `- **GIVEN**`, `- **WHEN**`, `- **THEN**`, `- **AND**`.
+- **Validation:** Never create or update a spec file without including both a Purpose and a Requirements section.
 
 ## Security & Configuration Tips
 - Do not commit secrets, personal attendee data, or private credentials.

@@ -1,0 +1,74 @@
+{% autoescape off %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Decisão da submissão — {{ submission.submission_id }}</title>
+</head>
+<body style="font-family: 'Inter', Arial, sans-serif; color: #111827; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 2rem;">
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <h1 style="color: #081426; margin: 0;">
+            <span style="color: #2FEA8B; font-weight: 700;">CBNV</span>
+            <span style="font-size: 0.8em; color: #9AA8C7;">2026</span>
+        </h1>
+    </div>
+
+    <h2 style="color: #081426; font-size: 1.25rem;">Decisão da sua submissão</h2>
+
+    <p>Prezado(a) <strong>{{ corresponding_author.full_name }}</strong>,</p>
+
+    <p>A comissão científica avaliou a sua submissão ao <strong>XII Congresso Brasileiro de Neurociências da Visão (CBNV 2026)</strong>.</p>
+
+    <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+        <tr>
+            <td style="padding: 0.5rem 0; color: #6B7280; font-size: 0.875rem;">ID da submissão</td>
+            <td style="padding: 0.5rem 0; font-weight: 600;">{{ submission.submission_id }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 0.5rem 0; color: #6B7280; font-size: 0.875rem;">Título</td>
+            <td style="padding: 0.5rem 0;">{{ submission.title }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 0.5rem 0; color: #6B7280; font-size: 0.875rem;">Decisão</td>
+            <td style="padding: 0.5rem 0;">
+                <span style="background: {% if submission.status == 'rejected' %}#FEE2E2; color: #B91C1C{% else %}#DBEAFE; color: #1D4ED8{% endif %}; padding: 0.25rem 0.5rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">
+                    {{ submission.status_label }}
+                </span>
+            </td>
+        </tr>
+        {% if submission.final_modality %}
+        <tr>
+            <td style="padding: 0.5rem 0; color: #6B7280; font-size: 0.875rem;">Modalidade</td>
+            <td style="padding: 0.5rem 0;">{{ submission.get_final_modality_display }}</td>
+        </tr>
+        {% endif %}
+    </table>
+
+    {% if chair_notes %}
+    <h3 style="color: #081426; font-size: 1rem;">Notas da comissão</h3>
+    <div style="background: #F3F4F6; padding: 1rem; border-radius: 0.5rem; margin: 0.75rem 0 1.5rem;">
+        <p style="margin: 0; font-size: 0.875rem; color: #374151;">{{ chair_notes }}</p>
+    </div>
+    {% endif %}
+
+    {% if reviews %}
+    <h3 style="color: #081426; font-size: 1rem;">Feedback dos revisores</h3>
+    {% for review in reviews %}
+    <div style="border: 1px solid #E5E7EB; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+        <p style="margin: 0 0 0.5rem; font-size: 0.875rem;">
+            <strong>Recomendação:</strong> {{ review.recommendation }}
+        </p>
+        {% if review.comments %}
+        <p style="margin: 0; font-size: 0.875rem; color: #374151;">{{ review.comments }}</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <p style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #E5E7EB; color: #6B7280; font-size: 0.875rem;">
+        XII Congresso Brasileiro de Neurociências da Visão — CBNV 2026<br>
+        11–13 de novembro de 2026 — CAD-1 UFMG, Belo Horizonte, MG
+    </p>
+</body>
+</html>
+{% endautoescape %}

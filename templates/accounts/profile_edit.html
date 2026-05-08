@@ -1,0 +1,43 @@
+{% extends "layouts/dashboard.html" %}
+
+{% block title %}Editar perfil — {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl">
+    <h1 class="text-2xl font-bold text-cbnv-navy-950 mb-6">Editar perfil</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="mb-4 rounded-lg px-4 py-3 text-sm
+                {% if message.tags == 'success' %}bg-green-100 text-green-800
+                {% elif message.tags == 'error' %}bg-red-100 text-red-800
+                {% else %}bg-gray-100 text-gray-700{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post" class="space-y-5 bg-white rounded-xl border border-gray-200 p-6">
+        {% csrf_token %}
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {% include "components/input.html" with id="id_first_name" label="Nome" name="first_name" required=True value=form.first_name.value|default:'' %}
+            {% include "components/input.html" with id="id_last_name" label="Sobrenome" name="last_name" required=True value=form.last_name.value|default:'' %}
+        </div>
+
+        {% include "components/input.html" with id="id_email" label="E-mail" name="email" type="email" required=True value=form.email.value|default:'' %}
+        {% include "components/input.html" with id="id_institution" label="Instituição" name="institution" required=True value=form.institution.value|default:'' %}
+        {% include "components/input.html" with id="id_position" label="Vínculo/Cargo" name="position" required=True value=form.position.value|default:'' %}
+        {% include "components/input.html" with id="id_country" label="País" name="country" tag="select" required=True choices=form.fields.country.choices value=form.country.value|default:'' %}
+
+        <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+            <a href="{% url 'dashboard:author' %}">
+                {% include "components/button.html" with label="Cancelar" variant="ghost" tag="a" href='/painel/autor/' %}
+            </a>
+            <button type="submit">
+                {% include "components/button.html" with label="Salvar" variant="primary" tag="button" %}
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

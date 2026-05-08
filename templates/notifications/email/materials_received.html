@@ -1,0 +1,30 @@
+{% autoescape off %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Materiais recebidos — {{ submission.submission_id }}</title>
+</head>
+<body style="font-family: 'Inter', Arial, sans-serif; color: #111827; line-height: 1.6; max-width: 600px; margin: 0 auto; padding: 2rem;">
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <h1 style="color: #081426; margin: 0;">
+            <span style="color: #2FEA8B; font-weight: 700;">CBNV</span>
+            <span style="font-size: 0.8em; color: #9AA8C7;">2026</span>
+        </h1>
+    </div>
+
+    <h2 style="color: #081426; font-size: 1.25rem;">Materiais finais recebidos</h2>
+
+    <p>Prezado(a) <strong>{{ corresponding_author.full_name }}</strong>,</p>
+
+    <p>Confirmamos o recebimento dos seus materiais finais para a submissão <strong>{{ submission.submission_id }}</strong> ao <strong>XII Congresso Brasileiro de Neurociências da Visão (CBNV 2026)</strong>.</p>
+
+    <p>A comissão científica analisará os materiais enviados. Você será notificado(a) após a validação.</p>
+
+    <p style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #E5E7EB; color: #6B7280; font-size: 0.875rem;">
+        XII Congresso Brasileiro de Neurociências da Visão — CBNV 2026<br>
+        11–13 de novembro de 2026 — CAD-1 UFMG, Belo Horizonte, MG
+    </p>
+</body>
+</html>
+{% endautoescape %}

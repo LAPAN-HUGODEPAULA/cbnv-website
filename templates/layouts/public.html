@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="flex flex-col min-h-screen bg-cbnv-navy-950 text-cbnv-text-light">
+    {% include "components/header.html" %}
+    
+    <main id="main-content" class="flex-grow">
+        {% block hero %}{% endblock %}
+        
+        <div id="content-area">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    {% include "components/footer.html" %}
+</div>
+{% endblock %}

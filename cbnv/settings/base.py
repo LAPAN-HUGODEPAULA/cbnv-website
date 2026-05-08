@@ -10,6 +10,9 @@ DEBUG = False
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
 
 AUTH_USER_MODEL = "accounts.User"
+LOGIN_URL = "/conta/entrar/"
+LOGIN_REDIRECT_URL = "/painel/"
+LOGOUT_REDIRECT_URL = "/"
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -18,6 +21,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "widget_tweaks",
+    "axes",
     "wagtail",
     "wagtail.admin",
     "wagtail.documents",
@@ -25,10 +30,13 @@ INSTALLED_APPS = [
     "wagtail.sites",
     "wagtail.contrib.settings",
     "wagtail.contrib.redirects",
+    "wagtail.users",
+    "wagtail.snippets",
     "modelcluster",
     "taggit",
     "rest_framework",
     "django_filters",
+    "django_countries",
     "accounts",
     "core",
     "pages",
@@ -43,8 +51,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "axes.middleware.AxesMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -100,16 +110,41 @@ USE_I18N = True
 
 USE_TZ = True
 
+LANGUAGES = [
+    ("pt-br", "Português"),
+    ("en", "English"),
+]
+
+WAGTAIL_I18N_ENABLED = True
+WAGTAIL_CONTENT_LANGUAGES = LANGUAGES
+
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+PROTECTED_MEDIA_ROOT = BASE_DIR / "protected_media"
+
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
 WAGTAIL_SITE_NAME = "CBNV 2026"
+WAGTAILADMIN_BASE_URL = os.environ.get("WAGTAILADMIN_BASE_URL", "http://localhost:8001")
+BASE_URL = os.environ.get("BASE_URL", "http://localhost:8000")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = "cbnv2026@cbnv.org.br"
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "axes.backends.AxesStandaloneBackend",
+]
+
+AXES_FAILURE_LIMIT = int(os.environ.get("AXES_FAILURE_LIMIT", "5"))
+AXES_COOLOFF_TIME = int(os.environ.get("AXES_COOLOFF_TIME", "15"))
+AXES_LOCKOUT_PARAMETERS = [["username", "ip_address"]]
+AXES_VERBOSE = True

@@ -1,0 +1,34 @@
+[
+  {
+    "model": "submissions.thematicaxis",
+    "pk": 1,
+    "fields": {
+      "name": "Neurociência da Visão",
+      "order": 1
+    }
+  },
+  {
+    "model": "submissions.thematicaxis",
+    "pk": 2,
+    "fields": {
+      "name": "Oftalmologia Clínica",
+      "order": 2
+    }
+  },
+  {
+    "model": "submissions.thematicaxis",
+    "pk": 3,
+    "fields": {
+      "name": "Ergonomia Visual",
+      "order": 3
+    }
+  },
+  {
+    "model": "submissions.thematicaxis",
+    "pk": 4,
+    "fields": {
+      "name": "Tecnologia Assistiva",
+      "order": 4
+    }
+  }
+]

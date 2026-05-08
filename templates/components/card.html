@@ -1,0 +1,24 @@
+<article class="
+    rounded-xl border border-gray-200 bg-cbnv-white p-6
+    hover:border-cbnv-blue-600/30 hover:shadow-lg transition-all
+    {% if dark %}
+        border-cbnv-navy-900 bg-cbnv-navy-950 text-cbnv-text-light hover:border-cbnv-green-400/30
+    {% endif %}
+" {{ attrs|default:'' }}>
+    {% if title %}
+        <h3 class="font-display text-lg font-semibold {% if dark %}text-cbnv-text-light{% else %}text-cbnv-navy-950{% endif %} mb-2">
+            {{ title }}
+        </h3>
+    {% endif %}
+    {% if meta %}
+        <p class="text-xs text-cbnv-text-muted uppercase tracking-wide mb-3">{{ meta }}</p>
+    {% endif %}
+    <div class="text-sm leading-relaxed {% if dark %}text-cbnv-text-muted{% else %}text-gray-600{% endif %}">
+        {{ body|default:'' }}
+    </div>
+    {% if cta_label %}
+        <div class="mt-4">
+            {% include "components/button.html" with label=cta_label variant="ghost" size="sm" href=cta_href|default:'#' %}
+        </div>
+    {% endif %}
+</article>

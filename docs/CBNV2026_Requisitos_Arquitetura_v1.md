@@ -5,7 +5,7 @@
 **Versão:** 1.0  
 **Data:** 2026-05-01  
 **Status:** Documento base para design, prototipação e implementação  
-**Stack aprovada:** Django + Wagtail + PostgreSQL + Tailwind CSS + HTMX/Alpine.js  
+**Stack aprovada:** Django 6.0.4 + Wagtail 7.3.1 + PostgreSQL 18 + Tailwind CSS 4.2.4 + HTMX/Alpine.js + uv  
 **Decisão crítica:** Este documento passa a ser o *single source of truth* do projeto. 
 
 ---
@@ -118,17 +118,26 @@ O produto digital não é apenas uma landing page. Ele deve funcionar como infra
 
 A stack principal aprovada é:
 
-1. **Django** como framework web principal.
-2. **Wagtail** como CMS editorial.
-3. **PostgreSQL** como banco de dados.
+1. **Django 6.0.4** como framework web principal.
+2. **Wagtail 7.3.1** como CMS editorial.
+3. **PostgreSQL 18** como banco de dados.
 4. **Django templates** como camada de renderização server-side.
-5. **Tailwind CSS** como sistema utilitário de estilos.
+5. **Tailwind CSS 4.2.4** como sistema utilitário de estilos.
 6. **HTMX** para interações leves sem SPA completa.
 7. **Alpine.js** apenas quando necessário para microinterações locais.
 8. **Docker Compose** para ambiente de desenvolvimento e deploy.
 9. **Caddy** ou **Nginx** como reverse proxy com HTTPS.
 10. **SMTP institucional ou provedor transacional** para e-mails.
 11. **Armazenamento local protegido** no MVP, com possibilidade de migração futura para S3/Backblaze/MinIO.
+12. **uv** como gerenciador obrigatório de dependências e ambiente Python; não usar `pip` diretamente.
+
+Requisitos de versão e configuração:
+
+1. Python deve ser `>=3.12,<3.14` para compatibilidade com Django 6.0.x.
+2. Dependências Python devem ser declaradas em `pyproject.toml` e travadas em `uv.lock`.
+3. Comandos Python locais devem ser executados com `uv run`.
+4. Tailwind CSS 4.2.4 deve usar configuração CSS-first em `src/input.css` com `@import "tailwindcss";`, `@source` para templates Django e `@theme` para tokens de design.
+5. Não criar `tailwind.config.js` por padrão; usar arquivo de configuração JavaScript apenas se uma necessidade futura e documentada exigir.
 
 Não usar Next.js + Strapi como stack principal desta versão.
 
@@ -1254,13 +1263,14 @@ Indicadores mínimos:
 
 Aplicação monolítica modular:
 
-1. Django project;
-2. Wagtail CMS;
-3. PostgreSQL;
+1. Django 6.0.4 project;
+2. Wagtail 7.3.1 CMS;
+3. PostgreSQL 18;
 4. Redis opcional para cache/fila;
 5. Celery opcional para e-mails e tarefas assíncronas;
 6. Caddy/Nginx como reverse proxy;
 7. Docker Compose.
+8. uv para ambiente e dependências Python.
 
 ### 20.2 Apps Django sugeridos
 
@@ -1425,10 +1435,11 @@ Fora do MVP:
 10. Não implementar certificado ou QR code próprio.
 11. Não hospedar vídeos.
 12. Criar fixtures da programação preliminar.
-13. Manter componentes Tailwind reutilizáveis.
+13. Manter componentes Tailwind reutilizáveis com Tailwind CSS 4.2.4 CSS-first (`src/input.css`, `@source`, `@theme`).
 14. Documentar decisões no README.
 15. Gerar seed de SiteSettings.
 16. Validar acessibilidade antes de aceitar páginas.
+17. Usar `uv sync`, `uv add`, `uv add --dev` e `uv run`; nunca usar `pip` diretamente.
 
 ---
 

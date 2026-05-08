@@ -1,0 +1,13 @@
+Prezado(a) {{ reviewer.get_full_name }},
+
+Você foi designado(a) para avaliar uma submissão ao XII Congresso Brasileiro de Neurociências da Visão (CBNV 2026).
+
+ID da submissão: {{ submission.submission_id }}
+Título: {{ submission.title }}
+Eixo temático: {{ submission.thematic_axis }}
+
+Acesse o painel do revisor para realizar sua avaliação.
+
+---
+XII Congresso Brasileiro de Neurociências da Visão — CBNV 2026
+11–13 de novembro de 2026 — CAD-1 UFMG, Belo Horizonte, MG

@@ -1,0 +1,77 @@
+{% extends "layouts/dashboard.html" %}
+
+{% block title %}Gerenciar submissões — {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="mb-6 flex items-center justify-between">
+    <div>
+        <h1 class="text-2xl font-bold text-cbnv-navy-950">Gerenciar submissões</h1>
+        <p class="mt-1 text-sm text-gray-500">Atribua revisores e emita decisões.</p>
+    </div>
+    <a href="{% url 'reports:export_decisions' %}" class="inline-flex items-center gap-2 rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        Exportar CSV
+    </a>
+</div>
+
+{% if submissions %}
+<div class="overflow-x-auto rounded-xl border border-gray-200">
+    <table class="w-full text-sm">
+        <thead>
+            <tr class="bg-gray-50 border-b border-gray-200">
+                <th class="px-4 py-3 text-left font-medium text-gray-500">ID</th>
+                <th class="px-4 py-3 text-left font-medium text-gray-500">Título</th>
+                <th class="px-4 py-3 text-left font-medium text-gray-500">Status</th>
+                <th class="px-4 py-3 text-left font-medium text-gray-500">Revisores</th>
+                <th class="px-4 py-3 text-left font-medium text-gray-500">Modalidade</th>
+                <th class="px-4 py-3 text-right font-medium text-gray-500">Ações</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+            {% for sub in submissions %}
+            <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-4 py-3 font-mono text-xs text-gray-400">{{ sub.submission_id }}</td>
+                <td class="px-4 py-3 font-medium text-cbnv-navy-950 max-w-xs truncate">{{ sub.title }}</td>
+                <td class="px-4 py-3">
+                    <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium
+                        {% if sub.status in 'accepted_oral,accepted_poster,accepted_video' %}bg-cbnv-green-400/10 text-cbnv-green-600
+                        {% elif sub.status == 'rejected' %}bg-red-100 text-red-700
+                        {% else %}bg-blue-50 text-blue-700{% endif %}">
+                        {{ sub.status_label }}
+                    </span>
+                </td>
+                <td class="px-4 py-3 text-gray-600">
+                    {% for ra in sub.reviewer_assignments.all %}
+                    <div class="flex items-center gap-1.5">
+                        {% if ra.review %}<span class="w-1.5 h-1.5 rounded-full bg-cbnv-green-400"></span>{% else %}<span class="w-1.5 h-1.5 rounded-full bg-yellow-400"></span>{% endif %}
+                        <span class="text-xs">{{ ra.reviewer.get_full_name }}</span>
+                    </div>
+                    {% empty %}
+                    <span class="text-xs text-gray-400">—</span>
+                    {% endfor %}
+                </td>
+                <td class="px-4 py-3 text-gray-600">
+                    {% if sub.final_modality %}{{ sub.get_final_modality_display }}{% else %}<span class="text-gray-400">—</span>{% endif %}
+                </td>
+                <td class="px-4 py-3 text-right space-x-2">
+                    {% if sub.status in 'submitted,admin_screening,assigned_to_reviewers' %}
+                    <a href="{% url 'reviews:assign_reviewers' sub.pk %}"
+                       class="text-xs text-cbnv-blue-600 hover:underline">Atribuir</a>
+                    {% endif %}
+                    {% if sub.status in 'reviews_completed,decision_pending' %}
+                    <a href="{% url 'reviews:issue_decision' sub.pk %}"
+                       class="text-xs text-cbnv-blue-600 hover:underline">Decidir</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="rounded-xl border border-dashed border-gray-300 p-12 text-center">
+    <h2 class="text-lg font-semibold text-gray-600">Nenhuma submissão</h2>
+    <p class="mt-1 text-sm text-gray-400">Submissões aparecerão aqui após o envio pelos autores.</p>
+</div>
+{% endif %}
+{% endblock %}

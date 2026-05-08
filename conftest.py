@@ -7,7 +7,8 @@ def user_data():
         "username": "testuser",
         "email": "test@example.com",
         "password": "testpass123",
-        "full_name": "Test User",
+        "first_name": "Test",
+        "last_name": "User",
         "institution": "UFMG",
         "country": "BR",
     }

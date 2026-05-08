@@ -1,0 +1,142 @@
+{% extends "layouts/public.html" %}
+
+{% block title %}Design System — CBNV 2026{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+    <div>
+        <h1 class="font-display text-4xl font-bold text-white">Design System</h1>
+        <p class="mt-2 text-cbnv-text-muted">CBNV 2026 — Componentes e tokens de referência</p>
+    </div>
+
+    <!-- Colors -->
+    <section>
+        <h2 class="font-display text-2xl font-semibold text-white mb-4">Cores</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
+            <div>
+                <div class="h-16 rounded-lg bg-cbnv-navy-950"></div>
+                <p class="text-xs mt-1 text-cbnv-text-muted">navy-950<br>#081426</p>
+            </div>
+            <div>
+                <div class="h-16 rounded-lg bg-cbnv-navy-900"></div>
+                <p class="text-xs mt-1 text-cbnv-text-muted">navy-900<br>#0E1E3A</p>
+            </div>
+            <div>
+                <div class="h-16 rounded-lg bg-cbnv-blue-600"></div>
+                <p class="text-xs mt-1 text-cbnv-text-muted">blue-600<br>#214BFF</p>
+            </div>
+            <div>
+                <div class="h-16 rounded-lg bg-cbnv-green-400"></div>
+                <p class="text-xs mt-1 text-cbnv-text-muted">green-400<br>#2FEA8B</p>
+            </div>
+            <div>
+                <div class="h-16 rounded-lg bg-cbnv-text-light"></div>
+                <p class="text-xs mt-1 text-cbnv-text-muted">text-light<br>#E7ECF7</p>
+            </div>
+            <div>
+                <div class="h-16 rounded-lg bg-cbnv-warning"></div>
+                <p class="text-xs mt-1 text-cbnv-text-muted">warning<br>#F59E0B</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Typography -->
+    <section>
+        <h2 class="font-display text-2xl font-semibold text-white mb-4">Tipografia</h2>
+        <div class="space-y-4 border border-white/10 rounded-xl p-6">
+            <div>
+                <p class="text-xs text-cbnv-text-muted uppercase tracking-wide mb-1">Display (Newsreader)</p>
+                <p class="font-display text-4xl font-bold text-white">Neurovisão na Era da IA</p>
+            </div>
+            <div>
+                <p class="text-xs text-cbnv-text-muted uppercase tracking-wide mb-1">Heading (Newsreader)</p>
+                <p class="font-display text-2xl font-semibold text-white">Título de Seção</p>
+            </div>
+            <div>
+                <p class="text-xs text-cbnv-text-muted uppercase tracking-wide mb-1">Body (Inter)</p>
+                <p class="font-body text-base text-cbnv-text-muted">Texto de corpo para descrições, parágrafos e conteúdo geral do congresso.</p>
+            </div>
+            <div>
+                <p class="text-xs text-cbnv-text-muted uppercase tracking-wide mb-1">Mono (Space Grotesk)</p>
+                <p class="font-mono text-base text-cbnv-text-muted">08:30 — Conferência Plenária</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Buttons -->
+    <section>
+        <h2 class="font-display text-2xl font-semibold text-white mb-4">Botões</h2>
+        <div class="flex flex-wrap gap-3 items-center">
+            {% include "components/button.html" with label="Primary" variant="primary" tag="button" %}
+            {% include "components/button.html" with label="Secondary" variant="secondary" tag="button" %}
+            {% include "components/button.html" with label="Outline" variant="outline" tag="button" %}
+            {% include "components/button.html" with label="Ghost" variant="ghost" tag="button" %}
+            {% include "components/button.html" with label="Small" variant="primary" size="sm" tag="button" %}
+            {% include "components/button.html" with label="Large" variant="primary" size="lg" tag="button" %}
+            {% include "components/button.html" with label="Disabled" variant="primary" tag="button" disabled="true" %}
+        </div>
+    </section>
+
+    <!-- Badges -->
+    <section>
+        <h2 class="font-display text-2xl font-semibold text-white mb-4">Badges</h2>
+        <div class="flex flex-wrap gap-3 items-center">
+            {% include "components/badge.html" with label="Confirmado" variant="confirmed" %}
+            {% include "components/badge.html" with label="Pendente" variant="pending" %}
+            {% include "components/badge.html" with label="Rejeitado" variant="rejected" %}
+            {% include "components/badge.html" with label="Info" variant="info" %}
+            {% include "components/badge.html" with label="Rascunho" variant="draft" %}
+            {% include "components/badge.html" with label="Em revisão" variant="review" %}
+        </div>
+    </section>
+
+    <!-- Cards -->
+    <section>
+        <h2 class="font-display text-2xl font-semibold text-white mb-4">Cards</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {% include "components/card.html" with title="Card Simples" body="Exemplo de card para informações científicas e destaques do congresso." dark="true" %}
+            {% include "components/card.html" with title="Card com CTA" body="Card com call-to-action para direcionar o usuário a uma ação." cta_label="Saiba mais" dark="true" %}
+            {% include "components/card.html" with title="Card Dark" body="Variante escura para uso em seções com fundo escuro." dark="true" %}
+        </div>
+    </section>
+
+    <!-- Form Inputs -->
+    <section>
+        <h2 class="font-display text-2xl font-semibold text-white mb-4">Formulários</h2>
+        <div class="max-w-md space-y-4 border border-white/10 rounded-xl p-6">
+            {% include "components/input.html" with id="name" label="Nome completo" type="text" placeholder="Digite seu nome" required="true" %}
+            {% include "components/input.html" with id="email" label="E-mail" type="email" placeholder="email@exemplo.com" required="true" help_text="Não será compartilhado com terceiros." %}
+            {% include "components/input.html" with id="bio" label="Mini-bio" tag="textarea" rows="3" placeholder="Breve descrição..." %}
+            {% include "components/input.html" with id="role" label="Papel" tag="select" choices="choices" help_text="Selecione seu papel no congresso." %}
+            {% include "components/button.html" with label="Enviar" variant="primary" tag="button" %}
+        </div>
+    </section>
+
+    <!-- Timeline -->
+    <section>
+        <h2 class="font-display text-2xl font-semibold text-white mb-4">Timeline</h2>
+        {% include "components/timeline.html" with items=timeline_items %}
+    </section>
+
+    <!-- States -->
+    <section>
+        <h2 class="font-display text-2xl font-semibold text-white mb-4">Estados de Interface</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="border border-white/10 rounded-xl p-6">
+                <p class="text-xs text-cbnv-text-muted uppercase tracking-wide mb-4">Loading</p>
+                {% include "components/states/loading.html" %}
+            </div>
+            <div class="border border-white/10 rounded-xl p-6">
+                <p class="text-xs text-cbnv-text-muted uppercase tracking-wide mb-4">Empty</p>
+                {% include "components/states/empty.html" with message="Nenhuma submissão encontrada." action_label="Criar submissão" %}
+            </div>
+            <div class="border border-white/10 rounded-xl p-6">
+                <p class="text-xs text-cbnv-text-muted uppercase tracking-wide mb-4">Error</p>
+                {% include "components/states/error.html" with message="Erro ao carregar dados." detail="Tente novamente em alguns instantes." action_label="Tentar novamente" %}
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock %}

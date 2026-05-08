@@ -1,1 +1,94 @@
 @import "tailwindcss";
+
+@source "../templates";
+
+@theme {
+  /* Colors — CBNV 2026 (High-Contrast OKLCH Palette) */
+  /* Target 5.5:1 contrast ratio against navy-950 (oklch(14% 0.04 260)) */
+  --color-cbnv-navy-950: oklch(14% 0.04 260); /* #081426 */
+  --color-cbnv-navy-900: oklch(18% 0.05 260);
+  --color-cbnv-blue-600: oklch(63% 0.23 255); /* Min for 5.5:1 (approx 5.7:1) */
+  --color-cbnv-blue-500: oklch(68% 0.23 255);
+  --color-cbnv-green-400: oklch(82% 0.21 160);
+  --color-cbnv-green-500: oklch(75% 0.20 160);
+  --color-cbnv-text-light: oklch(95% 0.02 260);
+  --color-cbnv-text-muted: oklch(80% 0.04 260);
+  --color-cbnv-bg-light: oklch(97% 0.01 260);
+  --color-cbnv-text-dark: oklch(10% 0.02 260);
+  --color-cbnv-warning: oklch(78% 0.18 70);
+  --color-cbnv-white: oklch(100% 0 0);
+
+  /* Typography */
+  --font-display: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "Space Grotesk", "Fira Code", monospace;
+
+  /* Spacing scale */
+  --spacing-18: 4.5rem;
+  --spacing-88: 22rem;
+  --spacing-128: 32rem;
+
+  /* Focus ring */
+  --ring-offset-color: transparent;
+
+  /* Animations */
+  --animate-fade-in: fade-in 0.5s ease-out;
+  --animate-slide-up: slide-up 0.5s ease-out;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(1rem); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+@layer utilities {
+  .neural-pattern {
+    background-image: radial-gradient(circle at 50% 50%, rgba(68, 247, 150, 0.05) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 20%, rgba(33, 75, 255, 0.05) 0%, transparent 40%);
+    background-size: 100vw 100vh;
+    background-attachment: fixed;
+  }
+
+  .glass-panel {
+    background: rgba(8, 20, 38, 0.6); /* cbnv-navy-950 with opacity */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(130, 255, 160, 0.2); /* cbnv-green-400 with opacity */
+  }
+}
+
+/* Base styles */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Focus visible ring — WCAG 2.2 AA */
+  :focus-visible {
+    outline: 2px solid var(--color-cbnv-blue-600);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}

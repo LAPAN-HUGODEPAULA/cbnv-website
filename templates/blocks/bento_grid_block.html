@@ -1,0 +1,41 @@
+{% load wagtailimages_tags %}
+<div class="py-12">
+    {% if value.title %}
+    <h2 class="font-display text-3xl font-bold mb-8 text-cbnv-white">{{ value.title }}</h2>
+    {% endif %}
+    
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[12rem]">
+        {% for item in value.items %}
+        <div class="
+            relative rounded-3xl overflow-hidden border border-white/10 p-8 flex flex-col justify-end group transition-all hover:border-cbnv-blue-600/50
+            {% if item.size == '2x1' %}md:col-span-2
+            {% elif item.size == '1x2' %}md:row-span-2
+            {% elif item.size == '2x2' %}md:col-span-2 md:row-span-2
+            {% endif %}
+        ">
+            {% if item.image %}
+                {% image item.image fill-800x800 format-webp as img %}
+                <img src="{{ img.url }}" alt="" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-700" loading="lazy">
+                <div class="absolute inset-0 bg-gradient-to-t from-cbnv-navy-950 via-cbnv-navy-950/40 to-transparent"></div>
+            {% else %}
+                <div class="absolute inset-0 bg-cbnv-navy-900"></div>
+            {% endif %}
+
+            <div class="relative z-10">
+                <h3 class="text-xl font-bold text-cbnv-white mb-2">{{ item.title }}</h3>
+                {% if item.text %}
+                <div class="text-sm text-cbnv-text-muted mb-4 prose-invert line-clamp-3">
+                    {{ item.text }}
+                </div>
+                {% endif %}
+                
+                {% if item.link %}
+                    <a href="{{ item.link.url }}" class="text-sm font-semibold text-cbnv-green-400 hover:text-cbnv-green-300 transition-colors">Saiba mais &rarr;</a>
+                {% elif item.external_link %}
+                    <a href="{{ item.external_link }}" class="text-sm font-semibold text-cbnv-green-400 hover:text-cbnv-green-300 transition-colors">Saiba mais &rarr;</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>

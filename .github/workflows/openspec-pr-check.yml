@@ -1,0 +1,49 @@
+name: OpenSpec PR Check
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  openspec-pr-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check branch naming
+        run: |
+          BRANCH="${{ github.head_ref }}"
+          echo "Branch: $BRANCH"
+
+          if [[ "$BRANCH" != change/* ]]; then
+            echo "Branch must be named change/<change-id>"
+            exit 1
+          fi
+
+          CHANGE_ID="${BRANCH#change/}"
+          echo "CHANGE_ID=$CHANGE_ID" >> "$GITHUB_ENV"
+
+      - name: Check OpenSpec change folder exists or archived
+        run: |
+          if [[ -d "openspec/changes/$CHANGE_ID" ]]; then
+            echo "Active OpenSpec change found: $CHANGE_ID"
+            exit 0
+          fi
+
+          if find openspec/changes/archive -maxdepth 1 -type d -name "*-$CHANGE_ID" | grep -q .; then
+            echo "Archived OpenSpec change found: $CHANGE_ID"
+            exit 0
+          fi
+
+          echo "No OpenSpec change found for $CHANGE_ID"
+          exit 1
+
+      - name: Check PR title contains change id
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          if [[ "$PR_TITLE" != *"[$CHANGE_ID]"* ]]; then
+            echo "PR title must contain [$CHANGE_ID]"
+            exit 1
+          fi

@@ -3,6 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from accounts.models import User
+from accounts.tests.factories import create_user_with_profile
 from proceedings.models import FinalMaterial
 from submissions.models import Submission, SubmissionAuthor, ThematicAxis
 
@@ -37,7 +38,7 @@ class _SubmissionMixin:
 
 class AuthorUploadTest(_SubmissionMixin, TestCase):
     def setUp(self):
-        self.author = User.objects.create_user(
+        self.author = create_user_with_profile(
             username="author", password="pass", is_author=True,
             first_name="João", last_name="Silva",
             institution="UFMG", country="BR",
@@ -61,7 +62,7 @@ class AuthorUploadTest(_SubmissionMixin, TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_upload_page_denies_other_user(self):
-        other = User.objects.create_user(username="other", password="pass", is_author=True)
+        other = create_user_with_profile(username="other", password="pass", is_author=True)
         sub = self._create_submission(status="final_materials_pending", author=other)
         self.client.login(username="author", password="pass")
         response = self.client.get(reverse("proceedings:author_upload", args=[sub.pk]))
@@ -128,11 +129,11 @@ class AuthorUploadTest(_SubmissionMixin, TestCase):
 
 class CommissionValidationTest(_SubmissionMixin, TestCase):
     def setUp(self):
-        self.chair = User.objects.create_user(
+        self.chair = create_user_with_profile(
             username="chair", password="pass", is_chair=True,
             first_name="Comissão", last_name="Científica",
         )
-        self.author = User.objects.create_user(
+        self.author = create_user_with_profile(
             username="author", password="pass", is_author=True,
             first_name="João", last_name="Silva",
             institution="UFMG", country="BR",
@@ -190,7 +191,7 @@ class CommissionValidationTest(_SubmissionMixin, TestCase):
 
 class PublicProceedingsTest(_SubmissionMixin, TestCase):
     def setUp(self):
-        self.author = User.objects.create_user(
+        self.author = create_user_with_profile(
             username="author", password="pass", is_author=True,
             first_name="João", last_name="Silva",
             institution="UFMG", country="BR",

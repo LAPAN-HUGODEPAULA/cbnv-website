@@ -26,7 +26,6 @@ services:
     command: gunicorn cbnv.wsgi:application --bind 0.0.0.0:8000 --workers ${GUNICORN_WORKERS:-4} --timeout 120 --access-logfile - --error-logfile -
     volumes:
       - .:/app
-      - /app/.venv
       - media_files:/app/media
       - protected_media:/app/protected_media
       - staticfiles:/app/staticfiles
@@ -76,7 +75,7 @@ services:
       start_period: 10s
 
   backup:
-    image: postgres:18-alpine
+    image: postgres:18.3-alpine
     volumes:
       - backups:/backups
       - ./scripts:/scripts:ro

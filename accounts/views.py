@@ -8,6 +8,7 @@ from django.views.generic import CreateView, UpdateView
 
 from .decorators import author_required, chair_required, reviewer_required
 from .forms import ProfileForm, RegistrationForm
+from .models import get_or_create_profile, user_has_complete_author_profile, user_has_role
 
 
 class RegisterView(CreateView):
@@ -31,9 +32,9 @@ register = RegisterView.as_view()
 @login_required
 def dashboard_redirect(request):
     user = request.user
-    if user.is_chair:
+    if user_has_role(user, "is_chair"):
         return redirect("dashboard:chair")
-    if user.is_reviewer:
+    if user_has_role(user, "is_reviewer"):
         return redirect("dashboard:reviewer")
     return redirect("dashboard:author")
 
@@ -42,7 +43,8 @@ def dashboard_redirect(request):
 @author_required
 def author_dashboard(request):
     user = request.user
-    if not user.has_complete_author_profile:
+    profile = get_or_create_profile(user)
+    if not user_has_complete_author_profile(user):
         messages.warning(
             request,
             "Complete seu perfil antes de enviar submissões.",
@@ -52,9 +54,9 @@ def author_dashboard(request):
             missing.append("nome")
         if not user.last_name.strip():
             missing.append("sobrenome")
-        if not user.institution.strip():
+        if not profile.institution.strip():
             missing.append("instituição")
-        if not user.country.strip():
+        if not profile.country.strip():
             missing.append("país")
         return redirect("accounts:profile_edit")
 

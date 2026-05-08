@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 from accounts.models import User
+from accounts.tests.factories import create_user_with_profile
 from submissions.models import (
     IllegalStateTransitionError,
     Submission,
@@ -19,7 +20,7 @@ def thematic_axis():
 
 @pytest.fixture
 def author_user():
-    return User.objects.create_user(
+    return create_user_with_profile(
         username="author1",
         email="author@example.com",
         password="testpass123",
@@ -220,7 +221,7 @@ class TestSubmissionFile:
 @pytest.mark.django_db
 class TestSubmissionQuerySet:
     def test_for_user(self, author_user, thematic_axis):
-        other = User.objects.create_user(
+        other = create_user_with_profile(
             username="other", password="p", is_author=True,
         )
         Submission.objects.create(

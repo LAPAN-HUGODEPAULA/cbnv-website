@@ -9,7 +9,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
 
-AUTH_USER_MODEL = "accounts.User"
 LOGIN_URL = "/conta/entrar/"
 LOGIN_REDIRECT_URL = "/painel/"
 LOGOUT_REDIRECT_URL = "/"

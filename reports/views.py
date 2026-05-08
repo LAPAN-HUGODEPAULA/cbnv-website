@@ -82,7 +82,7 @@ class IndicatorsExportView(AdminOrChairMixin, TemplateView):
                 "top_revisores": [
                     {
                         "nome": f"{r['reviewer__first_name']} {r['reviewer__last_name']}",
-                        "instituicao": r["reviewer__institution"],
+                        "instituicao": r["reviewer__profile__institution"],
                         "atribuidas": r["assigned"],
                         "concluidas": r["completed"],
                     }
@@ -191,7 +191,7 @@ class ReviewsExportView(AdminOrChairMixin, TemplateView):
             data = [
                 {
                     "revisor": a.reviewer.get_full_name() or a.reviewer.username,
-                    "instituicao": a.reviewer.institution or "",
+                    "instituicao": a.reviewer.profile.institution if hasattr(a.reviewer, "profile") else "",
                     "submissao_id": a.submission.submission_id,
                     "titulo": a.submission.title,
                     "recomendacao": (
@@ -217,7 +217,7 @@ class ReviewsExportView(AdminOrChairMixin, TemplateView):
         rows = [
             [
                 a.reviewer.get_full_name() or a.reviewer.username,
-                a.reviewer.institution or "",
+                a.reviewer.profile.institution if hasattr(a.reviewer, "profile") else "",
                 a.submission.submission_id,
                 a.submission.title,
                 a.review.get_recommendation_display() if hasattr(a, "review") else "Pendente",

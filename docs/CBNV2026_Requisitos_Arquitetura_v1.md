@@ -5,7 +5,7 @@
 **Versão:** 1.0  
 **Data:** 2026-05-01  
 **Status:** Documento base para design, prototipação e implementação  
-**Stack aprovada:** Django 6.0.4 + Wagtail 7.3.1 + PostgreSQL 18 + Tailwind CSS 4.2.4 + HTMX/Alpine.js + uv  
+**Stack aprovada:** Python 3.14.x + Django 6.0.5 + Wagtail 7.4.x LTS + PostgreSQL 18.3 + Tailwind CSS 4.x + HTMX/Alpine.js + uv  
 **Decisão crítica:** Este documento passa a ser o *single source of truth* do projeto. 
 
 ---
@@ -118,11 +118,11 @@ O produto digital não é apenas uma landing page. Ele deve funcionar como infra
 
 A stack principal aprovada é:
 
-1. **Django 6.0.4** como framework web principal.
-2. **Wagtail 7.3.1** como CMS editorial.
-3. **PostgreSQL 18** como banco de dados.
+1. **Django 6.0.x** como framework web principal.
+2. **Wagtail 7.4.x LTS** como CMS editorial.
+3. **PostgreSQL 18.3** como banco de dados.
 4. **Django templates** como camada de renderização server-side.
-5. **Tailwind CSS 4.2.4** como sistema utilitário de estilos.
+5. **Tailwind CSS 4.x** como sistema utilitário de estilos.
 6. **HTMX** para interações leves sem SPA completa.
 7. **Alpine.js** apenas quando necessário para microinterações locais.
 8. **Docker Compose** para ambiente de desenvolvimento e deploy.
@@ -133,10 +133,10 @@ A stack principal aprovada é:
 
 Requisitos de versão e configuração:
 
-1. Python deve ser `>=3.12,<3.14` para compatibilidade com Django 6.0.x.
+1. Python deve ser `>=3.14,<3.15` para compatibilidade com Django 6.0.x e Wagtail 7.4.x.
 2. Dependências Python devem ser declaradas em `pyproject.toml` e travadas em `uv.lock`.
 3. Comandos Python locais devem ser executados com `uv run`.
-4. Tailwind CSS 4.2.4 deve usar configuração CSS-first em `src/input.css` com `@import "tailwindcss";`, `@source` para templates Django e `@theme` para tokens de design.
+4. Tailwind CSS 4.x deve usar configuração CSS-first em `src/input.css` com `@import "tailwindcss";`, `@source` para templates Django e `@theme` para tokens de design.
 5. Não criar `tailwind.config.js` por padrão; usar arquivo de configuração JavaScript apenas se uma necessidade futura e documentada exigir.
 
 Não usar Next.js + Strapi como stack principal desta versão.
@@ -766,20 +766,20 @@ Campos:
 
 ### 12.1 User
 
-Usar Django User customizado (`accounts.User`) herdando de `AbstractUser` desde o início.
+Usar o User padrão do Django (`auth.User`) para autenticação e `accounts.UserProfile` para metadados do congresso.
 
 Campos essenciais:
 
-1. `email` (Username);
-2. `full_name` (Nome completo);
-3. `institution` (Instituição);
-4. `country` (País - ISO 3166-1);
-5. `position` (Vínculo/Cargo);
-6. `is_author` (Boolean);
-7. `is_reviewer` (Boolean);
-8. `is_chair` (Boolean);
-9. `consent_privacy` (Boolean);
-10. `consent_image` (Boolean).
+1. `auth.User.username` e `auth.User.email`;
+2. `auth.User.first_name` e `auth.User.last_name`;
+3. `UserProfile.institution` (Instituição);
+4. `UserProfile.country` (País - ISO 3166-1);
+5. `UserProfile.position` (Vínculo/Cargo);
+6. `UserProfile.is_author` (Boolean);
+7. `UserProfile.is_reviewer` (Boolean);
+8. `UserProfile.is_chair` (Boolean);
+9. `UserProfile.consent_privacy` (Boolean);
+10. `UserProfile.consent_image` (Boolean).
 
 ### 12.2 Submission
 
@@ -1263,9 +1263,9 @@ Indicadores mínimos:
 
 Aplicação monolítica modular:
 
-1. Django 6.0.4 project;
-2. Wagtail 7.3.1 CMS;
-3. PostgreSQL 18;
+1. Django 6.0.x project;
+2. Wagtail 7.4.x LTS CMS;
+3. PostgreSQL 18.3;
 4. Redis opcional para cache/fila;
 5. Celery opcional para e-mails e tarefas assíncronas;
 6. Caddy/Nginx como reverse proxy;
@@ -1435,7 +1435,7 @@ Fora do MVP:
 10. Não implementar certificado ou QR code próprio.
 11. Não hospedar vídeos.
 12. Criar fixtures da programação preliminar.
-13. Manter componentes Tailwind reutilizáveis com Tailwind CSS 4.2.4 CSS-first (`src/input.css`, `@source`, `@theme`).
+13. Manter componentes Tailwind reutilizáveis com Tailwind CSS 4.x CSS-first (`src/input.css`, `@source`, `@theme`).
 14. Documentar decisões no README.
 15. Gerar seed de SiteSettings.
 16. Validar acessibilidade antes de aceitar páginas.

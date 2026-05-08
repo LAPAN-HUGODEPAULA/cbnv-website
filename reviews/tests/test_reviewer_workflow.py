@@ -4,6 +4,7 @@ from django.test import Client
 from django.urls import reverse
 
 from accounts.models import User
+from accounts.tests.factories import create_user_with_profile
 from reviews.models import Review, ReviewerAssignment
 from submissions.models import Submission, SubmissionAuthor, ThematicAxis
 
@@ -11,7 +12,7 @@ from submissions.models import Submission, SubmissionAuthor, ThematicAxis
 @pytest.fixture
 def review_fixtures(db):
     axis = ThematicAxis.objects.create(name="Neurociência da Visão", order=1)
-    author = User.objects.create_user(
+    author = create_user_with_profile(
         username="author",
         email="author@example.com",
         password="testpass123",
@@ -21,7 +22,7 @@ def review_fixtures(db):
         country="BR",
         is_author=True,
     )
-    reviewer = User.objects.create_user(
+    reviewer = create_user_with_profile(
         username="reviewer1",
         email="reviewer@example.com",
         password="testpass123",
@@ -31,7 +32,7 @@ def review_fixtures(db):
         country="BR",
         is_reviewer=True,
     )
-    chair = User.objects.create_user(
+    chair = create_user_with_profile(
         username="chair1",
         email="chair@example.com",
         password="testpass123",
@@ -167,7 +168,7 @@ class TestReviewSubmission:
 
     def test_cannot_review_other_reviewer_assignment(self, review_fixtures):
         assignment = self._assign(review_fixtures)
-        other = User.objects.create_user(
+        other = create_user_with_profile(
             username="reviewer2", password="p", is_reviewer=True,
             first_name="Outro", last_name="Revisor",
         )

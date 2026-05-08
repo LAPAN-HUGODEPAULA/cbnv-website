@@ -9,7 +9,7 @@ class ReviewerAssignmentQuerySet(models.QuerySet):
                 "reviewer__id",
                 "reviewer__first_name",
                 "reviewer__last_name",
-                "reviewer__institution",
+                "reviewer__profile__institution",
             )
             .annotate(
                 assigned=Count("id"),

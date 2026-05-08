@@ -3,6 +3,7 @@ from django.test import TestCase
 from io import BytesIO
 
 from accounts.models import User
+from accounts.tests.factories import create_user_with_profile
 from proceedings.models import FinalMaterial
 from submissions.models import Submission, SubmissionAuthor, ThematicAxis
 
@@ -10,7 +11,7 @@ from submissions.models import Submission, SubmissionAuthor, ThematicAxis
 class FinalMaterialModelTest(TestCase):
     def setUp(self):
         self.axis = ThematicAxis.objects.create(name="Neurofisiologia")
-        self.author = User.objects.create_user(
+        self.author = create_user_with_profile(
             username="author", password="pass", is_author=True,
             first_name="João", last_name="Silva",
             institution="UFMG", country="BR",

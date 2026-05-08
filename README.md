@@ -4,12 +4,12 @@ Website e plataforma digital do **XII Congresso Brasileiro de Neurociências da 
 
 ## Stack
 
-Django 6.0.4 + Wagtail 7.x + PostgreSQL 18 + Tailwind CSS 4 + Docker Compose
+Django 6.0.5 + Wagtail 7.4.x LTS + PostgreSQL 18.3 + Tailwind CSS 4.x + Docker Compose
 
 ## Pré-requisitos
 
-- Python 3.13+
-- Node.js 18+
+- Python 3.14.x
+- Node.js 24 LTS
 - Docker e Docker Compose (opcional, para ambiente containerizado)
 
 ## Setup Local

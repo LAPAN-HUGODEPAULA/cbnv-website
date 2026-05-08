@@ -4,13 +4,14 @@ from django.test import Client
 from django.urls import reverse
 
 from accounts.models import User
+from accounts.tests.factories import create_user_with_profile
 from submissions.models import Submission, SubmissionFile, ThematicAxis
 
 
 @pytest.fixture
 def db_setup(db):
     axis = ThematicAxis.objects.create(name="Neurociência da Visão", order=1)
-    user = User.objects.create_user(
+    user = create_user_with_profile(
         username="author",
         email="author@example.com",
         password="testpass123",
@@ -33,7 +34,7 @@ def auth_client(db_setup):
 
 @pytest.fixture
 def incomplete_user(db):
-    return User.objects.create_user(
+    return create_user_with_profile(
         username="incomplete",
         email="incomplete@example.com",
         password="testpass123",
@@ -55,7 +56,7 @@ class TestDashboardAccess:
         assert response.url == "/conta/perfil/"
 
     def test_non_author_redirected(self, db):
-        user = User.objects.create_user(
+        user = create_user_with_profile(
             username="staff", password="p", is_staff=True,
         )
         client = Client()
@@ -210,7 +211,7 @@ class TestSecureFileDownload:
 
     def test_non_owner_forbidden(self, db_setup):
         user1, axis = db_setup
-        user2 = User.objects.create_user(
+        user2 = create_user_with_profile(
             username="other", password="p", is_author=True,
             first_name="Outro", last_name="User",
             institution="X", country="BR",

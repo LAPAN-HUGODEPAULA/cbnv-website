@@ -27,7 +27,7 @@
                        {% if reviewer.pk in existing_assignments %}checked disabled{% endif %}
                        class="rounded border-gray-300 text-cbnv-blue-600 focus:ring-cbnv-blue-600">
                 <span class="text-sm text-gray-700">{{ reviewer.get_full_name }}</span>
-                <span class="text-xs text-gray-400">{{ reviewer.institution|default:"" }}</span>
+                <span class="text-xs text-gray-400">{{ reviewer.profile.institution|default:"" }}</span>
                 {% if reviewer.pk in existing_assignments %}
                 <span class="text-xs text-cbnv-green-600 font-medium ml-auto">Já atribuído</span>
                 {% endif %}

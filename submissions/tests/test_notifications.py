@@ -2,13 +2,14 @@ import pytest
 from django.core import mail
 
 from accounts.models import User
+from accounts.tests.factories import create_user_with_profile
 from submissions.models import Submission, SubmissionAuthor, ThematicAxis
 
 
 @pytest.fixture
 def submission_with_author(db):
     axis = ThematicAxis.objects.create(name="Neurociência da Visão", order=1)
-    user = User.objects.create_user(
+    user = create_user_with_profile(
         username="author",
         email="author@example.com",
         password="testpass123",
@@ -63,7 +64,7 @@ class TestSubmissionConfirmationEmail:
         from notifications.services import send_submission_confirmation
 
         axis = ThematicAxis.objects.create(name="X", order=1)
-        user = User.objects.create_user(
+        user = create_user_with_profile(
             username="noauth", password="p", is_author=True,
             first_name="A", last_name="B", institution="X", country="BR",
         )

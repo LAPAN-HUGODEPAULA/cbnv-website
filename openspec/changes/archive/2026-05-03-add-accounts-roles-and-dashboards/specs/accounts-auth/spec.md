@@ -1,9 +1,4 @@
-# Contas e Autenticação (accounts-auth)
-
-## Purpose
-Gerenciar a identidade dos usuários, autenticação e papéis científicos (transactional roles) da plataforma.
-
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: Custom user model
 O sistema SHALL definir `accounts.User` como custom user model via `AUTH_USER_MODEL = "accounts.User"`. O model SHALL herdar de `AbstractUser` e utilizar os campos nativos `first_name` e `last_name` do Django em vez de um campo `full_name` redundante. Campos customizados:
@@ -96,6 +91,8 @@ O shell do dashboard SHALL ser totalmente responsivo em dispositivos móveis. SH
 - **WHEN** um usuário acessa o dashboard em um dispositivo móvel (< lg breakpoint)
 - **THEN** a sidebar SHALL estar oculta por padrão e SHALL ser revelada ao tocar no botão hamburger.
 - **THEN** o menu SHALL fechar ao pressionar Escape ou ao clicar em um link.
+
+## ADDED Requirements
 
 ### Requirement: Participant Registration Flow
 The system SHALL provide a public registration flow where users can create an account and automatically gain the 'Author' role (`is_author=True`). Registration SHALL NOT require email verification — users are logged in immediately upon successful registration.

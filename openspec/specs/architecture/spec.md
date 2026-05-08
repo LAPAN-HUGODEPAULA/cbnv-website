@@ -1,5 +1,8 @@
 # Arquitetura (architecture)
 
+## Purpose
+Definir a fundação técnica, estrutura modular de apps e infraestrutura de banco de dados e containers.
+
 ## Requirements
 
 ### Requirement: Django project structure

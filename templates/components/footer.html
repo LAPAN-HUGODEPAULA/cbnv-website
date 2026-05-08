@@ -1,0 +1,56 @@
+{% load static %}
+{% with instagram_url=settings.core.CoreSettings.instagram_url|default:"https://www.instagram.com/cbnvufmg/" %}
+<footer class="bg-cbnv-navy-950 text-cbnv-text-muted border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <p class="font-display text-lg font-semibold text-cbnv-text-light mb-2">{{ settings.core.CoreSettings.event_name }}</p>
+                <p class="text-sm leading-relaxed">{{ settings.core.CoreSettings.edition }} Congresso Brasileiro de Neurociências da Visão — {{ settings.core.CoreSettings.theme }}</p>
+                <p class="text-sm mt-2">{{ settings.core.CoreSettings.dates }} · {{ settings.core.CoreSettings.location }}</p>
+            </div>
+            <div>
+                <p class="text-sm font-semibold text-cbnv-text-light mb-2">Links</p>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="/sobre/" class="hover:text-cbnv-text-light transition-colors">Sobre</a></li>
+                    <li><a href="/noticias/" class="hover:text-cbnv-text-light transition-colors">Notícias</a></li>
+                    <li><a href="/edicoes-anteriores/" class="hover:text-cbnv-text-light transition-colors">Edições Anteriores</a></li>
+                    {% if settings.core.CoreSettings.registration_link %}
+                    <li><a href="{{ settings.core.CoreSettings.registration_link }}" class="hover:text-cbnv-text-light transition-colors">Inscrição</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div>
+                <p class="text-sm font-semibold text-cbnv-text-light mb-2">Contato</p>
+                <ul class="space-y-1 text-sm">
+                    {% if settings.core.CoreSettings.contact_email %}
+                    <li><a href="mailto:{{ settings.core.CoreSettings.contact_email }}" class="hover:text-cbnv-text-light transition-colors">{{ settings.core.CoreSettings.contact_email }}</a></li>
+                    {% endif %}
+                    <li><a href="{{ instagram_url }}" target="_blank" rel="noopener noreferrer" class="hover:text-cbnv-text-light transition-colors">Instagram</a></li>
+                    {% if settings.core.CoreSettings.youtube_url %}
+                    <li><a href="{{ settings.core.CoreSettings.youtube_url }}" target="_blank" rel="noopener noreferrer" class="hover:text-cbnv-text-light transition-colors">YouTube</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        <div class="mt-8 pt-8 border-t border-white/10 flex flex-col gap-6">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <img src="{% static 'images/organizations/fapemig-logo.svg' %}" alt="FAPEMIG" class="h-8 w-auto">
+                    <div class="text-sm">
+                        <p class="text-cbnv-text-light font-medium">FAPEMIG</p>
+                        <p class="text-xs text-cbnv-text-muted">Fundação de Amparo à Pesquisa do Estado de Minas Gerais</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 text-sm">
+                    <a href="{{ instagram_url }}" target="_blank" rel="noopener noreferrer" class="hover:text-cbnv-text-light transition-colors">Instagram</a>
+                    <span class="text-cbnv-text-muted">© 2026 CBNV</span>
+                </div>
+            </div>
+            {% if settings.core.CoreSettings.fapemig_text %}
+            <p class="text-xs text-cbnv-text-muted">{{ settings.core.CoreSettings.fapemig_text }}</p>
+            {% endif %}
+            <p class="text-xs text-cbnv-text-muted">XII CBNV — {{ settings.core.CoreSettings.theme }}</p>
+        </div>
+    </div>
+</footer>
+{% endwith %}

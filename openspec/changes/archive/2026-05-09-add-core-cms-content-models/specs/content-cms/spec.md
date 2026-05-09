@@ -2,21 +2,25 @@
 
 ## ADDED Requirements
 
-### Requirement: Global site settings
+### Requirement: Clear admin labels
 
-The platform SHALL provide editable global site settings for reusable event and site metadata.
+CMS fields SHALL use clear Portuguese labels and help text where needed.
 
-#### Scenario: Admin edits event identity
+#### Scenario: Admin edits a public link
 
-Given the admin opens global site settings
-When they update the event name, short name, theme, dates, city or format
-Then the updated values SHALL be saved in a central CMS-backed location.
+Given the admin edits an external link field
+When the field is displayed in the CMS
+Then the label and help text SHALL make clear where the link appears or what it controls.
 
-#### Scenario: Public templates can access global settings
+### Requirement: Visibility controls
 
-Given a public template needs global event metadata
-When the template renders
-Then it SHALL be able to retrieve the values from the central settings model or documented template context mechanism.
+CMS editorial models SHALL include simple visibility controls.
+
+#### Scenario: Admin hides content
+
+Given a news item or supporting entity should not appear publicly
+When the admin marks it as draft, hidden or inactive
+Then later public queries SHALL exclude it.
 
 ### Requirement: External public links
 
@@ -26,7 +30,7 @@ The platform SHALL centralize external public links used across the site.
 
 Given the registration platform is external
 When the admin sets a registration URL and status
-Then public templates SHALL be able to render either the configured link or a clear “em breve” state.
+Then public templates SHALL be able to render either the configured link or a clear "em breve" state.
 
 #### Scenario: Social and media links are configured
 
@@ -65,25 +69,3 @@ Then later Home rendering SHALL be able to retrieve featured entries.
 Given a news or announcement entry has draft status
 When public content queries are used
 Then the draft entry SHALL NOT be returned as publicly visible.
-
-### Requirement: Supporting entities
-
-The platform SHALL provide CMS-backed entities for partners, supporters, sponsors and institutional acknowledgements.
-
-#### Scenario: Admin creates supporting entity
-
-Given the admin creates a supporting entity with name, category and status
-When the entity is active
-Then it SHALL be available for later public display according to its display flags.
-
-#### Scenario: Hidden entity is not public
-
-Given a supporting entity is hidden or inactive
-When public display queries are used
-Then the entity SHALL NOT be returned for public display.
-
-#### Scenario: Entity display order is deterministic
-
-Given multiple supporting entities exist
-When they are queried for public display
-Then they SHALL be ordered by configured sort order and a deterministic fallback.

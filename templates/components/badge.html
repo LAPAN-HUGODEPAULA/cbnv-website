@@ -9,11 +9,11 @@
     {% elif variant == 'info' or variant == 'blue' %}
         bg-cbnv-blue-400/20 text-cbnv-blue-400
     {% elif variant == 'draft' or variant == 'gray' %}
-        bg-white/10 text-cbnv-text-muted
+        bg-cbnv-navy-900/10 text-cbnv-text-muted
     {% elif variant == 'review' or variant == 'purple' %}
         bg-purple-400/20 text-purple-400
     {% else %}
-        bg-white/10 text-cbnv-text-muted
+        bg-cbnv-navy-900/10 text-cbnv-text-muted
     {% endif %}
 " {{ attrs|default:'' }}>
     {{ label }}

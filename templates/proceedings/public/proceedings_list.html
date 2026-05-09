@@ -5,7 +5,7 @@
 {% block content %}
 <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6">
     <div class="mb-8">
-        <h1 class="text-3xl font-bold text-cbnv-navy-950">Anais do Congresso</h1>
+        <h1 class="text-3xl font-bold text-cbnv-text-primary">Anais do Congresso</h1>
         <p class="mt-2 text-cbnv-text-muted">Trabalhos publicados no XII Congresso Brasileiro de Neurociências da Visão.</p>
     </div>
 
@@ -22,7 +22,7 @@
             <option value="{{ axis.pk }}" {% if axis_filter == axis.pk|slugify %}selected{% endif %}>{{ axis.name }}</option>
             {% endfor %}
         </select>
-        <button type="submit" class="rounded-lg bg-cbnv-green-400 px-4 py-2 text-sm font-semibold text-cbnv-navy-950 hover:bg-cbnv-green-400/80 transition-colors">Filtrar</button>
+        <button type="submit" class="rounded-lg bg-cbnv-green-400 px-4 py-2 text-sm font-semibold text-cbnv-text-primary hover:bg-cbnv-green-400/80 transition-colors">Filtrar</button>
         {% if modality_filter or axis_filter %}
         <a href="/anais/" class="rounded-lg border border-white/20 px-4 py-2 text-sm text-cbnv-text-muted hover:text-cbnv-text-light transition-colors">Limpar</a>
         {% endif %}

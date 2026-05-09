@@ -4,7 +4,7 @@ Usage: {% include "components/icon_link.html" with href="https://..." icon="inst
 {% endcomment %}
 <a
     href="{{ href|default:'#' }}"
-    class="inline-flex items-center justify-center w-10 h-10 rounded-full text-cbnv-text-secondary hover:text-cbnv-text-primary hover:bg-white/10 transition-colors"
+    class="inline-flex items-center justify-center w-10 h-10 rounded-full text-cbnv-text-secondary hover:text-cbnv-text-primary hover:bg-cbnv-navy-900/10 transition-colors"
     aria-label="{{ label|default:'Link externo' }}"
     {% if external %}target="_blank" rel="noopener noreferrer"{% endif %}
     {{ attrs|default:'' }}>

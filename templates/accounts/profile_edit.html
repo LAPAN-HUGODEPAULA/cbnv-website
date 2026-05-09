@@ -4,20 +4,20 @@
 
 {% block content %}
 <div class="max-w-2xl">
-    <h1 class="text-2xl font-bold text-cbnv-navy-950 mb-6">Editar perfil</h1>
+    <h1 class="text-2xl font-bold text-cbnv-text-primary mb-6">Editar perfil</h1>
 
     {% if messages %}
         {% for message in messages %}
             <div class="mb-4 rounded-lg px-4 py-3 text-sm
                 {% if message.tags == 'success' %}bg-green-100 text-green-800
                 {% elif message.tags == 'error' %}bg-red-100 text-red-800
-                {% else %}bg-gray-100 text-gray-700{% endif %}">
+                {% else %}bg-gray-100 text-cbnv-text-secondary{% endif %}">
                 {{ message }}
             </div>
         {% endfor %}
     {% endif %}
 
-    <form method="post" class="space-y-5 bg-white rounded-xl border border-gray-200 p-6">
+    <form method="post" class="space-y-5 bg-cbnv-navy-900 rounded-xl border border-white/10 p-6">
         {% csrf_token %}
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">

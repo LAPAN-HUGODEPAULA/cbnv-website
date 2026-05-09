@@ -1,19 +1,19 @@
 <span class="
     inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium
-    {% if variant == 'confirmed' %}
-        bg-green-100 text-green-800
-    {% elif variant == 'pending' %}
-        bg-yellow-100 text-yellow-800
-    {% elif variant == 'rejected' %}
-        bg-red-100 text-red-800
-    {% elif variant == 'info' %}
-        bg-blue-100 text-blue-800
-    {% elif variant == 'draft' %}
-        bg-gray-100 text-gray-700
-    {% elif variant == 'review' %}
-        bg-purple-100 text-purple-800
+    {% if variant == 'confirmed' or variant == 'success' %}
+        bg-cbnv-green-400/20 text-cbnv-green-400
+    {% elif variant == 'pending' or variant == 'warning' %}
+        bg-cbnv-warning/20 text-cbnv-warning
+    {% elif variant == 'rejected' or variant == 'error' %}
+        bg-red-400/20 text-red-400
+    {% elif variant == 'info' or variant == 'blue' %}
+        bg-cbnv-blue-400/20 text-cbnv-blue-400
+    {% elif variant == 'draft' or variant == 'gray' %}
+        bg-white/10 text-cbnv-text-muted
+    {% elif variant == 'review' or variant == 'purple' %}
+        bg-purple-400/20 text-purple-400
     {% else %}
-        bg-gray-100 text-gray-700
+        bg-white/10 text-cbnv-text-muted
     {% endif %}
 " {{ attrs|default:'' }}>
     {{ label }}

@@ -214,3 +214,25 @@ Antes da aprovacao editorial final no CMS, o layout shell publico SHALL usar pla
 #### Scenario: Placeholder usage in layout shell
 - **WHEN** o shell de layout precisar de conteudo temporario
 - **THEN** o texto SHALL usar placeholders neutros e delegar afirmacoes editoriais para blocos/conteudos gerenciados
+
+### Requirement: Public layout consumes CMS-backed globals
+The public layout SHALL be able to consume CMS-backed global values instead of hardcoded repeated values.
+
+#### Scenario: Footer consumes global settings
+- **WHEN** the footer needs event identity, social links or institutional acknowledgement
+- **THEN** it SHALL use CMS-backed global settings where available
+
+#### Scenario: Header consumes global link state
+- **WHEN** the header needs a registration CTA and registration is not yet available
+- **THEN** the header SHALL be able to render a clear "em breve" state instead of a broken link
+
+### Requirement: Public pages can query featured content
+Public pages SHALL be able to query featured news/announcements and supporting entities.
+
+#### Scenario: Home requests featured news
+- **WHEN** the Home page queries CMS content
+- **THEN** it SHALL be able to retrieve published featured or recent news entries
+
+#### Scenario: Footer requests supporting entities
+- **WHEN** the footer queries CMS content
+- **THEN** it SHALL be able to retrieve active entities marked for footer display

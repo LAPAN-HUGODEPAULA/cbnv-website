@@ -76,3 +76,17 @@ The project SHALL maintain documentation for design-system primitives, including
 #### Scenario: Developer consults design-system documentation
 - **WHEN** a developer needs to create or update a public template
 - **THEN** they SHALL find documented token names, component usage examples, and accessibility rules in project documentation
+
+### Requirement: Typography roles
+The platform SHALL define explicit typography roles for display text, body text and technical labels via source-level font tokens with readable system fallbacks.
+
+#### Scenario: Font fallback is available
+- **WHEN** custom fonts fail to load or are not yet configured
+- **THEN** the site SHALL render with readable system fallback fonts
+
+### Requirement: Responsive layout primitives
+The design system SHALL provide mobile-first layout primitives (content containers, cards, navigation) that remain usable without horizontal scrolling on narrow viewports.
+
+#### Scenario: Layout works on mobile
+- **WHEN** a visitor opens the site on a narrow viewport
+- **THEN** core navigation, content containers and cards SHALL remain usable without horizontal scrolling

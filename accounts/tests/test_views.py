@@ -3,6 +3,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 
 from accounts.models import User
+from accounts.tests.factories import create_user_with_profile
 
 
 class RegistrationTest(TestCase):
@@ -81,15 +82,15 @@ class RegistrationTest(TestCase):
 
 class DashboardAccessTest(TestCase):
     def setUp(self):
-        self.author = User.objects.create_user(
+        self.author = create_user_with_profile(
             username="author", password="pass", is_author=True,
             first_name="Autor",
         )
-        self.reviewer = User.objects.create_user(
+        self.reviewer = create_user_with_profile(
             username="reviewer", password="pass", is_reviewer=True,
             first_name="Revisor",
         )
-        self.chair = User.objects.create_user(
+        self.chair = create_user_with_profile(
             username="chair", password="pass", is_chair=True,
             first_name="Comissão",
         )
@@ -128,7 +129,7 @@ class DashboardAccessTest(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_chair_can_access_all_dashboards(self):
-        chair_multi = User.objects.create_user(
+        chair_multi = create_user_with_profile(
             username="chair_all", password="pass",
             is_chair=True, is_reviewer=True, is_author=True,
             first_name="Chair", last_name="User",
@@ -168,7 +169,7 @@ class DashboardAccessTest(TestCase):
 @pytest.mark.django_db
 class TestHasCompleteAuthorProfile:
     def test_complete_profile(self):
-        user = User.objects.create_user(
+        user = create_user_with_profile(
             username="complete", password="p",
             first_name="João", last_name="Silva",
             institution="UFMG", country="BR", is_author=True,
@@ -176,35 +177,35 @@ class TestHasCompleteAuthorProfile:
         assert user.has_complete_author_profile is True
 
     def test_missing_first_name(self):
-        user = User.objects.create_user(
+        user = create_user_with_profile(
             username="mfn", password="p",
             last_name="Silva", institution="UFMG", country="BR", is_author=True,
         )
         assert user.has_complete_author_profile is False
 
     def test_missing_last_name(self):
-        user = User.objects.create_user(
+        user = create_user_with_profile(
             username="mln", password="p",
             first_name="João", institution="UFMG", country="BR", is_author=True,
         )
         assert user.has_complete_author_profile is False
 
     def test_missing_institution(self):
-        user = User.objects.create_user(
+        user = create_user_with_profile(
             username="minst", password="p",
             first_name="João", last_name="Silva", country="BR", is_author=True,
         )
         assert user.has_complete_author_profile is False
 
     def test_missing_country(self):
-        user = User.objects.create_user(
+        user = create_user_with_profile(
             username="mcountry", password="p",
             first_name="João", last_name="Silva", institution="UFMG", is_author=True,
         )
         assert user.has_complete_author_profile is False
 
     def test_whitespace_only_fails(self):
-        user = User.objects.create_user(
+        user = create_user_with_profile(
             username="ws", password="p",
             first_name="   ", last_name="   ",
             institution="   ", country="   ", is_author=True,
@@ -215,7 +216,7 @@ class TestHasCompleteAuthorProfile:
 @pytest.mark.django_db
 class TestProfileCompletenessRedirect:
     def test_dashboard_redirects_incomplete(self):
-        user = User.objects.create_user(
+        user = create_user_with_profile(
             username="incomplete", password="p", is_author=True,
         )
         client = Client()
@@ -225,7 +226,7 @@ class TestProfileCompletenessRedirect:
         assert response.url == "/conta/perfil/"
 
     def test_dashboard_allows_complete(self):
-        user = User.objects.create_user(
+        user = create_user_with_profile(
             username="complete2", password="p",
             first_name="João", last_name="Silva",
             institution="UFMG", country="BR", is_author=True,

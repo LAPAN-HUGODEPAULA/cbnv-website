@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
+from .models import UserProfile, get_or_create_profile
 
 User = get_user_model()
 
@@ -57,23 +58,60 @@ class RegistrationForm(UserCreationForm):
 
     def clean(self):
         cleaned = super().clean()
-        self.instance.is_author = True
         return cleaned
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.is_author = True
-        user.institution = self.cleaned_data["institution"]
-        user.country = self.cleaned_data["country"]
-        user.position = self.cleaned_data["position"]
-        user.consent_privacy = self.cleaned_data["consent_privacy"]
-        user.consent_image = self.cleaned_data["consent_image"]
         if commit:
             user.save()
+            UserProfile.objects.update_or_create(
+                user=user,
+                defaults={
+                    "institution": self.cleaned_data["institution"],
+                    "country": self.cleaned_data["country"],
+                    "position": self.cleaned_data["position"],
+                    "is_author": True,
+                    "consent_privacy": self.cleaned_data["consent_privacy"],
+                    "consent_image": self.cleaned_data["consent_image"],
+                },
+            )
         return user
 
 
-class ProfileForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ("first_name", "last_name", "email", "institution", "country", "position")
+class ProfileForm(forms.Form):
+    first_name = forms.CharField(label="Nome", max_length=150, required=True)
+    last_name = forms.CharField(label="Sobrenome", max_length=150, required=True)
+    email = forms.EmailField(label="E-mail", required=True)
+    institution = forms.CharField(label="Instituição", max_length=255, required=True)
+    country = forms.ChoiceField(label="País", required=True)
+    position = forms.CharField(label="Vínculo/Cargo", max_length=255, required=True)
+
+    def __init__(self, *args, instance=None, **kwargs):
+        self.instance = instance
+        initial = kwargs.pop("initial", {})
+        if instance is not None:
+            profile = get_or_create_profile(instance)
+            initial = {
+                **initial,
+                "first_name": instance.first_name,
+                "last_name": instance.last_name,
+                "email": instance.email,
+                "institution": profile.institution if profile else "",
+                "country": profile.country if profile else "",
+                "position": profile.position if profile else "",
+            }
+        super().__init__(*args, initial=initial, **kwargs)
+        self.fields["country"].choices = RegistrationForm._get_country_choices()
+
+    def save(self):
+        user = self.instance
+        user.first_name = self.cleaned_data["first_name"]
+        user.last_name = self.cleaned_data["last_name"]
+        user.email = self.cleaned_data["email"]
+        user.save(update_fields=["first_name", "last_name", "email"])
+        profile = get_or_create_profile(user)
+        profile.institution = self.cleaned_data["institution"]
+        profile.country = self.cleaned_data["country"]
+        profile.position = self.cleaned_data["position"]
+        profile.save(update_fields=["institution", "country", "position"])
+        return user

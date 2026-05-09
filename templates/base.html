@@ -12,10 +12,7 @@
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
-<body class="min-h-screen font-body text-cbnv-text-dark bg-cbnv-white">
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-cbnv-blue-600 focus:text-white focus:px-4 focus:py-2 focus:rounded">
-        Pular para o conteúdo principal
-    </a>
+<body class="min-h-screen font-body bg-cbnv-navy-950 text-cbnv-text-primary antialiased">
     {% block body %}
     <main id="main-content">
         {% block content %}{% endblock %}

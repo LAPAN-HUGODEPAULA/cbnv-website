@@ -1,5 +1,6 @@
 import pytest
 from accounts.models import User
+from accounts.tests.factories import create_user_with_profile
 from submissions.models import Submission, SubmissionAuthor, ThematicAxis
 
 
@@ -15,7 +16,7 @@ def axis_b():
 
 @pytest.fixture
 def user_a():
-    return User.objects.create_user(
+    return create_user_with_profile(
         username="user_a", email="a@test.com", password="pw",
         first_name="Ana", last_name="Silva", institution="UFMG",
         country="BR", is_author=True,
@@ -24,7 +25,7 @@ def user_a():
 
 @pytest.fixture
 def user_b():
-    return User.objects.create_user(
+    return create_user_with_profile(
         username="user_b", email="b@test.com", password="pw",
         first_name="Bia", last_name="Costa", institution="USP",
         country="BR", is_author=True,

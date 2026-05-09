@@ -1,13 +1,13 @@
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.core.files.storage import FileSystemStorage
 from django.db import models
+from core.storage import ProtectedMediaStorage
 from wagtail.admin.panels import FieldPanel
 from wagtail.snippets.models import register_snippet
 
 from proceedings.managers import FinalMaterialManager
 
-protected_storage = FileSystemStorage(location=settings.PROTECTED_MEDIA_ROOT)
+protected_storage = ProtectedMediaStorage()
 
 
 class FinalMaterial(models.Model):

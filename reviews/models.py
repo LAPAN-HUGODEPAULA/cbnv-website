@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 from submissions.models import Submission
@@ -6,11 +7,11 @@ from reviews.managers import ReviewerAssignmentManager, ReviewManager
 
 class ReviewerAssignment(models.Model):
     reviewer = models.ForeignKey(
-        "accounts.User",
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="review_assignments",
         verbose_name="Revisor",
-        limit_choices_to={"is_reviewer": True},
+        limit_choices_to={"profile__is_reviewer": True},
     )
     submission = models.ForeignKey(
         Submission,

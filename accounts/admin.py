@@ -1,15 +1,10 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from .models import User
+from .models import UserProfile
 
 
-@admin.register(User)
-class UserAdmin(BaseUserAdmin):
-    fieldsets = BaseUserAdmin.fieldsets + (
-        ("Perfil", {"fields": ("institution", "country", "position")}),
-        ("Papéis Científicos", {"fields": ("is_author", "is_reviewer", "is_chair")}),
-        ("Consentimentos", {"fields": ("consent_privacy", "consent_image")}),
-    )
-    list_display = BaseUserAdmin.list_display + ("institution",)
-    list_filter = BaseUserAdmin.list_filter + ("is_author", "is_reviewer", "is_chair")
+@admin.register(UserProfile)
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ("user", "institution", "country", "is_author", "is_reviewer", "is_chair")
+    list_filter = ("is_author", "is_reviewer", "is_chair", "country")
+    search_fields = ("user__username", "user__first_name", "user__last_name", "user__email", "institution")

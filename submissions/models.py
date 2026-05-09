@@ -1,12 +1,12 @@
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.core.files.storage import FileSystemStorage
 from django.db import models, transaction
 from django.db.models import Max
+from core.storage import ProtectedMediaStorage
 from wagtail.snippets.models import register_snippet
 
 
-protected_storage = FileSystemStorage(location=settings.PROTECTED_MEDIA_ROOT)
+protected_storage = ProtectedMediaStorage()
 
 
 class IllegalStateTransitionError(ValueError):
@@ -106,7 +106,7 @@ class Submission(models.Model):
         "Status", max_length=30, choices=STATUS_CHOICES, default="draft"
     )
     submitter = models.ForeignKey(
-        "accounts.User",
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="submissions",
         verbose_name="Submetedor",

@@ -1,11 +1,12 @@
 FROM python:3.14-slim
 
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.8.13 /uv /uvx /bin/
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV UV_COMPILE_BYTECODE=1
 ENV UV_LINK_MODE=copy
+ENV UV_PROJECT_ENVIRONMENT=/opt/venv
 
 WORKDIR /app
 
@@ -21,9 +22,9 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 COPY . .
 
 # Ensure virtualenv is used for subsequent commands
-ENV PATH="/app/.venv/bin:$PATH"
+ENV PATH="/opt/venv/bin:$PATH"
 
-RUN uv run python manage.py collectstatic --noinput 2>/dev/null || true
+RUN uv run python manage.py collectstatic --noinput
 
 EXPOSE 8000
 

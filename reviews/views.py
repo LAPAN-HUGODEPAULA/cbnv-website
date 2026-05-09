@@ -59,9 +59,10 @@ def assign_reviewers(request, submission_id):
 
     if request.method == "POST":
         reviewer_ids = request.POST.getlist("reviewers")
-        from accounts.models import User
+        from django.contrib.auth import get_user_model
 
-        reviewers = User.objects.filter(pk__in=reviewer_ids, is_reviewer=True)
+        User = get_user_model()
+        reviewers = User.objects.filter(pk__in=reviewer_ids, profile__is_reviewer=True)
         created_count = 0
         for reviewer in reviewers:
             _, created = ReviewerAssignment.objects.get_or_create(
@@ -86,9 +87,10 @@ def assign_reviewers(request, submission_id):
             )
         return redirect("reviews:manage_submissions")
 
-    from accounts.models import User
+    from django.contrib.auth import get_user_model
 
-    all_reviewers = User.objects.filter(is_reviewer=True)
+    User = get_user_model()
+    all_reviewers = User.objects.filter(profile__is_reviewer=True)
     existing_assignments = submission.reviewer_assignments.values_list(
         "reviewer_id", flat=True
     )

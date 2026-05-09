@@ -9,7 +9,7 @@ class ReviewerAssignmentQuerySet(models.QuerySet):
                 "reviewer__id",
                 "reviewer__first_name",
                 "reviewer__last_name",
-                "reviewer__institution",
+                "reviewer__profile__institution",
             )
             .annotate(
                 assigned=Count("id"),
@@ -44,7 +44,7 @@ class ReviewerAssignmentQuerySet(models.QuerySet):
 
     def export_queryset(self):
         return self.select_related(
-            "reviewer", "submission", "review"
+            "reviewer__profile", "submission", "review"
         ).order_by("-assigned_at")
 
 

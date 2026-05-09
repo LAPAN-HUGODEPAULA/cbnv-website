@@ -4,16 +4,17 @@ from django.test import TestCase
 from django.urls import reverse
 
 from accounts.models import User
+from accounts.tests.factories import create_user_with_profile
 from proceedings.models import FinalMaterial
 from submissions.models import Submission, SubmissionAuthor, ThematicAxis
 
 
 class NotificationTest(TestCase):
     def setUp(self):
-        self.chair = User.objects.create_user(
+        self.chair = create_user_with_profile(
             username="chair", password="pass", is_chair=True,
         )
-        self.author = User.objects.create_user(
+        self.author = create_user_with_profile(
             username="author", password="pass", is_author=True,
             first_name="João", last_name="Silva",
             institution="UFMG", country="BR",

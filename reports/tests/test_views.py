@@ -3,11 +3,12 @@ from django.test import Client
 from django.urls import reverse
 
 from accounts.models import User
+from accounts.tests.factories import create_user_with_profile
 
 
 @pytest.fixture
 def chair_user():
-    return User.objects.create_user(
+    return create_user_with_profile(
         username="chair1", email="chair@test.com", password="pw",
         first_name="Maria", last_name="Silva", institution="UFMG",
         country="BR", is_chair=True,
@@ -16,7 +17,7 @@ def chair_user():
 
 @pytest.fixture
 def staff_user():
-    return User.objects.create_user(
+    return create_user_with_profile(
         username="staff1", email="staff@test.com", password="pw",
         first_name="Admin", last_name="Teste", institution="UFMG",
         country="BR", is_staff=True,
@@ -25,7 +26,7 @@ def staff_user():
 
 @pytest.fixture
 def author_user():
-    return User.objects.create_user(
+    return create_user_with_profile(
         username="author1", email="author@test.com", password="pw",
         first_name="João", last_name="Costa", institution="USP",
         country="BR", is_author=True,
@@ -34,7 +35,7 @@ def author_user():
 
 @pytest.fixture
 def reviewer_user():
-    return User.objects.create_user(
+    return create_user_with_profile(
         username="rev1", email="rev@test.com", password="pw",
         first_name="Ana", last_name="Revisora", institution="UNICAMP",
         country="BR", is_reviewer=True,
@@ -182,7 +183,7 @@ class TestAggregateConsistency:
         from accounts.models import User
 
         axis = ThematicAxis.objects.create(name="Teste", order=1)
-        user = User.objects.create_user(
+        user = create_user_with_profile(
             username="sub1", email="sub@test.com", password="pw",
             first_name="Sub", last_name="Teste", institution="UFMG",
             country="BR", is_author=True,

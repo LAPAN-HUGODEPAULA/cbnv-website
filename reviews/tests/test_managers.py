@@ -1,13 +1,14 @@
 import pytest
 from django.utils import timezone
 from accounts.models import User
+from accounts.tests.factories import create_user_with_profile
 from reviews.models import Review, ReviewerAssignment
 from submissions.models import Submission, SubmissionAuthor, ThematicAxis
 
 
 @pytest.fixture
 def reviewer_a():
-    return User.objects.create_user(
+    return create_user_with_profile(
         username="rev_a", email="ra@test.com", password="pw",
         first_name="Revisor", last_name="Um", institution="UFMG",
         country="BR", is_reviewer=True,
@@ -16,7 +17,7 @@ def reviewer_a():
 
 @pytest.fixture
 def reviewer_b():
-    return User.objects.create_user(
+    return create_user_with_profile(
         username="rev_b", email="rb@test.com", password="pw",
         first_name="Revisor", last_name="Dois", institution="USP",
         country="BR", is_reviewer=True,
@@ -25,7 +26,7 @@ def reviewer_b():
 
 @pytest.fixture
 def author_user():
-    return User.objects.create_user(
+    return create_user_with_profile(
         username="author1", email="a@test.com", password="pw",
         first_name="Autor", last_name="Teste", institution="UFMG",
         country="BR", is_author=True,

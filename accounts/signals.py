@@ -4,7 +4,20 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
 
+from .models import UserProfile
+
 User = get_user_model()
+
+
+@receiver(post_save, sender=User)
+def ensure_user_profile(sender, instance, created, **kwargs):
+    profile, _ = UserProfile.objects.get_or_create(user=instance)
+    pending = getattr(instance, "_pending_profile_fields", None)
+    if pending:
+        for field, value in pending.items():
+            setattr(profile, field, value)
+        profile.save(update_fields=list(pending.keys()))
+        instance._pending_profile_fields = {}
 
 
 @receiver(post_save, sender=User)

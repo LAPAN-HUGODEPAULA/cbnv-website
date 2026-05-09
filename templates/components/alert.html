@@ -1,0 +1,41 @@
+{% comment %}
+Alert component with variants: info, success, warning, error.
+Usage: {% include "components/alert.html" with variant="info" title="Título" message="Descrição" dark=True %}
+{% endcomment %}
+<div class="rounded-lg border p-4 flex items-start gap-3
+    {% if dark %}
+        {% if variant == 'success' %} border-green-400/30 bg-green-400/10 text-green-300
+        {% elif variant == 'warning' %} border-amber-400/30 bg-amber-400/10 text-amber-300
+        {% elif variant == 'error' %} border-red-400/30 bg-red-400/10 text-red-300
+        {% else %} border-cbnv-blue-400/30 bg-cbnv-blue-400/10 text-cbnv-blue-400
+        {% endif %}
+    {% else %}
+        {% if variant == 'success' %} border-green-200 bg-green-50 text-green-800
+        {% elif variant == 'warning' %} border-amber-200 bg-amber-50 text-amber-800
+        {% elif variant == 'error' %} border-red-200 bg-red-50 text-red-800
+        {% else %} border-blue-200 bg-blue-50 text-blue-800
+        {% endif %}
+    {% endif %}"
+    role="{% if variant == 'error' %}alert{% else %}status{% endif %}"
+    {% if variant == 'warning' %}aria-live="polite"{% endif %}
+    {{ attrs|default:'' }}>
+
+    {% if variant == 'success' %}
+        <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    {% elif variant == 'warning' %}
+        <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+    {% elif variant == 'error' %}
+        <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    {% else %}
+        <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    {% endif %}
+
+    <div class="flex-1 min-w-0">
+        {% if title %}
+            <p class="text-sm font-semibold">{{ title }}</p>
+        {% endif %}
+        {% if message %}
+            <p class="text-sm {% if title %}mt-1{% endif %}">{{ message }}</p>
+        {% endif %}
+    </div>
+</div>

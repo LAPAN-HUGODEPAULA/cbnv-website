@@ -63,3 +63,20 @@ def test_published_announcement_requires_publication_date():
 
     with pytest.raises(ValidationError):
         announcement.full_clean()
+
+
+@pytest.mark.django_db
+def test_duplicate_title_auto_slug_raises_validation_error():
+    Announcement.objects.create(
+        title="Evento cancelado",
+        slug="evento-cancelado",
+        status=Announcement.Status.PUBLISHED,
+        published_at=timezone.now(),
+    )
+    duplicate = Announcement(
+        title="Evento cancelado",
+        status=Announcement.Status.DRAFT,
+    )
+
+    with pytest.raises(ValidationError):
+        duplicate.full_clean()

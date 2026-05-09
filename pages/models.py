@@ -121,6 +121,13 @@ class Announcement(TranslatableMixin, models.Model):
         super().clean()
         if self.status == self.Status.PUBLISHED and not self.published_at:
             raise ValidationError({"published_at": "Informe a data de publicação para conteúdo publicado."})
+        slug = self.slug or slugify(self.title)
+        if slug:
+            qs = Announcement.objects.filter(slug=slug)
+            if self.pk:
+                qs = qs.exclude(pk=self.pk)
+            if qs.exists():
+                raise ValidationError({"slug": "Já existe um comunicado com este slug."})
 
     def save(self, *args, **kwargs):
         if not self.slug:

@@ -44,7 +44,7 @@ class ReviewerAssignmentQuerySet(models.QuerySet):
 
     def export_queryset(self):
         return self.select_related(
-            "reviewer", "submission", "review"
+            "reviewer__profile", "submission", "review"
         ).order_by("-assigned_at")
 
 

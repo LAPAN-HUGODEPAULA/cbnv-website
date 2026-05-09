@@ -20,7 +20,7 @@
                         <span class="font-cbnv-display text-xl font-bold tracking-tight text-cbnv-green-400 leading-none">
                             {{ settings.core.CoreSettings.event_name }}
                         </span>
-                        <span class="text-[8px] uppercase tracking-[0.2em] text-cbnv-text-secondary font-cbnv-label leading-none mt-1">
+                        <span class="text-[8px] uppercase tracking-[0.2em] text-cbnv-text-muted font-cbnv-label leading-none mt-1">
                             {{ settings.core.CoreSettings.theme }}
                         </span>
                     </div>
@@ -31,7 +31,7 @@
                 {% for link in menu_items %}
                         <a
                             href="{{ link.url }}"
-                            class="px-4 py-2 rounded-full text-sm font-medium text-cbnv-text-secondary hover:text-cbnv-white hover:bg-white/5 transition-colors
+                            class="px-4 py-2 rounded-full text-sm font-medium text-cbnv-text-light hover:text-cbnv-white hover:bg-white/5 transition-colors
                                 {% if link.active %}bg-white/10 text-cbnv-white{% endif %}">
                             {{ link.label }}
                             {% if link.external %}
@@ -45,14 +45,14 @@
                     Inscrição
                 </a>
                 {% elif settings.core.CoreSettings.registration_status == "coming_soon" %}
-                <span class="ml-4 px-6 py-2.5 bg-white/10 text-cbnv-text-secondary rounded-full text-sm font-bold">
+                <span class="ml-4 px-6 py-2.5 bg-white/10 text-cbnv-text-muted rounded-full text-sm font-bold">
                     Inscrição em breve
                 </span>
                 {% endif %}
             </nav>
 
             <button
-                class="lg:hidden p-2 rounded-lg text-cbnv-text-secondary hover:text-cbnv-text-primary hover:bg-white/10 transition-colors"
+                class="lg:hidden p-2 rounded-lg text-cbnv-text-muted hover:text-cbnv-text-light hover:bg-white/10 transition-colors"
                 @click="mobileOpen = !mobileOpen"
                 :aria-expanded="mobileOpen"
                 aria-controls="mobile-menu"

@@ -11,7 +11,13 @@ User = get_user_model()
 
 @receiver(post_save, sender=User)
 def ensure_user_profile(sender, instance, created, **kwargs):
-    UserProfile.objects.get_or_create(user=instance)
+    profile, _ = UserProfile.objects.get_or_create(user=instance)
+    pending = getattr(instance, "_pending_profile_fields", None)
+    if pending:
+        for field, value in pending.items():
+            setattr(profile, field, value)
+        profile.save(update_fields=list(pending.keys()))
+        instance._pending_profile_fields = {}
 
 
 @receiver(post_save, sender=User)

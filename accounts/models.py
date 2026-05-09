@@ -79,10 +79,13 @@ def _profile_property(name):
         return getattr(profile, name) if profile else False
 
     def setter(user, value):
+        if not user.pk:
+            user._pending_profile_fields = getattr(user, "_pending_profile_fields", {})
+            user._pending_profile_fields[name] = value
+            return
         profile = get_or_create_profile(user)
         setattr(profile, name, value)
-        if user.pk:
-            profile.save(update_fields=[name])
+        profile.save(update_fields=[name])
 
     return property(getter, setter)
 

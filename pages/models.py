@@ -1,10 +1,14 @@
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils import timezone
+from django.utils.text import slugify
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.models import Page, TranslatableMixin
-from wagtail.fields import StreamField
+from wagtail.fields import RichTextField, StreamField
 from wagtail import blocks
 from wagtail.images.blocks import ImageChooserBlock
+from wagtail.snippets.models import register_snippet
 from core.blocks import BentoGridBlock, StatBlock, TimelineBlock
 from pages.content import (
     ABOUT_CONTENT,
@@ -13,6 +17,115 @@ from pages.content import (
     PREVIOUS_EDITIONS_FALLBACK,
     dedupe_editions,
 )
+
+
+class AnnouncementQuerySet(models.QuerySet):
+    def published(self):
+        return self.filter(status=Announcement.Status.PUBLISHED, published_at__lte=timezone.now())
+
+    def featured(self):
+        return self.published().filter(featured_on_home=True)
+
+    def recent(self):
+        return self.published().order_by("-pinned", "-published_at", "title")
+
+
+@register_snippet
+class Announcement(TranslatableMixin, models.Model):
+    class Category(models.TextChoices):
+        GENERAL = "general", "Geral"
+        REGISTRATION = "registration", "Inscrições"
+        SUBMISSIONS = "submissions", "Submissões"
+        PROGRAM = "program", "Programação"
+        INSTITUTIONAL = "institutional", "Institucional"
+
+    class Status(models.TextChoices):
+        DRAFT = "draft", "Rascunho"
+        PUBLISHED = "published", "Publicado"
+        ARCHIVED = "archived", "Arquivado"
+
+    title = models.CharField("Título", max_length=255)
+    slug = models.SlugField("Slug", max_length=255, unique=True, blank=True)
+    summary = models.CharField("Resumo", max_length=300, blank=True)
+    body = RichTextField("Corpo", blank=True)
+    category = models.CharField(
+        "Categoria",
+        max_length=32,
+        choices=Category.choices,
+        default=Category.GENERAL,
+    )
+    published_at = models.DateTimeField("Data de publicação", null=True, blank=True)
+    status = models.CharField(
+        "Status",
+        max_length=20,
+        choices=Status.choices,
+        default=Status.DRAFT,
+    )
+    featured_on_home = models.BooleanField("Destaque na Home", default=False)
+    pinned = models.BooleanField("Fixar no topo", default=False)
+    image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name="Imagem",
+    )
+    external_url = models.URLField("URL externa", blank=True)
+    seo_title = models.CharField("Título SEO", max_length=255, blank=True)
+    seo_description = models.TextField("Descrição SEO", blank=True)
+
+    objects = AnnouncementQuerySet.as_manager()
+
+    panels = [
+        FieldPanel("title"),
+        FieldPanel("slug"),
+        FieldPanel("summary"),
+        FieldPanel("body"),
+        MultiFieldPanel(
+            [
+                FieldPanel("category"),
+                FieldPanel("status"),
+                FieldPanel("published_at"),
+                FieldPanel("featured_on_home"),
+                FieldPanel("pinned"),
+            ],
+            heading="Publicação e destaque",
+        ),
+        FieldPanel("image"),
+        FieldPanel("external_url"),
+        MultiFieldPanel(
+            [
+                FieldPanel("seo_title"),
+                FieldPanel("seo_description"),
+            ],
+            heading="SEO",
+        ),
+    ]
+
+    class Meta:
+        ordering = ["-pinned", "-published_at", "title"]
+        verbose_name = "Notícia ou comunicado"
+        verbose_name_plural = "Notícias e comunicados"
+        constraints = [
+            models.UniqueConstraint(
+                fields=("translation_key", "locale"),
+                name="unique_translation_key_locale_pages_announcement",
+            )
+        ]
+
+    def __str__(self):
+        return self.title
+
+    def clean(self):
+        super().clean()
+        if self.status == self.Status.PUBLISHED and not self.published_at:
+            raise ValidationError({"published_at": "Informe a data de publicação para conteúdo publicado."})
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
 
 class HomePage(Page):

@@ -105,7 +105,7 @@
 ## PR checklist
 
 - [x] Branch is `change/add-core-cms-content-models`.
-- [ ] PR title starts with `[add-core-cms-content-models]`.
-- [ ] PR body includes `Closes #3`.
-- [ ] PR body includes validation checklist.
+- [x] PR title starts with `[add-core-cms-content-models]`.
+- [x] PR body includes `Closes #3`.
+- [x] PR body includes validation checklist.
 - [x] No public pages, program models or submission flows were implemented.

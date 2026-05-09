@@ -4,45 +4,45 @@
 
 {% block content %}
 <div class="mb-6">
-    <h1 class="text-2xl font-bold text-cbnv-navy-950">Painel do Autor</h1>
-    <p class="mt-1 text-sm text-gray-500">Gerencie suas submissões e acompanhe o status de suas contribuições.</p>
+    <h1 class="text-2xl font-bold text-cbnv-text-primary">Painel do Autor</h1>
+    <p class="mt-1 text-sm text-cbnv-text-muted">Gerencie suas submissões e acompanhe o status de suas contribuições.</p>
 </div>
 
 {% if submissions %}
-<div class="overflow-hidden rounded-xl border border-gray-200">
-    <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
+<div class="overflow-hidden rounded-xl border border-white/10 bg-white/5">
+    <table class="min-w-full divide-y divide-white/10">
+        <thead class="bg-white/5">
             <tr>
-                <th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">ID</th>
-                <th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Título</th>
-                <th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Eixo temático</th>
-                <th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Status</th>
-                <th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Ações</th>
+                <th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-cbnv-text-muted">ID</th>
+                <th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-cbnv-text-muted">Título</th>
+                <th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-cbnv-text-muted">Eixo temático</th>
+                <th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-cbnv-text-muted">Status</th>
+                <th scope="col" class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-cbnv-text-muted">Ações</th>
             </tr>
         </thead>
-        <tbody class="divide-y divide-gray-100 bg-white">
+        <tbody class="divide-y divide-white/5">
             {% for submission in submissions %}
-            <tr class="hover:bg-gray-50 transition-colors">
-                <td class="whitespace-nowrap px-4 py-3 text-sm font-mono text-gray-500">{{ submission.submission_id }}</td>
-                <td class="px-4 py-3 text-sm text-gray-900 max-w-xs truncate">{{ submission.title }}</td>
-                <td class="px-4 py-3 text-sm text-gray-600">{{ submission.thematic_axis }}</td>
+            <tr class="hover:bg-white/10 transition-colors">
+                <td class="whitespace-nowrap px-4 py-3 text-sm font-mono text-cbnv-text-muted">{{ submission.submission_id }}</td>
+                <td class="px-4 py-3 text-sm text-cbnv-text-primary max-w-xs truncate">{{ submission.title }}</td>
+                <td class="px-4 py-3 text-sm text-cbnv-text-muted">{{ submission.thematic_axis }}</td>
                 <td class="px-4 py-3 text-sm">
                     <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium
-                        {% if submission.status == 'draft' %}bg-gray-100 text-gray-700
-                        {% elif submission.status == 'submitted' %}bg-blue-100 text-blue-700
-                        {% elif submission.status in 'accepted_oral,accepted_poster,accepted_video' %}bg-green-100 text-green-700
-                        {% elif submission.status == 'final_materials_pending' %}bg-yellow-100 text-yellow-700
-                        {% elif submission.status in 'ready_for_proceedings,published_in_proceedings' %}bg-cbnv-green-400/10 text-cbnv-green-600
-                        {% elif submission.status == 'rejected' %}bg-red-100 text-red-700
-                        {% else %}bg-gray-100 text-gray-700{% endif %}">
+                        {% if submission.status == 'draft' %}bg-white/10 text-cbnv-text-secondary
+                        {% elif submission.status == 'submitted' %}bg-cbnv-blue-400/20 text-cbnv-blue-400
+                        {% elif submission.status in 'accepted_oral,accepted_poster,accepted_video' %}bg-cbnv-green-400/20 text-cbnv-green-400
+                        {% elif submission.status == 'final_materials_pending' %}bg-cbnv-warning/20 text-cbnv-warning
+                        {% elif submission.status in 'ready_for_proceedings,published_in_proceedings' %}bg-cbnv-green-400/30 text-cbnv-green-300
+                        {% elif submission.status == 'rejected' %}bg-red-400/20 text-red-400
+                        {% else %}bg-white/10 text-cbnv-text-muted{% endif %}">
                         {{ submission.status_label }}
                     </span>
                 </td>
                 <td class="whitespace-nowrap px-4 py-3 text-sm">
                     {% if submission.status == 'draft' %}
-                        <a href="{% url 'submissions:wizard_edit' submission.pk %}" class="text-cbnv-blue-600 hover:text-cbnv-blue-800 font-medium">Editar</a>
+                        <a href="{% url 'submissions:wizard_edit' submission.pk %}" class="text-cbnv-blue-400 hover:text-cbnv-blue-300 font-medium">Editar</a>
                     {% elif submission.status == 'final_materials_pending' %}
-                        <a href="{% url 'proceedings:author_upload' submission.pk %}" class="text-cbnv-blue-600 hover:text-cbnv-blue-800 font-medium">Enviar materiais</a>
+                        <a href="{% url 'proceedings:author_upload' submission.pk %}" class="text-cbnv-blue-400 hover:text-cbnv-blue-300 font-medium">Enviar materiais</a>
                     {% endif %}
                 </td>
             </tr>
@@ -51,10 +51,10 @@
     </table>
 </div>
 {% else %}
-<div class="rounded-xl border border-dashed border-gray-300 p-12 text-center">
-    <svg class="mx-auto w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-    <h2 class="text-lg font-semibold text-gray-600">Nenhuma submissão</h2>
-    <p class="mt-1 text-sm text-gray-400">Suas submissões aparecerão aqui assim que você enviar um trabalho.</p>
+<div class="rounded-xl border border-dashed border-white/20 p-12 text-center bg-white/5">
+    <svg class="mx-auto w-16 h-16 text-cbnv-text-muted mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+    <h2 class="text-lg font-semibold text-cbnv-text-primary">Nenhuma submissão</h2>
+    <p class="mt-1 text-sm text-cbnv-text-muted">Suas submissões aparecerão aqui assim que você enviar um trabalho.</p>
 </div>
 {% endif %}
 {% endblock %}

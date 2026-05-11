@@ -1,6 +1,7 @@
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import Prefetch
 from django.utils import timezone
 from django.utils.text import slugify
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
@@ -167,8 +168,10 @@ class HomePage(Page):
         "pages.PreviousEditionsPage",
         "pages.ProgramPage",
         "pages.RegistrationPage",
+        "pages.SpeakerIndexPage",
         "pages.SubmissionsPage",
         "pages.SponsorsPage",
+        "pages.ContactPage",
         "pages.VideoGalleryPage",
     ]
 
@@ -181,9 +184,18 @@ class HomePage(Page):
         ctx["submissions_page"] = self.get_children().live().type(SubmissionsPage).first()
         ctx["registration_page"] = self.get_children().live().type(RegistrationPage).first()
         ctx["sponsors_page"] = self.get_children().live().type(SponsorsPage).first()
+        ctx["speakers_page"] = self.get_children().live().type(SpeakerIndexPage).first()
+        ctx["contact_page"] = self.get_children().live().type(ContactPage).first()
+
+        ctx["announcements"] = Announcement.objects.featured()[:3] or Announcement.objects.recent()[:3]
+
+        from program.models import get_public_program_by_day
+        from sponsors.models import Sponsor
+
+        ctx["program_preview"] = get_public_program_by_day()[:2]
+        ctx["supporting_entities"] = Sponsor.objects.for_home().select_related("tier")[:8]
         ctx["organizations"] = ORGANIZATIONS
-        
-        # Featured news
+
         news_index = NewsIndexPage.objects.live().first()
         if news_index:
             ctx["featured_news"] = news_index.get_children().live().order_by("-first_published_at")[:3]
@@ -213,6 +225,9 @@ class AboutPage(Page):
         ctx = super().get_context(request, *args, **kwargs)
         ctx["about_content"] = ABOUT_CONTENT
         ctx["organizations"] = ORGANIZATIONS
+        from sponsors.models import Sponsor
+
+        ctx["supporting_entities"] = Sponsor.objects.for_about().select_related("tier")
         ctx["committee_members"] = ORGANIZING_COMMITTEE
         return ctx
 
@@ -338,10 +353,14 @@ class SponsorsPage(Page):
     subpage_types = []
 
     def get_context(self, request, *args, **kwargs):
-        from sponsors.models import SponsorTier
+        from sponsors.models import Sponsor, SponsorTier
+
         ctx = super().get_context(request, *args, **kwargs)
-        tiers = SponsorTier.objects.prefetch_related("sponsors").all()
+        tiers = SponsorTier.objects.prefetch_related(
+            Prefetch("sponsors", queryset=Sponsor.objects.for_sponsorship(), to_attr="public_sponsors")
+        ).all()
         ctx["tiers"] = tiers
+        ctx["untiered_sponsors"] = Sponsor.objects.for_sponsorship().filter(tier__isnull=True)
         return ctx
 
 
@@ -405,3 +424,45 @@ class ProgramPage(Page):
         ctx = super().get_context(request, *args, **kwargs)
         ctx["program_data"] = get_public_program_by_day()
         return ctx
+
+
+class SpeakerIndexPage(Page):
+    intro = models.TextField("Introdução", blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("intro"),
+    ]
+
+    class Meta:
+        verbose_name = "Página de Palestrantes"
+
+    parent_page_types = ["pages.HomePage"]
+    subpage_types = []
+
+    def get_context(self, request, *args, **kwargs):
+        from program.models import ProgramTalk, Speaker
+
+        ctx = super().get_context(request, *args, **kwargs)
+        public_talks = (
+            ProgramTalk.objects.public()
+            .select_related("session", "session__day")
+            .order_by("session__day__sort_order", "session__start_time", "sort_order", "title")
+        )
+        ctx["speakers"] = Speaker.objects.linked_to_public_program().prefetch_related(
+            Prefetch("talks", queryset=public_talks, to_attr="public_talks")
+        )
+        return ctx
+
+
+class ContactPage(Page):
+    intro = models.TextField("Introdução", blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("intro"),
+    ]
+
+    class Meta:
+        verbose_name = "Página de Contato"
+
+    parent_page_types = ["pages.HomePage"]
+    subpage_types = []

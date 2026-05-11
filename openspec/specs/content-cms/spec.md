@@ -175,3 +175,64 @@ Seeded content SHALL avoid unverified claims and final promotional copy.
 - **GIVEN** the seed creates default text or announcements
 - **WHEN** the content is inspected
 - **THEN** it SHALL NOT claim that the event is the largest in Latin America or use similarly unverified promotional claims.
+
+### Requirement: Wagtail public page types
+The public site SHALL use Wagtail page types for public pages.
+
+#### Scenario: Public page can be managed in Wagtail
+Given a public page type exists  
+When the admin edits it in Wagtail  
+Then the page SHALL support title and basic editable content appropriate to its role.
+
+### Requirement: Public pages reuse CMS/domain models
+Public page templates SHALL reuse CMS/domain models rather than duplicating content sources.
+
+#### Scenario: Sponsors display comes from sponsor model
+Given active sponsor/supporting entities exist  
+When a public page needs supporting entities  
+Then it SHALL query the sponsor/supporting-entity model.
+
+#### Scenario: Announcements display comes from announcement model
+Given public announcements exist  
+When a public page needs recent or featured news  
+Then it SHALL query the announcement/news model.
+
+### Requirement: Public pages consume CMS-backed global settings
+Public pages SHALL use CMS-backed global settings for repeated event facts.
+
+#### Scenario: Page needs event dates
+Given a page needs event dates  
+When it renders  
+Then it SHALL read the dates from global settings or the documented canonical source.
+
+### Requirement: Public pages consume announcements
+Public pages SHALL consume published announcement/news content where appropriate.
+
+#### Scenario: Draft announcements are not public
+Given an announcement is draft  
+When public pages query announcements  
+Then the draft announcement SHALL NOT be displayed.
+
+### Requirement: Public pages avoid misleading copy
+Public MVP pages SHALL avoid unverified promotional claims.
+
+#### Scenario: Home copy is conservative
+Given Home renders MVP copy  
+When the content is inspected  
+Then it SHALL NOT claim that CBNV is the largest Neurovision event in Latin America or use similarly unverified claims.
+
+### Requirement: Coming-soon states
+Public pages SHALL render coming-soon states for unavailable links.
+
+#### Scenario: External link missing
+Given a required external URL is unavailable  
+When a CTA is rendered  
+Then it SHALL show a clear disabled or coming-soon state and SHALL NOT render `#` as a destination.
+
+### Requirement: Static fallback content is temporary
+Public MVP pages SHALL prefer CMS/domain models over static constants for repeated event facts.
+
+#### Scenario: Home renders repeated event facts
+Given `CoreSettings` contains event identity, dates, location and links
+When Home renders
+Then it SHALL use those settings instead of duplicating those facts in hardcoded template copy.

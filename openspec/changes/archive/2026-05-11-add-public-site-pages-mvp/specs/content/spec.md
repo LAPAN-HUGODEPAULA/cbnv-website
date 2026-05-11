@@ -44,7 +44,7 @@ Then it SHALL show a clear disabled or coming-soon state and SHALL NOT render `#
 
 ### Requirement: Static fallback content is temporary
 
-Public MVP pages SHOULD prefer CMS/domain models over static constants for repeated event facts.
+Public MVP pages SHALL prefer CMS/domain models over static constants for repeated event facts.
 
 #### Scenario: Home renders repeated event facts
 

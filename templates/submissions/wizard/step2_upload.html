@@ -6,31 +6,31 @@
 
     <div class="space-y-4">
         <div>
-            <label for="{{ form.file.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+            <label for="{{ form.file.id_for_label }}" class="block text-sm font-medium text-cbnv-text-secondary mb-1">
                 {{ form.file.label }}
             </label>
 
             {% if existing_file %}
-            <div class="p-4 rounded-lg border border-gray-200 bg-gray-50">
+            <div class="p-4 rounded-lg border border-white/10 bg-cbnv-navy-900/5">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <svg class="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zM6 20V4h7v5h5v11H6z"/></svg>
                         <div>
-                            <p class="text-sm font-medium text-gray-900">{{ existing_file.filename }}</p>
-                            <p class="text-xs text-gray-500">{{ existing_file.filesize }}</p>
+                            <p class="text-sm font-medium text-cbnv-text-primary">{{ existing_file.filename }}</p>
+                            <p class="text-xs text-cbnv-text-muted">{{ existing_file.filesize }}</p>
                         </div>
                     </div>
                 </div>
-                <p class="mt-2 text-xs text-gray-500">Envie um novo arquivo para substituir o existente.</p>
+                <p class="mt-2 text-xs text-cbnv-text-muted">Envie um novo arquivo para substituir o existente.</p>
             </div>
             {% endif %}
 
             <div class="mt-2 flex items-center justify-center w-full">
                 <label for="{{ form.file.id_for_label }}"
-                    class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-cbnv-blue-600 hover:bg-blue-50/50 transition-colors">
-                    <svg class="w-10 h-10 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
-                    <span class="text-sm text-gray-600">Clique ou arraste o arquivo PDF aqui</span>
-                    <span class="text-xs text-gray-400 mt-1">PDF, máximo 10 MB</span>
+                    class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-white/10 rounded-lg cursor-pointer hover:border-cbnv-blue-600 hover:bg-blue-50/50 transition-colors">
+                    <svg class="w-10 h-10 text-cbnv-text-muted mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                    <span class="text-sm text-cbnv-text-muted">Clique ou arraste o arquivo PDF aqui</span>
+                    <span class="text-xs text-cbnv-text-muted mt-1">PDF, máximo 10 MB</span>
                     {% load widget_tweaks %}
                     {% with help_id=form.file.id_for_label|add:"-help" is_invalid=form.file.errors|yesno:"true,false" %}
                         {% render_field form.file aria-describedby=help_id aria-invalid=is_invalid %}
@@ -40,13 +40,13 @@
             {% if form.file.errors %}
             <p id="{{ form.file.id_for_label }}-error" class="mt-1 text-sm text-red-600" aria-live="polite">{{ form.file.errors.0 }}</p>
             {% endif %}
-            <p id="{{ form.file.id_for_label }}-help" class="mt-1 text-xs text-gray-500">{{ form.file.help_text }}</p>
+            <p id="{{ form.file.id_for_label }}-help" class="mt-1 text-xs text-cbnv-text-muted">{{ form.file.help_text }}</p>
         </div>
     </div>
 
     <div class="mt-8 flex justify-between">
         <a href="{% url 'submissions:wizard_step1' submission.pk %}"
-            class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-6 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2">
+            class="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-cbnv-navy-900 px-6 py-2.5 text-sm font-semibold text-cbnv-text-secondary hover:bg-cbnv-navy-900/5 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             Voltar
         </a>

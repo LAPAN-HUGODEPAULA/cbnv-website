@@ -4,19 +4,19 @@
 
 {% block content %}
 <div class="mb-6">
-    <h1 class="text-2xl font-bold text-cbnv-navy-950">Trabalhos atribuídos</h1>
-    <p class="mt-1 text-sm text-gray-500">Trabalhos atribuídos para sua avaliação.</p>
+    <h1 class="text-2xl font-bold text-cbnv-text-primary">Trabalhos atribuídos</h1>
+    <p class="mt-1 text-sm text-cbnv-text-muted">Trabalhos atribuídos para sua avaliação.</p>
 </div>
 
 {% if assignments %}
 <div class="space-y-4">
     {% for assignment in assignments %}
-    <div class="rounded-xl border border-gray-200 bg-white p-5">
+    <div class="rounded-xl border border-white/10 bg-cbnv-navy-900 p-5">
         <div class="flex items-start justify-between gap-4">
             <div class="min-w-0">
-                <p class="text-xs text-gray-400 font-mono">{{ assignment.submission.submission_id }}</p>
-                <h2 class="mt-1 text-base font-semibold text-cbnv-navy-950 truncate">{{ assignment.submission.title }}</h2>
-                <p class="mt-1 text-sm text-gray-500">{{ assignment.submission.thematic_axis }}</p>
+                <p class="text-xs text-cbnv-text-muted font-mono">{{ assignment.submission.submission_id }}</p>
+                <h2 class="mt-1 text-base font-semibold text-cbnv-text-primary truncate">{{ assignment.submission.title }}</h2>
+                <p class="mt-1 text-sm text-cbnv-text-muted">{{ assignment.submission.thematic_axis }}</p>
             </div>
             {% if assignment.review %}
             <span class="shrink-0 inline-flex items-center rounded-full bg-cbnv-green-400/10 px-3 py-1 text-xs font-medium text-cbnv-green-600">
@@ -31,7 +31,7 @@
         </div>
         {% if assignment.review %}
         <div class="mt-3 pt-3 border-t border-gray-100">
-            <p class="text-sm text-gray-600">
+            <p class="text-sm text-cbnv-text-muted">
                 <span class="font-medium">Recomendação:</span>
                 {{ assignment.review.get_recommendation_display }}
             </p>
@@ -41,10 +41,10 @@
     {% endfor %}
 </div>
 {% else %}
-<div class="rounded-xl border border-dashed border-gray-300 p-12 text-center">
-    <svg class="mx-auto w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-    <h2 class="text-lg font-semibold text-gray-600">Nenhuma revisão pendente</h2>
-    <p class="mt-1 text-sm text-gray-400">Os trabalhos atribuídos para avaliação aparecerão aqui.</p>
+<div class="rounded-xl border border-dashed border-white/10 p-12 text-center">
+    <svg class="mx-auto w-16 h-16 text-cbnv-text-muted mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+    <h2 class="text-lg font-semibold text-cbnv-text-muted">Nenhuma revisão pendente</h2>
+    <p class="mt-1 text-sm text-cbnv-text-muted">Os trabalhos atribuídos para avaliação aparecerão aqui.</p>
 </div>
 {% endif %}
 {% endblock %}

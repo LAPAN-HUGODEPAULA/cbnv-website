@@ -5,48 +5,48 @@
 {% block content %}
 <div class="mb-6 flex items-center justify-between">
     <div>
-        <h1 class="text-2xl font-bold text-cbnv-navy-950">Materiais finais</h1>
-        <p class="mt-1 text-sm text-gray-500">Gerencie materiais, validação e publicação nos anais.</p>
+        <h1 class="text-2xl font-bold text-cbnv-text-primary">Materiais finais</h1>
+        <p class="mt-1 text-sm text-cbnv-text-muted">Gerencie materiais, validação e publicação nos anais.</p>
     </div>
 </div>
 
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-    <div class="rounded-xl border border-gray-200 bg-white p-5">
-        <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Pendentes</p>
+    <div class="rounded-xl border border-white/10 bg-cbnv-navy-900 p-5">
+        <p class="text-xs text-cbnv-text-muted uppercase tracking-wide font-medium">Pendentes</p>
         <p class="mt-1 text-3xl font-bold text-yellow-600">{{ pending|length }}</p>
     </div>
-    <div class="rounded-xl border border-gray-200 bg-white p-5">
-        <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Validados</p>
+    <div class="rounded-xl border border-white/10 bg-cbnv-navy-900 p-5">
+        <p class="text-xs text-cbnv-text-muted uppercase tracking-wide font-medium">Validados</p>
         <p class="mt-1 text-3xl font-bold text-cbnv-blue-600">{{ validated|length }}</p>
     </div>
-    <div class="rounded-xl border border-gray-200 bg-white p-5">
-        <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Publicados</p>
+    <div class="rounded-xl border border-white/10 bg-cbnv-navy-900 p-5">
+        <p class="text-xs text-cbnv-text-muted uppercase tracking-wide font-medium">Publicados</p>
         <p class="mt-1 text-3xl font-bold text-cbnv-green-600">{{ published|length }}</p>
     </div>
 </div>
 
 {% if all_submissions %}
-<div class="overflow-x-auto rounded-xl border border-gray-200">
+<div class="overflow-x-auto rounded-xl border border-white/10">
     <table class="w-full text-sm">
         <thead>
-            <tr class="bg-gray-50 border-b border-gray-200">
-                <th class="px-4 py-3 text-left font-medium text-gray-500">ID</th>
-                <th class="px-4 py-3 text-left font-medium text-gray-500">Título</th>
-                <th class="px-4 py-3 text-left font-medium text-gray-500">Modalidade</th>
-                <th class="px-4 py-3 text-left font-medium text-gray-500">Materiais</th>
-                <th class="px-4 py-3 text-left font-medium text-gray-500">Status</th>
-                <th class="px-4 py-3 text-right font-medium text-gray-500">Ações</th>
+            <tr class="bg-cbnv-navy-900/5 border-b border-white/10">
+                <th class="px-4 py-3 text-left font-medium text-cbnv-text-muted">ID</th>
+                <th class="px-4 py-3 text-left font-medium text-cbnv-text-muted">Título</th>
+                <th class="px-4 py-3 text-left font-medium text-cbnv-text-muted">Modalidade</th>
+                <th class="px-4 py-3 text-left font-medium text-cbnv-text-muted">Materiais</th>
+                <th class="px-4 py-3 text-left font-medium text-cbnv-text-muted">Status</th>
+                <th class="px-4 py-3 text-right font-medium text-cbnv-text-muted">Ações</th>
             </tr>
         </thead>
         <tbody class="divide-y divide-gray-100">
             {% for sub in all_submissions %}
-            <tr class="hover:bg-gray-50 transition-colors">
-                <td class="px-4 py-3 font-mono text-xs text-gray-400">{{ sub.submission_id }}</td>
-                <td class="px-4 py-3 font-medium text-cbnv-navy-950 max-w-xs truncate">{{ sub.title }}</td>
-                <td class="px-4 py-3 text-gray-600">
+            <tr class="hover:bg-cbnv-navy-900/5 transition-colors">
+                <td class="px-4 py-3 font-mono text-xs text-cbnv-text-muted">{{ sub.submission_id }}</td>
+                <td class="px-4 py-3 font-medium text-cbnv-text-primary max-w-xs truncate">{{ sub.title }}</td>
+                <td class="px-4 py-3 text-cbnv-text-muted">
                     {% if sub.final_modality %}{{ sub.get_final_modality_display }}{% else %}—{% endif %}
                 </td>
-                <td class="px-4 py-3 text-gray-600">
+                <td class="px-4 py-3 text-cbnv-text-muted">
                     {% if sub.final_material %}
                         {% if sub.final_material.received_at %}
                         <span class="text-xs text-cbnv-green-600">Recebidos {{ sub.final_material.received_at|date:"d/m/Y H:i" }}</span>
@@ -54,7 +54,7 @@
                         <span class="text-xs text-yellow-600">Aguardando envio</span>
                         {% endif %}
                     {% else %}
-                        <span class="text-xs text-gray-400">—</span>
+                        <span class="text-xs text-cbnv-text-muted">—</span>
                     {% endif %}
                 </td>
                 <td class="px-4 py-3">
@@ -81,9 +81,9 @@
     </table>
 </div>
 {% else %}
-<div class="rounded-xl border border-dashed border-gray-300 p-12 text-center">
-    <h2 class="text-lg font-semibold text-gray-600">Nenhum material</h2>
-    <p class="mt-1 text-sm text-gray-400">Solicite materiais finais para trabalhos aprovados na página de gerenciamento de submissões.</p>
+<div class="rounded-xl border border-dashed border-white/10 p-12 text-center">
+    <h2 class="text-lg font-semibold text-cbnv-text-muted">Nenhum material</h2>
+    <p class="mt-1 text-sm text-cbnv-text-muted">Solicite materiais finais para trabalhos aprovados na página de gerenciamento de submissões.</p>
     <a href="{% url 'reviews:manage_submissions' %}" class="mt-4 inline-flex items-center gap-2 rounded-lg bg-cbnv-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-cbnv-blue-700 transition-colors">
         Gerenciar submissões
     </a>

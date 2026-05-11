@@ -1,24 +1,24 @@
 {% load static supporting_entities wagtailimages_tags %}
 {% footer_supporting_entities as footer_entities %}
 {% with instagram_url=settings.core.CoreSettings.instagram_url|default:"https://www.instagram.com/cbnvufmg/" youtube_url=settings.core.CoreSettings.primary_youtube_url %}
-<footer class="bg-cbnv-navy-950 text-cbnv-text-secondary border-t border-white/10" role="contentinfo">
+<footer class="bg-cbnv-navy-950 text-cbnv-text-muted border-t border-white/10" role="contentinfo">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-                <p class="font-cbnv-display text-lg font-semibold text-cbnv-text-primary mb-2">{{ settings.core.CoreSettings.event_name }}</p>
-                <p class="text-sm leading-relaxed">{{ settings.core.CoreSettings.edition }} Congresso Brasileiro de Neurociências da Visão — {{ settings.core.CoreSettings.theme }}</p>
-                <p class="text-sm mt-2">{{ settings.core.CoreSettings.dates }} · {{ settings.core.CoreSettings.location }}</p>
+                <p class="font-cbnv-display text-lg font-semibold mb-2">{{ settings.core.CoreSettings.event_name }}</p>
+                <p class="text-sm leading-relaxed text-cbnv-text-secondary">{{ settings.core.CoreSettings.edition }} Congresso Brasileiro de Neurociências da Visão — {{ settings.core.CoreSettings.theme }}</p>
+                <p class="text-sm mt-2 text-cbnv-text-muted">{{ settings.core.CoreSettings.dates }} · {{ settings.core.CoreSettings.location }}</p>
             </div>
             <div>
-                <p class="text-sm font-semibold text-cbnv-text-primary mb-2">Links</p>
+                <p class="text-sm font-semibold text-cbnv-text-muted mb-2">Links</p>
                 <ul class="space-y-1 text-sm">
-                    <li><a href="/sobre/" class="hover:text-cbnv-text-primary transition-colors">Sobre</a></li>
-                    <li><a href="/noticias/" class="hover:text-cbnv-text-primary transition-colors">Notícias</a></li>
-                    <li><a href="/edicoes-anteriores/" class="hover:text-cbnv-text-primary transition-colors">Edições Anteriores</a></li>
+                    <li><a href="/sobre/" class="text-cbnv-text-secondary hover:text-cbnv-text-primary transition-colors">Sobre</a></li>
+                    <li><a href="/noticias/" class="text-cbnv-text-secondary hover:text-cbnv-text-primary transition-colors">Notícias</a></li>
+                    <li><a href="/edicoes-anteriores/" class="text-cbnv-text-secondary hover:text-cbnv-text-primary transition-colors">Edições anteriores</a></li>
                     {% if settings.core.CoreSettings.registration_is_available %}
-                    <li><a href="{{ settings.core.CoreSettings.registration_link }}" class="hover:text-cbnv-text-primary transition-colors">Inscrição</a></li>
+                    <li><a href="{{ settings.core.CoreSettings.registration_link }}" class="text-cbnv-text-secondary hover:text-cbnv-text-primary transition-colors">Inscrição</a></li>
                     {% elif settings.core.CoreSettings.registration_status == "coming_soon" %}
-                    <li><span class="text-cbnv-text-secondary">Inscrição em breve</span></li>
+                    <li><span class="text-cbnv-text-muted">Inscrição em breve</span></li>
                     {% endif %}
                 </ul>
             </div>
@@ -26,16 +26,16 @@
                 <p class="text-sm font-semibold text-cbnv-text-primary mb-2">Contato</p>
                 <ul class="space-y-1 text-sm">
                     {% if settings.core.CoreSettings.contact_email %}
-                    <li><a href="mailto:{{ settings.core.CoreSettings.contact_email }}" class="hover:text-cbnv-text-primary transition-colors">{{ settings.core.CoreSettings.contact_email }}</a></li>
+                    <li><a href="mailto:{{ settings.core.CoreSettings.contact_email }}" class="text-cbnv-text-secondary hover:text-cbnv-text-primary transition-colors">{{ settings.core.CoreSettings.contact_email }}</a></li>
                     {% endif %}
                     <li class="flex items-center gap-2">
                         {% include "components/icon_link.html" with href=instagram_url icon="instagram" label="Siga-nos no Instagram" external=True %}
-                        <a href="{{ instagram_url }}" target="_blank" rel="noopener noreferrer" class="hover:text-cbnv-text-primary transition-colors">Instagram</a>
+                        <a href="{{ instagram_url }}" target="_blank" rel="noopener noreferrer" class="text-cbnv-text-secondary hover:text-cbnv-text-primary transition-colors">Instagram</a>
                     </li>
                     {% if youtube_url %}
                     <li class="flex items-center gap-2">
                         {% include "components/icon_link.html" with href=youtube_url icon="youtube" label="Canal no YouTube" external=True %}
-                        <a href="{{ youtube_url }}" target="_blank" rel="noopener noreferrer" class="hover:text-cbnv-text-primary transition-colors">YouTube</a>
+                        <a href="{{ youtube_url }}" target="_blank" rel="noopener noreferrer" class="text-cbnv-text-secondary hover:text-cbnv-text-primary transition-colors">YouTube</a>
                     </li>
                     {% endif %}
                 </ul>
@@ -68,9 +68,9 @@
                 {% for entity in footer_entities %}
                 <li>
                     {% if entity.url %}
-                    <a href="{{ entity.url }}" target="_blank" rel="noopener noreferrer" class="hover:text-cbnv-text-primary transition-colors">{{ entity.name }}</a>
+                    <a href="{{ entity.url }}" target="_blank" rel="noopener noreferrer" class="text-cbnv-text-secondary hover:text-cbnv-text-primary transition-colors">{{ entity.name }}</a>
                     {% else %}
-                    <span>{{ entity.name }}</span>
+                    <span class="text-cbnv-text-secondary">{{ entity.name }}</span>
                     {% endif %}
                 </li>
                 {% endfor %}

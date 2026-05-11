@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @source "../templates";
+@source "../pages/templates";
 
 @theme {
   /* ── Colors — CBNV 2026 (High-Contrast OKLCH Palette) ── */

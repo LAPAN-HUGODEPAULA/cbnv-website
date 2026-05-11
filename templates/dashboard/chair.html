@@ -4,56 +4,56 @@
 
 {% block content %}
 <div class="mb-6">
-    <h1 class="text-2xl font-bold text-cbnv-text-primary">Painel da Comissão Científica</h1>
-    <p class="mt-1 text-sm text-cbnv-text-muted">Visão geral das submissões, revisões e indicadores do evento.</p>
+    <h1 class="text-2xl font-bold text-cbnv-navy-950">Painel da Comissão Científica</h1>
+    <p class="mt-1 text-sm text-gray-500">Visão geral das submissões, revisões e indicadores do evento.</p>
 </div>
 
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-    <div class="rounded-xl border border-white/10 bg-white/5 p-5">
-        <p class="text-xs text-cbnv-text-muted uppercase tracking-wide font-medium">Submissões</p>
-        <p class="mt-1 text-3xl font-bold text-cbnv-text-primary">{{ total }}</p>
+    <div class="rounded-xl border border-gray-200 bg-white p-5">
+        <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Submissões</p>
+        <p class="mt-1 text-3xl font-bold text-cbnv-navy-950">{{ total }}</p>
     </div>
-    <div class="rounded-xl border border-white/10 bg-white/5 p-5">
-        <p class="text-xs text-cbnv-text-muted uppercase tracking-wide font-medium">Em avaliação</p>
-        <p class="mt-1 text-3xl font-bold text-cbnv-blue-400">{{ in_review }}</p>
+    <div class="rounded-xl border border-gray-200 bg-white p-5">
+        <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Em avaliação</p>
+        <p class="mt-1 text-3xl font-bold text-cbnv-blue-600">{{ in_review }}</p>
     </div>
-    <div class="rounded-xl border border-white/10 bg-white/5 p-5">
-        <p class="text-xs text-cbnv-text-muted uppercase tracking-wide font-medium">Decisões</p>
-        <p class="mt-1 text-3xl font-bold text-cbnv-green-400">{{ decisions }}</p>
+    <div class="rounded-xl border border-gray-200 bg-white p-5">
+        <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Decisões</p>
+        <p class="mt-1 text-3xl font-bold text-cbnv-green-600">{{ decisions }}</p>
     </div>
 </div>
 
-<h2 class="text-lg font-semibold text-cbnv-text-primary mb-3">Progresso dos anais</h2>
+<h2 class="text-lg font-semibold text-cbnv-navy-950 mb-3">Progresso dos anais</h2>
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-    <div class="rounded-xl border border-white/10 bg-white/5 p-5">
-        <p class="text-xs text-cbnv-text-muted uppercase tracking-wide font-medium">Materiais pendentes</p>
-        <p class="mt-1 text-3xl font-bold text-cbnv-warning">{{ pending_materials }}</p>
+    <div class="rounded-xl border border-gray-200 bg-white p-5">
+        <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Materiais pendentes</p>
+        <p class="mt-1 text-3xl font-bold text-yellow-600">{{ pending_materials }}</p>
         {% if pending_materials > 0 %}
-        <a href="{% url 'proceedings:commission_materials' %}" class="mt-2 text-xs text-cbnv-blue-400 hover:underline">Gerenciar</a>
+        <a href="{% url 'proceedings:commission_materials' %}" class="mt-2 text-xs text-cbnv-blue-600 hover:underline">Gerenciar</a>
         {% endif %}
     </div>
-    <div class="rounded-xl border border-white/10 bg-white/5 p-5">
-        <p class="text-xs text-cbnv-text-muted uppercase tracking-wide font-medium">Validados</p>
-        <p class="mt-1 text-3xl font-bold text-cbnv-blue-400">{{ validated }}</p>
+    <div class="rounded-xl border border-gray-200 bg-white p-5">
+        <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Validados</p>
+        <p class="mt-1 text-3xl font-bold text-cbnv-blue-600">{{ validated }}</p>
         {% if validated > 0 %}
-        <a href="{% url 'proceedings:commission_materials' %}" class="mt-2 text-xs text-cbnv-blue-400 hover:underline">Publicar</a>
+        <a href="{% url 'proceedings:commission_materials' %}" class="mt-2 text-xs text-cbnv-blue-600 hover:underline">Publicar</a>
         {% endif %}
     </div>
-    <div class="rounded-xl border border-white/10 bg-white/5 p-5">
-        <p class="text-xs text-cbnv-text-muted uppercase tracking-wide font-medium">Publicados</p>
-        <p class="mt-1 text-3xl font-bold text-cbnv-green-400">{{ published }}</p>
+    <div class="rounded-xl border border-gray-200 bg-white p-5">
+        <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Publicados</p>
+        <p class="mt-1 text-3xl font-bold text-cbnv-green-600">{{ published }}</p>
         {% if published > 0 %}
-        <a href="/anais/" class="mt-2 text-xs text-cbnv-green-400 hover:underline">Ver anais</a>
+        <a href="/anais/" class="mt-2 text-xs text-cbnv-green-600 hover:underline">Ver anais</a>
         {% endif %}
     </div>
 </div>
 
 <div class="flex gap-3">
-    <a href="{% url 'reviews:manage_submissions' %}" class="inline-flex items-center gap-2 rounded-lg border border-white/20 px-4 py-2 text-sm font-medium text-cbnv-text-primary hover:bg-white/10 transition-colors">
+    <a href="{% url 'reviews:manage_submissions' %}" class="inline-flex items-center gap-2 rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
         Gerenciar submissões
     </a>
-    <a href="{% url 'proceedings:commission_materials' %}" class="inline-flex items-center gap-2 rounded-lg bg-cbnv-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-cbnv-blue-500 transition-colors shadow-cbnv-glow-blue">
+    <a href="{% url 'proceedings:commission_materials' %}" class="inline-flex items-center gap-2 rounded-lg bg-cbnv-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-cbnv-blue-700 transition-colors">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6m8 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0h6"/></svg>
         Materiais finais
     </a>

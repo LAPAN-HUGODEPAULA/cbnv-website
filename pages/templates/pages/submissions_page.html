@@ -1,66 +1,60 @@
 {% extends "layouts/public.html" %}
 {% load wagtailcore_tags %}
 
+{% block title %}Submissões{% endblock %}
+
 {% block content %}
-<article class="py-20 lg:py-32">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <header class="mb-16">
-            <h1 class="font-display text-4xl lg:text-6xl font-bold mb-6 text-cbnv-white">{{ page.title }}</h1>
-            <p class="text-cbnv-text-muted text-xl leading-relaxed">{{ page.intro }}</p>
-            
-            <div class="mt-8 inline-flex items-center gap-4 px-6 py-3 bg-white/5 rounded-2xl border border-white/10">
-                <span class="w-3 h-3 rounded-full {% if page.status == 'open' %}bg-cbnv-green-400 animate-pulse{% else %}bg-cbnv-warning{% endif %}"></span>
-                <span class="text-cbnv-text-light font-medium">{{ page.get_status_display }}</span>
+<article class="space-y-0">
+    <section class="border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+            {% include "components/breadcrumbs.html" %}
+            <div class="max-w-3xl space-y-4">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-cbnv-green-400">Submissões</p>
+                <h1 class="font-display text-4xl sm:text-5xl font-bold text-white">{{ page.title }}</h1>
+                <p class="text-lg text-cbnv-text-muted">
+                    {{ page.intro|default:"Orientações públicas para acompanhar o processo de submissão científica do CBNV 2026." }}
+                </p>
+                {% include "components/badge.html" with label=page.get_status_display variant="info" %}
             </div>
-        </header>
+        </div>
+    </section>
 
-        <section class="mb-20">
-            <h2 class="text-2xl font-bold mb-8 text-cbnv-green-400">Fluxo de Submissão em 2 Fases</h2>
-            <div class="grid md:grid-cols-2 gap-8 relative">
-                {# Connecting line #}
-                <div class="hidden md:block absolute top-1/2 left-1/4 right-1/4 h-px bg-white/10 -translate-y-1/2"></div>
-                
-                <div class="p-8 rounded-2xl bg-white/5 border border-white/10 relative z-10 group hover:border-cbnv-blue-600/50 transition-all">
-                    <span class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-cbnv-blue-600 text-white font-bold text-xl mb-6 shadow-lg shadow-cbnv-blue-600/20">01</span>
-                    <h3 class="text-xl font-bold mb-4 text-cbnv-white">Submissão Inicial</h3>
-                    <p class="text-cbnv-text-muted mb-6 leading-relaxed">Envio de metadados, autores e arquivo PDF (conforme template) para avaliação cega.</p>
-                    <ul class="text-sm text-cbnv-text-muted space-y-3">
-                        <li class="flex items-start gap-3">
-                            <svg class="w-5 h-5 text-cbnv-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                            <span>Metadados completos</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <svg class="w-5 h-5 text-cbnv-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                            <span>Arquivo PDF (sem identificação)</span>
-                        </li>
-                    </ul>
-                </div>
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <article class="rounded-2xl border border-white/10 bg-white/5 p-6 lg:p-8">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-cbnv-green-400">Fase 1</p>
+                <h2 class="mt-3 font-display text-3xl font-bold text-white">Submissão Inicial</h2>
+                <p class="mt-4 text-cbnv-text-muted leading-relaxed">
+                    A submissão inicial não requer vídeo. O envio inicial deve priorizar os metadados, autores e arquivo conforme as instruções públicas do edital.
+                </p>
+            </article>
+            <article class="rounded-2xl border border-white/10 bg-white/5 p-6 lg:p-8">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-cbnv-green-400">Fase Final</p>
+                <h2 class="mt-3 font-display text-3xl font-bold text-white">Modalidades Possíveis</h2>
+                <p class="mt-4 text-cbnv-text-muted leading-relaxed">
+                    Após avaliação, trabalhos aprovados poderão ser organizados em modalidades finais como apresentação oral, pôster, vídeo ou materiais complementares, conforme decisão editorial posterior.
+                </p>
+            </article>
+        </div>
 
-                <div class="p-8 rounded-2xl bg-white/5 border border-white/10 relative z-10 group hover:border-cbnv-blue-600/50 transition-all">
-                    <span class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-cbnv-navy-800 text-cbnv-text-muted font-bold text-xl mb-6 border border-white/10">02</span>
-                    <h3 class="text-xl font-bold mb-4 text-cbnv-white">Envio Final (Aprovados)</h3>
-                    <p class="text-cbnv-text-muted mb-6 leading-relaxed">Para trabalhos aprovados, envio da versão final com autores e link para vídeo de apresentação.</p>
-                    <ul class="text-sm text-cbnv-text-muted space-y-3">
-                        <li class="flex items-start gap-3">
-                            <svg class="w-5 h-5 text-cbnv-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                            <span>Versão final (com identificação)</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <svg class="w-5 h-5 text-cbnv-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                            <span>Link para Vídeo (YouTube/Vimeo)</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+        <div class="mt-8 rounded-2xl border border-white/10 bg-cbnv-navy-900/70 p-6 lg:p-8">
+            <h2 class="font-display text-3xl font-bold text-white">Acesso Ao Sistema</h2>
+            {% if page.status == "open" %}
+            <p class="mt-4 text-cbnv-text-muted">Quando o fluxo operacional estiver liberado, a organização informará o canal oficial de submissão.</p>
+            <span class="mt-6 inline-flex rounded-lg border border-white/15 px-5 py-3 text-sm font-semibold text-cbnv-text-muted" aria-disabled="true">Canal Oficial A Definir</span>
+            {% else %}
+            <p class="mt-4 text-cbnv-text-muted">As submissões ainda não estão disponíveis para o público. Esta página será atualizada com prazos e canal oficial quando houver confirmação.</p>
+            <span class="mt-6 inline-flex rounded-lg border border-white/15 px-5 py-3 text-sm font-semibold text-cbnv-text-muted" aria-disabled="true">Submissões Em Breve</span>
+            {% endif %}
+        </div>
 
-        <div class="space-y-12">
+        {% if page.body %}
+        <div class="prose prose-invert mt-12 max-w-none">
             {% for block in page.body %}
-                <div class="block-{{ block.block_type }}">
-                    {% include_block block %}
-                </div>
+            {% include_block block %}
             {% endfor %}
         </div>
-    </div>
+        {% endif %}
+    </section>
 </article>
 {% endblock %}

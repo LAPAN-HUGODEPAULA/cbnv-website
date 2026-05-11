@@ -1,0 +1,79 @@
+{% extends "layouts/public.html" %}
+
+{% block title %}Contato{% endblock %}
+
+{% block content %}
+<article class="space-y-0">
+    <section class="border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+            {% include "components/breadcrumbs.html" %}
+            <div class="max-w-3xl space-y-4">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-cbnv-green-400">Contato e local</p>
+                <h1 class="font-display text-4xl sm:text-5xl font-bold text-white">{{ page.title }}</h1>
+                <p class="text-lg text-cbnv-text-muted">
+                    {{ page.intro|default:"Canais públicos de contato e informações do local atual do CBNV 2026." }}
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-5 space-y-5">
+                <article class="rounded-2xl border border-white/10 bg-white/5 p-6">
+                    <h2 class="font-display text-2xl font-semibold text-white">Canais De Contato</h2>
+                    <dl class="mt-6 space-y-5">
+                        {% if settings.core.CoreSettings.contact_email %}
+                        <div>
+                            <dt class="text-xs uppercase tracking-[0.16em] text-cbnv-text-muted">Contato Geral</dt>
+                            <dd class="mt-1"><a href="mailto:{{ settings.core.CoreSettings.contact_email }}" class="text-cbnv-green-400 hover:text-white transition-colors">{{ settings.core.CoreSettings.contact_email }}</a></dd>
+                        </div>
+                        {% endif %}
+                        {% if settings.core.CoreSettings.submissions_contact_email %}
+                        <div>
+                            <dt class="text-xs uppercase tracking-[0.16em] text-cbnv-text-muted">Submissões</dt>
+                            <dd class="mt-1"><a href="mailto:{{ settings.core.CoreSettings.submissions_contact_email }}" class="text-cbnv-green-400 hover:text-white transition-colors">{{ settings.core.CoreSettings.submissions_contact_email }}</a></dd>
+                        </div>
+                        {% endif %}
+                        {% if settings.core.CoreSettings.sponsorship_contact_email %}
+                        <div>
+                            <dt class="text-xs uppercase tracking-[0.16em] text-cbnv-text-muted">Patrocínio</dt>
+                            <dd class="mt-1"><a href="mailto:{{ settings.core.CoreSettings.sponsorship_contact_email }}" class="text-cbnv-green-400 hover:text-white transition-colors">{{ settings.core.CoreSettings.sponsorship_contact_email }}</a></dd>
+                        </div>
+                        {% endif %}
+                    </dl>
+                    {% if not settings.core.CoreSettings.contact_email and not settings.core.CoreSettings.submissions_contact_email and not settings.core.CoreSettings.sponsorship_contact_email %}
+                    <p class="mt-6 text-cbnv-text-muted">Os canais públicos de contato serão informados em breve.</p>
+                    {% endif %}
+                </article>
+            </div>
+
+            <div class="lg:col-span-7">
+                <article class="rounded-2xl border border-white/10 bg-cbnv-navy-900/70 p-6 lg:p-8">
+                    <h2 class="font-display text-2xl font-semibold text-white">Local Do Evento</h2>
+                    <div class="mt-6 space-y-4 text-cbnv-text-muted">
+                        <p class="text-lg font-semibold text-white">
+                            {{ settings.core.CoreSettings.venue_name|default:settings.core.CoreSettings.location }}
+                        </p>
+                        {% if settings.core.CoreSettings.venue_short_name %}
+                        <p>{{ settings.core.CoreSettings.venue_short_name }}</p>
+                        {% endif %}
+                        {% if settings.core.CoreSettings.venue_address %}
+                        <p>{{ settings.core.CoreSettings.venue_address|linebreaksbr }}</p>
+                        {% endif %}
+                        <p>{{ settings.core.CoreSettings.city }}{% if settings.core.CoreSettings.state %}, {{ settings.core.CoreSettings.state }}{% endif %}{% if settings.core.CoreSettings.country %}, {{ settings.core.CoreSettings.country }}{% endif %}</p>
+                        {% if settings.core.CoreSettings.venue_access_notes %}
+                        <p>{{ settings.core.CoreSettings.venue_access_notes }}</p>
+                        {% endif %}
+                    </div>
+                    {% if settings.core.CoreSettings.google_maps_url %}
+                    <a href="{{ settings.core.CoreSettings.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex rounded-lg bg-cbnv-blue-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-cbnv-blue-500">
+                        Abrir No Google Maps
+                    </a>
+                    {% endif %}
+                </article>
+            </div>
+        </div>
+    </section>
+</article>
+{% endblock %}

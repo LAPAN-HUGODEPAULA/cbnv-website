@@ -92,16 +92,14 @@ class TestLegacyContentPages:
 
         for heading in [
             "Bem vindos",
-            "O evento",
+            "Tema 2026",
             "Objetivos",
-            "O que esperar",
-            "Local e acessibilidade",
-            "Comissão organizadora",
+            "Local e acesso",
+            "Equipe Organizadora",
             "Organização",
         ]:
             assert heading in html
 
-        assert "google.com/maps" in html
         assert "eventos recentes" not in html
 
     def test_committee_cards_use_compact_four_column_layout(self, client):

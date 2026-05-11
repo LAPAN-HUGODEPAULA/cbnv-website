@@ -1,64 +1,92 @@
 {% extends "layouts/public.html" %}
 {% load wagtailimages_tags %}
 
+{% block title %}Patrocínio{% endblock %}
+
 {% block content %}
-<article class="py-20 lg:py-32">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <header class="text-center mb-20">
-            <h1 class="font-display text-4xl lg:text-6xl font-bold mb-6 text-cbnv-white">{{ page.title }}</h1>
-            <p class="text-cbnv-text-muted text-xl max-w-2xl mx-auto">{{ page.intro }}</p>
-        </header>
-
-        {% for tier in tiers %}
-        <section class="mb-24 last:mb-0">
-            <h2 class="text-sm font-mono uppercase tracking-[0.3em] text-cbnv-green-400 mb-12 text-center flex items-center justify-center gap-6">
-                <span class="h-px bg-white/5 flex-grow"></span>
-                {{ tier.name }}
-                <span class="h-px bg-white/5 flex-grow"></span>
-            </h2>
-            
-            <div class="grid gap-6 sm:gap-8 justify-center
-                {% if tier.weight <= 1 %} 
-                    grid-cols-1 md:grid-cols-2
-                {% elif tier.weight == 2 %} 
-                    grid-cols-2 lg:grid-cols-3
-                {% elif tier.weight == 3 %} 
-                    grid-cols-2 sm:grid-cols-3 lg:grid-cols-4
-                {% else %} 
-                    grid-cols-3 sm:grid-cols-4 lg:grid-cols-6
-                {% endif %}
-            ">
-                {% for sponsor in tier.sponsors.all %}
-                <a 
-                    href="{{ sponsor.url|default:'#' }}" 
-                    {% if sponsor.url %}target="_blank" rel="noopener"{% endif %}
-                    class="group p-8 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center hover:border-cbnv-blue-600/50 hover:bg-white/[0.08] transition-all aspect-[4/3] sm:aspect-video lg:aspect-square">
-                    
-                    {% if sponsor.logo %}
-                        {% image sponsor.logo max-400x400 format-webp as logo_img %}
-                        <img
-                            src="{{ logo_img.url }}"
-                            alt="{{ sponsor.name }}"
-                            loading="lazy"
-                            class="max-w-full max-h-full object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 scale-90 group-hover:scale-100">
-                    {% else %}                        <span class="text-cbnv-text-muted font-bold text-center group-hover:text-cbnv-white transition-colors">
-                            {{ sponsor.name }}
-                        </span>
-                    {% endif %}
-                </a>
-                {% endfor %}
+<article class="space-y-0">
+    <section class="border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+            {% include "components/breadcrumbs.html" %}
+            <div class="max-w-3xl space-y-4">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-cbnv-green-400">Patrocínio e apoio</p>
+                <h1 class="font-display text-4xl sm:text-5xl font-bold text-white">{{ page.title }}</h1>
+                <p class="text-lg text-cbnv-text-muted">
+                    {{ page.intro|default:"Entidades de apoio, parceiros institucionais e informações públicas para contato sobre patrocínio." }}
+                </p>
             </div>
-        </section>
-        {% endfor %}
+        </div>
+    </section>
 
-        <section class="mt-32 p-12 rounded-[2rem] bg-gradient-to-br from-cbnv-blue-600/20 to-transparent border border-cbnv-blue-600/20 text-center">
-            <h3 class="text-2xl font-bold mb-4 text-cbnv-white">Interesse em apoiar o evento?</h3>
-            <p class="text-cbnv-text-muted mb-8 max-w-xl mx-auto">Junte-se às principais instituições e empresas que impulsionam a neurociência da visão no Brasil.</p>
-            {% if settings.core.CoreSettings.contact_email %}
-                {% include "components/button.html" with label="Baixar Mídia Kit" variant="primary" size="lg" href="#" %}
-                <p class="mt-4 text-sm text-cbnv-text-muted">Ou envie um e-mail para <a href="mailto:{{ settings.core.CoreSettings.contact_email }}" class="text-cbnv-blue-600 hover:underline">{{ settings.core.CoreSettings.contact_email }}</a></p>
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {% if tiers or untiered_sponsors %}
+        <div class="space-y-16">
+            {% for tier in tiers %}
+            {% if tier.public_sponsors %}
+            <section>
+                <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-cbnv-green-400">{{ tier.name }}</h2>
+                <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                    {% for sponsor in tier.public_sponsors %}
+                    <article class="rounded-2xl border border-white/10 bg-white/5 p-6">
+                        {% if sponsor.logo %}
+                        {% image sponsor.logo max-320x180 format-webp as logo_img %}
+                        <img src="{{ logo_img.url }}" alt="{{ sponsor.logo_alt_text|default:sponsor.name }}" width="{{ logo_img.width }}" height="{{ logo_img.height }}" loading="lazy" class="h-20 w-full object-contain">
+                        {% else %}
+                        <h3 class="text-xl font-semibold text-white">{{ sponsor.name }}</h3>
+                        {% endif %}
+                        <div class="mt-5 space-y-2">
+                            <p class="font-semibold text-white">{{ sponsor.name }}</p>
+                            <p class="text-sm text-cbnv-text-muted">{{ sponsor.get_category_display }}</p>
+                            {% if sponsor.description %}
+                            <p class="text-sm leading-relaxed text-cbnv-text-muted">{{ sponsor.description }}</p>
+                            {% endif %}
+                            {% if sponsor.url %}
+                            <a href="{{ sponsor.url }}" target="_blank" rel="noopener noreferrer" class="inline-flex text-sm font-semibold text-cbnv-green-400 transition-colors hover:text-white">Visitar Site<span class="sr-only"> de {{ sponsor.name }}</span></a>
+                            {% endif %}
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+            {% endfor %}
+
+            {% if untiered_sponsors %}
+            <section>
+                <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-cbnv-green-400">Apoiadores</h2>
+                <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                    {% for sponsor in untiered_sponsors %}
+                    <article class="rounded-2xl border border-white/10 bg-white/5 p-6">
+                        <h3 class="text-xl font-semibold text-white">{{ sponsor.name }}</h3>
+                        <p class="mt-2 text-sm text-cbnv-text-muted">{{ sponsor.get_category_display }}</p>
+                    </article>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+        </div>
+        {% else %}
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-8 text-cbnv-text-muted">
+            Entidades de apoio e patrocínio serão publicadas quando confirmadas.
+        </div>
+        {% endif %}
+
+        <section class="mt-16 rounded-2xl border border-white/10 bg-cbnv-navy-900/70 p-6 lg:p-8">
+            <h2 class="font-display text-3xl font-bold text-white">Contato Para Apoio</h2>
+            {% if settings.core.CoreSettings.sponsorship_contact_email %}
+            <p class="mt-4 text-cbnv-text-muted">Para conversar sobre apoio institucional ou patrocínio, escreva para o canal dedicado.</p>
+            <a href="mailto:{{ settings.core.CoreSettings.sponsorship_contact_email }}" class="mt-6 inline-flex rounded-lg bg-cbnv-blue-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-cbnv-blue-500">
+                {{ settings.core.CoreSettings.sponsorship_contact_email }}
+            </a>
+            {% elif settings.core.CoreSettings.contact_email %}
+            <p class="mt-4 text-cbnv-text-muted">Use o contato geral do evento para encaminhar propostas de apoio.</p>
+            <a href="mailto:{{ settings.core.CoreSettings.contact_email }}" class="mt-6 inline-flex rounded-lg bg-cbnv-blue-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-cbnv-blue-500">
+                {{ settings.core.CoreSettings.contact_email }}
+            </a>
+            {% else %}
+            <p class="mt-4 text-cbnv-text-muted">O canal de contato para patrocínio será informado em breve.</p>
             {% endif %}
         </section>
-    </div>
+    </section>
 </article>
 {% endblock %}

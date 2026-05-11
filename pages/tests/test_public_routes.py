@@ -1,7 +1,19 @@
 import pytest
 from django.urls import reverse
 from wagtail.models import Page, Site
-from pages.models import HomePage, AboutPage, ProgramPage, RegistrationPage, SubmissionsPage, SponsorsPage, VideoGalleryPage, NewsIndexPage, PreviousEditionsPage
+from pages.models import (
+    AboutPage,
+    ContactPage,
+    HomePage,
+    NewsIndexPage,
+    PreviousEditionsPage,
+    ProgramPage,
+    RegistrationPage,
+    SpeakerIndexPage,
+    SponsorsPage,
+    SubmissionsPage,
+    VideoGalleryPage,
+)
 
 @pytest.mark.django_db
 class TestPublicRoutes:
@@ -28,6 +40,9 @@ class TestPublicRoutes:
 
         self.program = ProgramPage(title="Programação", slug="programacao")
         self.home.add_child(instance=self.program)
+
+        self.speakers = SpeakerIndexPage(title="Palestrantes", slug="palestrantes")
+        self.home.add_child(instance=self.speakers)
         
         self.registration = RegistrationPage(title="Inscrição", slug="inscricao")
         self.home.add_child(instance=self.registration)
@@ -43,6 +58,9 @@ class TestPublicRoutes:
         
         self.sponsors = SponsorsPage(title="Patrocinadores", slug="patrocinadores")
         self.home.add_child(instance=self.sponsors)
+
+        self.contact = ContactPage(title="Contato", slug="contato")
+        self.home.add_child(instance=self.contact)
         
         self.videos = VideoGalleryPage(title="Vídeos", slug="videos")
         self.home.add_child(instance=self.videos)
@@ -52,11 +70,13 @@ class TestPublicRoutes:
             self.home,
             self.about,
             self.program,
+            self.speakers,
             self.registration,
             self.submissions,
             self.news_index,
             self.previous_editions,
             self.sponsors,
+            self.contact,
             self.videos
         ]
         
@@ -81,6 +101,10 @@ class TestPublicRoutes:
         assert 'href="/"' in html
         assert 'href="/sobre/"' in html
         assert 'href="/programacao/"' in html
+        assert 'href="/palestrantes/"' in html
         assert 'href="/submissoes/"' in html
+        assert 'href="/inscricao/"' in html
+        assert 'href="/patrocinadores/"' in html
         assert 'href="/edicoes-anteriores/"' in html
+        assert 'href="/contato/"' in html
         assert 'hx-boost="false"' in html

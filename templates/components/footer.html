@@ -1,5 +1,6 @@
-{% load static %}
-{% with instagram_url=settings.core.CoreSettings.instagram_url|default:"https://www.instagram.com/cbnvufmg/" %}
+{% load static supporting_entities wagtailimages_tags %}
+{% footer_supporting_entities as footer_entities %}
+{% with instagram_url=settings.core.CoreSettings.instagram_url|default:"https://www.instagram.com/cbnvufmg/" youtube_url=settings.core.CoreSettings.primary_youtube_url %}
 <footer class="bg-cbnv-navy-950 text-cbnv-text-secondary border-t border-white/10" role="contentinfo">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -14,8 +15,10 @@
                     <li><a href="/sobre/" class="hover:text-cbnv-text-primary transition-colors">Sobre</a></li>
                     <li><a href="/noticias/" class="hover:text-cbnv-text-primary transition-colors">Notícias</a></li>
                     <li><a href="/edicoes-anteriores/" class="hover:text-cbnv-text-primary transition-colors">Edições Anteriores</a></li>
-                    {% if settings.core.CoreSettings.registration_link %}
+                    {% if settings.core.CoreSettings.registration_is_available %}
                     <li><a href="{{ settings.core.CoreSettings.registration_link }}" class="hover:text-cbnv-text-primary transition-colors">Inscrição</a></li>
+                    {% elif settings.core.CoreSettings.registration_status == "coming_soon" %}
+                    <li><span class="text-cbnv-text-secondary">Inscrição em breve</span></li>
                     {% endif %}
                 </ul>
             </div>
@@ -29,10 +32,10 @@
                         {% include "components/icon_link.html" with href=instagram_url icon="instagram" label="Siga-nos no Instagram" external=True %}
                         <a href="{{ instagram_url }}" target="_blank" rel="noopener noreferrer" class="hover:text-cbnv-text-primary transition-colors">Instagram</a>
                     </li>
-                    {% if settings.core.CoreSettings.youtube_url %}
+                    {% if youtube_url %}
                     <li class="flex items-center gap-2">
-                        {% include "components/icon_link.html" with href=settings.core.CoreSettings.youtube_url icon="youtube" label="Canal no YouTube" external=True %}
-                        <a href="{{ settings.core.CoreSettings.youtube_url }}" target="_blank" rel="noopener noreferrer" class="hover:text-cbnv-text-primary transition-colors">YouTube</a>
+                        {% include "components/icon_link.html" with href=youtube_url icon="youtube" label="Canal no YouTube" external=True %}
+                        <a href="{{ youtube_url }}" target="_blank" rel="noopener noreferrer" class="hover:text-cbnv-text-primary transition-colors">YouTube</a>
                     </li>
                     {% endif %}
                 </ul>
@@ -41,7 +44,12 @@
         <div class="mt-8 pt-8 border-t border-white/10 flex flex-col gap-6">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div class="flex items-center gap-3">
-                    <img src="{% static 'images/organizations/fapemig-logo.svg' %}" alt="Logotipo FAPEMIG" class="h-8 w-auto">
+                    {% if settings.core.CoreSettings.fapemig_logo %}
+                        {% image settings.core.CoreSettings.fapemig_logo height-32 as fapemig_logo %}
+                        <img src="{{ fapemig_logo.url }}" alt="Logotipo FAPEMIG" class="h-8 w-auto">
+                    {% else %}
+                        <img src="{% static 'images/organizations/fapemig-logo.svg' %}" alt="Logotipo FAPEMIG" class="h-8 w-auto">
+                    {% endif %}
                     <div class="text-sm">
                         <p class="text-cbnv-text-primary font-medium">FAPEMIG</p>
                         <p class="text-xs text-cbnv-text-secondary">Fundação de Amparo à Pesquisa do Estado de Minas Gerais</p>
@@ -54,6 +62,19 @@
             </div>
             {% if settings.core.CoreSettings.fapemig_text %}
             <p class="text-xs text-cbnv-text-secondary">{{ settings.core.CoreSettings.fapemig_text }}</p>
+            {% endif %}
+            {% if footer_entities %}
+            <ul class="flex flex-wrap gap-3 text-xs text-cbnv-text-secondary">
+                {% for entity in footer_entities %}
+                <li>
+                    {% if entity.url %}
+                    <a href="{{ entity.url }}" target="_blank" rel="noopener noreferrer" class="hover:text-cbnv-text-primary transition-colors">{{ entity.name }}</a>
+                    {% else %}
+                    <span>{{ entity.name }}</span>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
             {% endif %}
         </div>
     </div>

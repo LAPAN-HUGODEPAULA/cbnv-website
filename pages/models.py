@@ -400,20 +400,8 @@ class ProgramPage(Page):
     subpage_types = []
 
     def get_context(self, request, *args, **kwargs):
-        from program.models import ProgramDay, ProgramSession, ProgramTalk, CONFIRMED
+        from program.models import get_public_program_by_day
 
         ctx = super().get_context(request, *args, **kwargs)
-        days = ProgramDay.objects.prefetch_related("sessions__talks__speaker").order_by("sort_order", "date")
-
-        program_data = []
-        for day in days:
-            sessions = []
-            for session in day.sessions.filter(status="published").order_by("start_time"):
-                talks = session.talks.filter(status=CONFIRMED).order_by("sort_order")
-                if talks or session.activity_type in ("break", "reception", "closing_ceremony", "awards"):
-                    sessions.append({"session": session, "talks": list(talks)})
-            if sessions:
-                program_data.append({"day": day, "sessions": sessions})
-
-        ctx["program_data"] = program_data
+        ctx["program_data"] = get_public_program_by_day()
         return ctx

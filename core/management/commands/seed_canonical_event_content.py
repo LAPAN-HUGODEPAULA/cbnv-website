@@ -8,10 +8,9 @@ from core.models import CoreSettings
 from sponsors.models import Sponsor, SponsorTier
 
 
-VENUE_ADDRESS = (
-    "Centro de Atividades Didáticas 1 (CAD-1), UFMG Campus Pampulha.\n"
-    "R. Prof. Baeta Viana, s/n - Pampulha, Belo Horizonte - MG, 31270-901"
-)
+VENUE_NAME = "Centro de Atividades Didáticas 1 (CAD-1), UFMG Campus Pampulha"
+VENUE_SHORT_NAME = "CAD-1/UFMG"
+VENUE_ADDRESS = "R. Prof. Baeta Viana, s/n - Pampulha, Belo Horizonte - MG, 31270-901"
 
 
 CANONICAL_SETTINGS = {
@@ -23,12 +22,13 @@ CANONICAL_SETTINGS = {
     "start_date": date(2026, 11, 11),
     "end_date": date(2026, 11, 13),
     "format_label": "Presencial com transmissão híbrida",
-    "location": VENUE_ADDRESS,
+    "location": "CAD-1/UFMG, Belo Horizonte, MG",
     "city": "Belo Horizonte",
     "state": "Minas Gerais",
     "country": "Brasil",
-    "venue_name": "Centro de Atividades Didáticas 1 (CAD-1), UFMG Campus Pampulha",
-    "venue_short_name": "CAD-1/UFMG",
+    "venue_name": VENUE_NAME,
+    "venue_short_name": VENUE_SHORT_NAME,
+    "venue_address": VENUE_ADDRESS,
     "google_maps_url": "https://maps.app.goo.gl/xzqJ2LCAHVP4hsFp6",
 }
 

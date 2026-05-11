@@ -14,9 +14,16 @@ def _time(h, m):
     return time(h, m)
 
 
+def _coerce_time(value):
+    if isinstance(value, time):
+        return value
+    hour, minute = value.split(":", 1)
+    return time(int(hour), int(minute))
+
+
 def _s(day, start, end, title, atype, status=PUBLISHED, fmt=IN_PERSON, room="", desc="", sort=0):
     return {
-        "start_time": start, "end_time": end, "title": title, "activity_type": atype,
+        "start_time": _coerce_time(start), "end_time": _coerce_time(end), "title": title, "activity_type": atype,
         "status": status, "format": fmt, "room": room, "description": desc, "sort_order": sort,
     }
 
@@ -45,15 +52,35 @@ class Command(BaseCommand):
             ProgramSession.objects.all().delete()
             ProgramDay.objects.all().delete()
             # We keep speakers but they will be updated if they exist
-        elif ProgramDay.objects.exists():
-            self.stdout.write(self.style.WARNING("Program data already exists. Use --clear to overwrite."))
-            return
 
-        speakers = self._create_speakers()
-        self._create_days_and_sessions(speakers)
+        stats = {"created": 0, "updated": 0, "skipped": 0}
+        speakers = self._create_speakers(stats)
+        self._create_days_and_sessions(speakers, stats)
+        self.stdout.write(
+            f"Program records: {stats['created']} created, {stats['updated']} updated, {stats['skipped']} skipped."
+        )
         self.stdout.write(self.style.SUCCESS("Program seed complete."))
 
-    def _create_speakers(self):
+    def _upsert(self, model, lookup, defaults, stats):
+        obj, created = model.objects.get_or_create(**lookup, defaults=defaults)
+        if created:
+            stats["created"] += 1
+            return obj
+
+        changed_fields = []
+        for field, value in defaults.items():
+            if getattr(obj, field) != value:
+                setattr(obj, field, value)
+                changed_fields.append(field)
+
+        if changed_fields:
+            obj.save(update_fields=changed_fields)
+            stats["updated"] += 1
+        else:
+            stats["skipped"] += 1
+        return obj
+
+    def _create_speakers(self, stats):
         # (Full Name, Display Name, Title, Institution, Country, Bio, Lattes)
         data = [
             ("Alessandro Fernandes Moreira", "Alessandro Fernandes Moreira", "Prof. Dr.", "UFMG", "BR", "Reitor da UFMG.", ""),
@@ -81,19 +108,21 @@ class Command(BaseCommand):
         ]
         speakers = {}
         for full_name, display, title, inst, country, bio, lattes in data:
-            s, _ = Speaker.objects.update_or_create(
-                name=full_name,
+            s = self._upsert(
+                Speaker,
+                {"name": full_name},
                 defaults={
                     "display_name": display, "title": title,
                     "institution": inst, "country": country,
                     "bio": bio, "lattes_url": lattes, "status": CONFIRMED,
                 },
+                stats=stats,
             )
             speakers[full_name] = s
         self.stdout.write(f"Processed {len(speakers)} speakers.")
         return speakers
 
-    def _create_days_and_sessions(self, speakers):
+    def _create_days_and_sessions(self, speakers, stats):
         days_data = [
             {
                 "date": date(2026, 11, 11),
@@ -175,11 +204,33 @@ class Command(BaseCommand):
             talks_map = day_data.pop("talks")
             day_sessions = day_data.pop("day_sessions")
             sort_order = day_data.pop("sort")
-            day = ProgramDay.objects.create(**day_data, sort_order=sort_order)
+            day = self._upsert(
+                ProgramDay,
+                {"date": day_data["date"]},
+                {
+                    "title": day_data["title"],
+                    "subtitle": day_data["subtitle"],
+                    "sort_order": sort_order,
+                },
+                stats,
+            )
             session_objs = {}
             for s in day_sessions:
                 s["day"] = day
-                sess = ProgramSession.objects.create(**s)
+                sess = self._upsert(
+                    ProgramSession,
+                    {"day": day, "title": s["title"], "start_time": s["start_time"]},
+                    {
+                        "end_time": s["end_time"],
+                        "activity_type": s["activity_type"],
+                        "status": s["status"],
+                        "format": s["format"],
+                        "room": s["room"],
+                        "description": s["description"],
+                        "sort_order": s["sort_order"],
+                    },
+                    stats,
+                )
                 session_objs[sess.title] = sess
             for t in talks_map:
                 sess = session_objs.get(t["session_title"])
@@ -187,13 +238,16 @@ class Command(BaseCommand):
                     self.stderr.write(f"  WARNING: session '{t['session_title']}' not found for talk '{t['title']}'")
                     continue
                 speaker = speakers.get(t["speaker_name"])
-                ProgramTalk.objects.create(
-                    session=sess,
-                    speaker=speaker,
-                    title=t["title"],
-                    description=t.get("description", ""),
-                    status=t["status"],
-                    sort_order=t.get("sort_order", 0),
+                self._upsert(
+                    ProgramTalk,
+                    {"session": sess, "title": t["title"]},
+                    {
+                        "speaker": speaker,
+                        "description": t.get("description", ""),
+                        "status": t["status"],
+                        "sort_order": t.get("sort_order", 0),
+                    },
+                    stats,
                 )
 
         total = ProgramSession.objects.count()

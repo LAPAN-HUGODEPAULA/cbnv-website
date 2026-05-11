@@ -1,267 +1,214 @@
 {% extends "layouts/public.html" %}
-{% load wagtailcore_tags wagtailimages_tags static %}
+{% load static wagtailcore_tags wagtailimages_tags %}
 
 {% block title %}{{ settings.core.CoreSettings.event_name }} — {{ settings.core.CoreSettings.theme }}{% endblock %}
 
 {% block hero %}
-{% load static %}
-<section id="hero" class="relative min-h-[85vh] flex flex-col items-center justify-center text-center overflow-hidden neural-pattern">
-    {# Background Image with Overlay #}
-    <div class="absolute inset-0 z-0">
-        <img src="{% static 'images/hero-bg-v2.jpg' %}" alt="Neural network background" class="w-full h-full object-cover opacity-30 mix-blend-screen">
-        <div class="absolute inset-0 bg-gradient-to-b from-cbnv-navy-950/20 via-transparent to-cbnv-navy-950"></div>
-    </div>
-
-    {# Decorative Emojis as "Floating" particles (subtle) #}
-    <div class="absolute inset-0 pointer-events-none select-none opacity-20 overflow-hidden" aria-hidden="true">
-        <span class="absolute top-[15%] left-[10%] text-4xl animate-pulse">🧠</span>
-        <span class="absolute top-[25%] right-[15%] text-4xl animate-bounce" style="animation-duration: 4s">👁️</span>
-        <span class="absolute bottom-[20%] left-[20%] text-4xl animate-pulse" style="animation-duration: 5s">🔬</span>
-        <span class="absolute bottom-[30%] right-[25%] text-4xl animate-bounce" style="animation-duration: 3s">🤖</span>
-    </div>
-
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-8">
-        {# Logo and Edition #}
-        <div class="flex flex-col items-center gap-6 mb-4">
-            <img src="{% static 'images/logo-12-cbnv.avif' %}" alt="CBNV Logo" class="h-24 md:h-32 w-auto animate-fade-in drop-shadow-2xl">
-            <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-cbnv-green-400/10 border border-cbnv-green-400/20 text-cbnv-green-400 font-mono text-xs uppercase tracking-[0.3em] animate-fade-in">
-                <span>{{ settings.core.CoreSettings.edition }}ª Edição</span>
-                <span class="w-1.5 h-1.5 rounded-full bg-cbnv-green-400 animate-pulse"></span>
-                <span>2026</span>
+<section class="border-b border-white/10 bg-cbnv-navy-950">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            <div class="lg:col-span-7 space-y-8">
+                <div class="inline-flex flex-wrap items-center gap-3 rounded-full border border-cbnv-green-400/30 bg-cbnv-green-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-cbnv-green-400">
+                    <span>{{ settings.core.CoreSettings.edition }} Congresso Brasileiro de Neurociências da Visão</span>
+                </div>
+                <div class="space-y-5">
+                    <h1 class="font-display text-4xl sm:text-5xl lg:text-7xl font-bold leading-tight text-white text-balance">
+                        {{ settings.core.CoreSettings.short_event_name|default:settings.core.CoreSettings.event_name }}
+                    </h1>
+                    <p class="max-w-3xl text-xl lg:text-2xl leading-relaxed text-cbnv-text-light">
+                        {{ settings.core.CoreSettings.theme }}
+                    </p>
+                </div>
+                <dl class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                        <dt class="text-xs uppercase tracking-[0.16em] text-cbnv-text-muted">Datas</dt>
+                        <dd class="mt-2 text-base font-semibold text-white">{{ settings.core.CoreSettings.dates }}</dd>
+                    </div>
+                    <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                        <dt class="text-xs uppercase tracking-[0.16em] text-cbnv-text-muted">Local</dt>
+                        <dd class="mt-2 text-base font-semibold text-white">{{ settings.core.CoreSettings.location }}</dd>
+                    </div>
+                    <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                        <dt class="text-xs uppercase tracking-[0.16em] text-cbnv-text-muted">Formato</dt>
+                        <dd class="mt-2 text-base font-semibold text-white">{{ settings.core.CoreSettings.format_label|default:"Presencial" }}</dd>
+                    </div>
+                </dl>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    {% if settings.core.CoreSettings.registration_is_available %}
+                    <a href="{{ settings.core.CoreSettings.registration_link }}" class="inline-flex items-center justify-center rounded-lg bg-cbnv-blue-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-cbnv-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cbnv-green-400">
+                        Fazer Inscrição
+                    </a>
+                    {% elif registration_page %}
+                    <a href="{{ registration_page.url }}" class="inline-flex items-center justify-center rounded-lg border border-white/15 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cbnv-green-400">
+                        Inscrição Em Breve
+                    </a>
+                    {% endif %}
+                    {% if submissions_page %}
+                    <a href="{{ submissions_page.url }}" class="inline-flex items-center justify-center rounded-lg border border-white/15 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cbnv-green-400">
+                        Ver Submissões
+                    </a>
+                    {% endif %}
+                    {% if program_page %}
+                    <a href="{{ program_page.url }}" class="inline-flex items-center justify-center rounded-lg border border-white/15 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cbnv-green-400">
+                        Programação
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="lg:col-span-5">
+                <div class="rounded-2xl border border-white/10 bg-cbnv-navy-900/70 p-8">
+                    <img src="{% static 'images/logo-12-cbnv.avif' %}" alt="{{ settings.core.CoreSettings.event_name }}" width="512" height="512" fetchpriority="high" class="mx-auto h-44 w-auto object-contain">
+                    <div class="mt-8 space-y-4 text-sm text-cbnv-text-muted">
+                        <p class="text-base text-cbnv-text-light">{{ page.intro|default:"Site oficial do CBNV 2026, com informações públicas sobre programação, inscrições, submissões, palestrantes e apoio institucional." }}</p>
+                        {% if settings.core.CoreSettings.venue_short_name or settings.core.CoreSettings.venue_name %}
+                        <p><span class="font-semibold text-white">Local:</span> {{ settings.core.CoreSettings.venue_short_name|default:settings.core.CoreSettings.venue_name }}</p>
+                        {% endif %}
+                        {% if contact_page %}
+                        <a href="{{ contact_page.url }}" class="inline-flex text-cbnv-green-400 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cbnv-green-400">Informações de contato e acesso</a>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
-
-        {# Main Headline #}
-        <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-cbnv-white leading-[1.05] drop-shadow-sm animate-slide-up">
-            Neurovisão na Era da<br>
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-cbnv-green-400 via-cbnv-blue-500 to-cbnv-blue-600">Inteligência Artificial</span>
-        </h1>
-
-        {# Event Details with Icons #}
-        <div class="flex flex-wrap justify-center gap-x-8 gap-y-4 text-cbnv-text-muted text-lg font-medium animate-fade-in" style="animation-delay: 0.3s">
-            <div class="flex items-center gap-2">
-                <svg class="w-5 h-5 text-cbnv-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                <span>{{ settings.core.CoreSettings.dates }}</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <svg class="w-5 h-5 text-cbnv-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                <span>{{ settings.core.CoreSettings.location }}</span>
-            </div>
-        </div>
-
-        {# CTAs #}
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6 animate-fade-in" style="animation-delay: 0.5s">
-            {% if settings.core.CoreSettings.registration_link %}
-                <a href="{{ settings.core.CoreSettings.registration_link }}" class="group relative px-8 py-4 bg-cbnv-blue-600 text-white rounded-xl font-bold text-lg hover:bg-cbnv-blue-500 transition-all shadow-xl shadow-cbnv-blue-600/30 overflow-hidden">
-                    <span class="relative z-10">Inscrever-se agora</span>
-                    <div class="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-500"></div>
-                </a>
-            {% else %}
-                <button disabled class="px-8 py-4 bg-white/5 text-cbnv-text-muted border border-white/10 rounded-xl font-bold text-lg cursor-not-allowed">
-                    Inscrições em breve
-                </button>
-            {% endif %}
-            
-            <a href="#sobre" class="px-8 py-4 rounded-xl font-bold text-lg text-cbnv-text-light hover:bg-white/5 border border-white/10 transition-all backdrop-blur-sm">
-                Saber mais
-            </a>
-        </div>
-    </div>
-
-    {# Scroll Indicator #}
-    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-50">
-        <svg class="w-6 h-6 text-cbnv-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
     </div>
 </section>
 {% endblock %}
 
 {% block content %}
-{% load static %}
-<div class="relative">
-    {# Bento Grid Info Section #}
-    <section class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Card 1: Datas -->
-            <div class="glass-panel rounded-3xl p-8 flex flex-col justify-between group hover:border-cbnv-blue-500/50 transition-all duration-500">
-                <div>
-                    <div class="w-12 h-12 rounded-2xl bg-cbnv-blue-600/20 flex items-center justify-center mb-6 text-cbnv-blue-500 group-hover:scale-110 transition-transform">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                    </div>
-                    <h3 class="font-display text-2xl font-bold text-cbnv-white mb-2">Datas Importantes</h3>
-                    <p class="text-cbnv-text-muted mb-6">Fique atento aos prazos para garantir sua participação.</p>
+<div class="space-y-0">
+    <section class="border-b border-white/10 bg-cbnv-navy-900/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="rounded-xl border border-white/10 bg-white/5 p-5">
+                    <p class="text-xs uppercase tracking-[0.16em] text-cbnv-text-muted">Tema</p>
+                    <p class="mt-2 text-white font-semibold">{{ settings.core.CoreSettings.theme }}</p>
                 </div>
-                <div class="space-y-4">
-                    <div class="flex justify-between items-center text-sm">
-                        <span class="text-cbnv-text-muted">Submissões</span>
-                        <span class="px-2 py-1 rounded-md bg-cbnv-green-400/10 text-cbnv-green-400 font-bold border border-cbnv-green-400/20">Até 15 Ago</span>
-                    </div>
-                    <div class="flex justify-between items-center text-sm">
-                        <span class="text-cbnv-text-muted">Resultados</span>
-                        <span class="px-2 py-1 rounded-md bg-white/5 text-cbnv-text-light font-bold border border-white/10">30 Set</span>
-                    </div>
+                <div class="rounded-xl border border-white/10 bg-white/5 p-5">
+                    <p class="text-xs uppercase tracking-[0.16em] text-cbnv-text-muted">Cidade</p>
+                    <p class="mt-2 text-white font-semibold">{{ settings.core.CoreSettings.city|default:"Belo Horizonte" }}{% if settings.core.CoreSettings.state %}, {{ settings.core.CoreSettings.state }}{% endif %}</p>
                 </div>
-            </div>
-
-            <!-- Card 2: Local (Wide) -->
-            <div class="md:col-span-2 glass-panel rounded-3xl p-8 relative overflow-hidden group hover:border-cbnv-green-400/50 transition-all duration-500">
-                <div class="relative z-10 h-full flex flex-col justify-between">
-                    <div>
-                        <div class="w-12 h-12 rounded-2xl bg-cbnv-green-400/20 flex items-center justify-center mb-6 text-cbnv-green-400 group-hover:scale-110 transition-transform">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                        </div>
-                        <h3 class="font-display text-2xl font-bold text-cbnv-white mb-2">Local do Evento</h3>
-                        <p class="text-cbnv-text-muted text-lg max-w-md">Centro de Atividades Didáticas 1 (CAD-1), UFMG Campus Pampulha.</p>
-                    </div>
-                    <div class="flex items-center gap-4 mt-8">
-                        <div class="flex -space-x-2">
-                            <div class="w-10 h-10 rounded-full border-2 border-[#081426] bg-cbnv-blue-600 flex items-center justify-center text-xs font-bold">BH</div>
-                            <div class="w-10 h-10 rounded-full border-2 border-[#081426] bg-cbnv-green-400 flex items-center justify-center text-xs font-bold text-[#081426]">MG</div>
-                        </div>
-                        <span class="text-sm font-medium text-cbnv-text-light">Belo Horizonte, Brasil</span>
-                    </div>
+                <div class="rounded-xl border border-white/10 bg-white/5 p-5">
+                    <p class="text-xs uppercase tracking-[0.16em] text-cbnv-text-muted">Inscrições</p>
+                    <p class="mt-2 text-white font-semibold">{{ settings.core.CoreSettings.get_registration_status_display }}</p>
                 </div>
-                {# Background accent #}
-                <div class="absolute top-0 right-0 w-64 h-64 bg-cbnv-green-400/10 blur-[100px] -mr-32 -mt-32"></div>
-            </div>
-
-            <!-- Card 4: Formato -->
-            <div class="glass-panel rounded-3xl p-8 flex flex-col justify-between group hover:border-cbnv-blue-500/50 transition-all duration-500">
-                <div>
-                    <div class="w-12 h-12 rounded-2xl bg-cbnv-blue-600/20 flex items-center justify-center mb-6 text-cbnv-blue-500 group-hover:scale-110 transition-transform">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                    </div>
-                    <h3 class="font-display text-2xl font-bold text-cbnv-white mb-2">Híbrido</h3>
-                    <p class="text-cbnv-text-muted">Acesso presencial completo ou transmissão digital de alta performance.</p>
-                </div>
-                <div class="mt-6">
-                    <span class="inline-flex items-center gap-2 text-sm font-bold text-cbnv-blue-500">
-                        Saber mais
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                    </span>
+                <div class="rounded-xl border border-white/10 bg-white/5 p-5">
+                    <p class="text-xs uppercase tracking-[0.16em] text-cbnv-text-muted">Transmissão</p>
+                    <p class="mt-2 text-white font-semibold">{{ settings.core.CoreSettings.get_livestream_status_display }}</p>
                 </div>
             </div>
         </div>
     </section>
 
-    {% if about_page %}
-    <section id="sobre" class="py-32 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div class="relative">
-                    <div class="absolute -top-10 -left-10 w-32 h-32 bg-cbnv-blue-600/20 rounded-full blur-3xl"></div>
-                    <h2 class="font-display text-4xl lg:text-6xl font-bold mb-8 text-cbnv-white leading-tight">
-                        Um congresso na fronteira do <span class="text-cbnv-green-400 italic">conhecimento</span>.
-                    </h2>
-                    <div class="text-cbnv-text-muted space-y-8 text-lg leading-relaxed">
-                        {% for block in about_page.specific.body %}
-                            {% include_block block %}
-                        {% endfor %}
-                    </div>
-                    <div class="mt-12 flex items-center gap-8">
-                        <img src="{% static 'images/logo-ufmg.png' %}" alt="UFMG" class="h-10 opacity-50 hover:opacity-100 transition-opacity">
-                        <img src="{% static 'images/logo-lapan.png' %}" alt="LAPAN" class="h-10 opacity-50 hover:opacity-100 transition-opacity">
-                        <img src="{% static 'images/logo-neuro.png' %}" alt="Neuro" class="h-10 opacity-50 hover:opacity-100 transition-opacity">
-                    </div>
-                </div>
-                <div class="relative lg:pl-12">
-                    <div class="aspect-square rounded-[3rem] bg-gradient-to-br from-cbnv-blue-600 to-cbnv-green-400 p-1">
-                        <div class="w-full h-full rounded-[2.9rem] bg-cbnv-navy-950 flex items-center justify-center relative overflow-hidden">
-                            {# Decorative SVG for "Scientific/Neural" look #}
-                            <svg class="w-3/4 h-3/4 text-cbnv-blue-500/20" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="100" cy="100" r="80" stroke="currentColor" stroke-width="0.5" stroke-dasharray="4 4"/>
-                                <circle cx="100" cy="100" r="60" stroke="currentColor" stroke-width="0.5"/>
-                                <path d="M100 20V180M20 100H180" stroke="currentColor" stroke-width="0.5" stroke-opacity="0.5"/>
-                                <circle cx="100" cy="100" r="5" fill="currentColor"/>
-                            </svg>
-                            <div class="absolute inset-0 flex flex-col items-center justify-center p-12 text-center">
-                                <span class="text-6xl mb-6">👁️‍🗨️</span>
-                                <h4 class="text-xl font-bold text-cbnv-white mb-2">Inovação Constante</h4>
-                                <p class="text-cbnv-text-muted text-sm italic">"Explorando os limites da percepção humana através da tecnologia."</p>
-                            </div>
+    {% if program_preview %}
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+            <div>
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-cbnv-green-400">Prévia</p>
+                <h2 class="mt-2 font-display text-3xl font-bold text-white">Programação</h2>
+            </div>
+            {% if program_page %}
+            <a href="{{ program_page.url }}" class="text-sm font-semibold text-cbnv-green-400 hover:text-white transition-colors">Ver Programação Completa</a>
+            {% endif %}
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            {% for day_data in program_preview %}
+            <article class="rounded-2xl border border-white/10 bg-white/5 p-6">
+                <h3 class="font-display text-2xl font-semibold text-white">{{ day_data.day.title }}</h3>
+                <p class="mt-1 text-sm text-cbnv-text-muted">{{ day_data.day.date|date:"d/m/Y" }}</p>
+                <div class="mt-5 space-y-3">
+                    {% for item in day_data.sessions|slice:":3" %}
+                    <div class="rounded-xl border border-white/10 bg-cbnv-navy-900/70 p-4">
+                        <div class="flex flex-wrap gap-2 items-center text-sm">
+                            <time class="font-mono text-cbnv-green-400">{{ item.session.time_range }}</time>
+                            {% include "components/badge.html" with label=item.session.get_activity_type_display variant=item.session.badge_variant %}
                         </div>
+                        <p class="mt-2 font-medium text-white">{{ item.session.title }}</p>
                     </div>
-                    {# Floating badges #}
-                    <div class="absolute -top-6 -right-6 glass-panel px-6 py-4 rounded-2xl animate-bounce" style="animation-duration: 6s">
-                        <span class="text-2xl block text-center">🏆</span>
-                        <span class="text-xs font-bold text-cbnv-blue-500 uppercase tracking-widest">Excelência</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    {% endif %}
-
-    {# Other sections (program, submissions, etc.) simplified for impact #}
-    {% if program_page %}
-    <section id="programacao" class="py-24 bg-cbnv-navy-900/50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="font-display text-4xl lg:text-5xl font-bold mb-6 text-cbnv-white">O que esperar? 📅</h2>
-            <p class="text-cbnv-text-muted text-xl max-w-2xl mx-auto mb-12">{{ program_page.specific.intro }}</p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                <div class="p-8 rounded-3xl bg-white/5 border border-white/10">
-                    <div class="text-4xl mb-4">🎤</div>
-                    <h4 class="font-bold text-xl text-cbnv-white mb-2">Palestrantes Internacionais</h4>
-                    <p class="text-sm text-cbnv-text-muted">Líderes mundiais em IA e Neurociência.</p>
-                </div>
-                <div class="p-8 rounded-3xl bg-white/5 border border-white/10">
-                    <div class="text-4xl mb-4">🛠️</div>
-                    <h4 class="font-bold text-xl text-cbnv-white mb-2">Workshops Práticos</h4>
-                    <p class="text-sm text-cbnv-text-muted">Aplicação direta de modelos preditivos.</p>
-                </div>
-                <div class="p-8 rounded-3xl bg-white/5 border border-white/10">
-                    <div class="text-4xl mb-4">🤝</div>
-                    <h4 class="font-bold text-xl text-cbnv-white mb-2">Networking</h4>
-                    <p class="text-sm text-cbnv-text-muted">Conecte-se com a elite científica.</p>
-                </div>
-            </div>
-            <a href="{{ program_page.url }}" class="inline-flex items-center gap-3 px-8 py-4 bg-white/5 border border-white/10 rounded-2xl font-bold text-cbnv-text-light hover:bg-cbnv-blue-600 hover:text-white transition-all">
-                Ver programação completa
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-            </a>
-        </div>
-    </section>
-    {% endif %}
-
-    {# Final CTA #}
-    <section class="py-32 bg-gradient-to-b from-transparent to-cbnv-blue-600/10">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
-            <h2 class="font-display text-4xl lg:text-6xl font-bold text-cbnv-white">Não perca a chance de<br>fazer parte da história. 🚀</h2>
-            <p class="text-cbnv-text-muted text-xl max-w-2xl mx-auto">Vagas limitadas para a modalidade presencial. Garanta seu lugar no maior evento de Neurovisão da América Latina.</p>
-            <div class="pt-8">
-                {% if settings.core.CoreSettings.registration_link %}
-                    <a href="{{ settings.core.CoreSettings.registration_link }}" class="px-12 py-5 bg-cbnv-blue-600 text-white rounded-2xl font-bold text-2xl hover:bg-cbnv-blue-500 transition-all shadow-2xl shadow-cbnv-blue-600/40">
-                        Quero participar!
-                    </a>
-                {% endif %}
-            </div>
-        </div>
-    </section>
-
-    {% if organizations %}
-    <section class="border-t border-white/10 bg-cbnv-navy-900/50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <div class="lg:col-span-3 space-y-3">
-                    <p class="text-xs font-semibold uppercase tracking-[0.2em] text-cbnv-green-400">Organização</p>
-                    <h2 class="font-display text-3xl font-bold text-white">Entidades parceiras</h2>
-                </div>
-                <div class="lg:col-span-9 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-                    {% for org in organizations %}
-                    <article class="rounded-xl border border-white/10 bg-white/5 p-4">
-                        {% if org.url %}
-                        <a href="{{ org.url }}" target="_blank" rel="noopener noreferrer" class="block space-y-3">
-                            <img src="{% static org.logo %}" alt="{{ org.alt }}" class="h-12 w-auto object-contain">
-                            <p class="text-sm text-white leading-snug">{{ org.name }}</p>
-                        </a>
-                        {% else %}
-                        <div class="space-y-3">
-                            <img src="{% static org.logo %}" alt="{{ org.alt }}" class="h-12 w-auto object-contain">
-                            <p class="text-sm text-white leading-snug">{{ org.name }}</p>
-                        </div>
-                        {% endif %}
-                    </article>
                     {% endfor %}
                 </div>
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    {% if announcements %}
+    <section class="border-y border-white/10 bg-cbnv-navy-900/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="mb-8">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-cbnv-green-400">Atualizações</p>
+                <h2 class="mt-2 font-display text-3xl font-bold text-white">Comunicados Recentes</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                {% for announcement in announcements %}
+                <article class="rounded-2xl border border-white/10 bg-white/5 p-6">
+                    <p class="text-xs uppercase tracking-[0.16em] text-cbnv-text-muted">{{ announcement.get_category_display }}</p>
+                    <h3 class="mt-3 text-lg font-semibold text-white">{{ announcement.title }}</h3>
+                    {% if announcement.summary %}
+                    <p class="mt-3 text-sm leading-relaxed text-cbnv-text-muted">{{ announcement.summary }}</p>
+                    {% endif %}
+                    {% if announcement.external_url %}
+                    <a href="{{ announcement.external_url }}" target="_blank" rel="noopener noreferrer" class="mt-5 inline-flex text-sm font-semibold text-cbnv-green-400 hover:text-white transition-colors">Ler Comunicado<span class="sr-only">: {{ announcement.title }}</span></a>
+                    {% endif %}
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <article class="rounded-2xl border border-white/10 bg-white/5 p-6 lg:p-8">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-cbnv-green-400">Submissões</p>
+                <h2 class="mt-3 font-display text-3xl font-bold text-white">Trabalhos Científicos</h2>
+                <p class="mt-4 text-cbnv-text-muted">A submissão inicial não exige vídeo. Informações públicas sobre fases, modalidades finais e status serão mantidas nesta área.</p>
+                {% if submissions_page %}
+                <a href="{{ submissions_page.url }}" class="mt-6 inline-flex rounded-lg border border-white/15 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10">Ver Orientações</a>
+                {% endif %}
+            </article>
+            <article class="rounded-2xl border border-white/10 bg-white/5 p-6 lg:p-8">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-cbnv-green-400">Inscrição</p>
+                <h2 class="mt-3 font-display text-3xl font-bold text-white">{{ settings.core.CoreSettings.get_registration_status_display }}</h2>
+                <p class="mt-4 text-cbnv-text-muted">A inscrição será feita por plataforma externa quando o link oficial estiver disponível.</p>
+                {% if settings.core.CoreSettings.registration_is_available %}
+                <a href="{{ settings.core.CoreSettings.registration_link }}" class="mt-6 inline-flex rounded-lg bg-cbnv-blue-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-cbnv-blue-500">Acessar Inscrição</a>
+                {% elif registration_page %}
+                <a href="{{ registration_page.url }}" class="mt-6 inline-flex rounded-lg border border-white/15 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10">Detalhes da Inscrição</a>
+                {% endif %}
+            </article>
+        </div>
+    </section>
+
+    {% if supporting_entities or organizations %}
+    <section class="border-t border-white/10 bg-cbnv-navy-900/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="mb-8">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-cbnv-green-400">Apoio</p>
+                <h2 class="mt-2 font-display text-3xl font-bold text-white">Entidades de Apoio</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {% for sponsor in supporting_entities %}
+                <article class="rounded-xl border border-white/10 bg-white/5 p-5">
+                    <p class="font-semibold text-white">{{ sponsor.name }}</p>
+                    <p class="mt-1 text-sm text-cbnv-text-muted">{{ sponsor.get_category_display }}</p>
+                </article>
+                {% endfor %}
+                {% for org in organizations %}
+                <article class="rounded-xl border border-white/10 bg-white/5 p-5">
+                    {% if org.url %}
+                    <a href="{{ org.url }}" target="_blank" rel="noopener noreferrer" class="block space-y-3">
+                        <img src="{% static org.logo %}" alt="{{ org.alt }}" width="160" height="48" loading="lazy" class="h-12 w-auto object-contain">
+                        <p class="text-sm font-semibold text-white leading-snug">{{ org.name }}</p>
+                    </a>
+                    {% else %}
+                    <div class="space-y-3">
+                        <img src="{% static org.logo %}" alt="{{ org.alt }}" width="160" height="48" loading="lazy" class="h-12 w-auto object-contain">
+                        <p class="text-sm font-semibold text-white leading-snug">{{ org.name }}</p>
+                    </div>
+                    {% endif %}
+                </article>
+                {% endfor %}
             </div>
         </div>
     </section>

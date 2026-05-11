@@ -1,5 +1,9 @@
 # Public Content Integration Delta
 
+## Purpose
+
+Define content management and "coming soon" states for the public MVP.
+
 ## ADDED Requirements
 
 ### Requirement: Public pages consume CMS-backed global settings

@@ -1,5 +1,9 @@
 # Public CMS Page Delta
 
+## Purpose
+
+Define CMS settings and announcement consumption for the XII CBNV 2026 platform.
+
 ## ADDED Requirements
 
 ### Requirement: Wagtail public page types

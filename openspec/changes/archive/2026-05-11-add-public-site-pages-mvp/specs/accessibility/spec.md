@@ -1,5 +1,9 @@
 # Public Site Accessibility Delta
 
+## Purpose
+
+Define accessibility standards for the XII CBNV 2026 public website MVP.
+
 ## ADDED Requirements
 
 ### Requirement: Semantic page structure

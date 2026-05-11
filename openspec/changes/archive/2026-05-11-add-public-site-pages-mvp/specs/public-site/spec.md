@@ -1,5 +1,9 @@
 # Public Site MVP Delta
 
+## Purpose
+
+Define the core set of public pages and navigation for the XII CBNV 2026 website MVP.
+
 ## ADDED Requirements
 
 ### Requirement: Public page set

@@ -1,5 +1,9 @@
 # Program Public Rendering Delta
 
+## Purpose
+
+Define public program and speaker rendering requirements for the XII CBNV 2026 congress.
+
 ## ADDED Requirements
 
 ### Requirement: Public program rendering

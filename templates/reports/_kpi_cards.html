@@ -1,20 +1,20 @@
 <section aria-label="Indicadores gerais">
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="rounded-xl border border-gray-200 bg-white p-4 sm:p-5">
-            <p class="text-sm font-medium text-gray-500">Total de submissões</p>
-            <p class="mt-1 text-3xl font-bold text-cbnv-navy-950">{{ total|default:"0" }}</p>
+        <div class="rounded-xl border border-white/10 bg-cbnv-navy-900 p-4 sm:p-5">
+            <p class="text-sm font-medium text-cbnv-text-muted">Total de submissões</p>
+            <p class="mt-1 text-3xl font-bold text-cbnv-text-primary">{{ total|default:"0" }}</p>
         </div>
-        <div class="rounded-xl border border-gray-200 bg-white p-4 sm:p-5">
-            <p class="text-sm font-medium text-gray-500">Autores únicos</p>
-            <p class="mt-1 text-3xl font-bold text-cbnv-navy-950">{{ unique_authors|default:"0" }}</p>
+        <div class="rounded-xl border border-white/10 bg-cbnv-navy-900 p-4 sm:p-5">
+            <p class="text-sm font-medium text-cbnv-text-muted">Autores únicos</p>
+            <p class="mt-1 text-3xl font-bold text-cbnv-text-primary">{{ unique_authors|default:"0" }}</p>
         </div>
-        <div class="rounded-xl border border-gray-200 bg-white p-4 sm:p-5">
-            <p class="text-sm font-medium text-gray-500">Instituições</p>
-            <p class="mt-1 text-3xl font-bold text-cbnv-navy-950">{{ unique_institutions|default:"0" }}</p>
+        <div class="rounded-xl border border-white/10 bg-cbnv-navy-900 p-4 sm:p-5">
+            <p class="text-sm font-medium text-cbnv-text-muted">Instituições</p>
+            <p class="mt-1 text-3xl font-bold text-cbnv-text-primary">{{ unique_institutions|default:"0" }}</p>
         </div>
-        <div class="rounded-xl border border-gray-200 bg-white p-4 sm:p-5">
-            <p class="text-sm font-medium text-gray-500">Revisões concluídas</p>
-            <p class="mt-1 text-3xl font-bold text-cbnv-green-400">{{ completed|default:"0" }}<span class="text-base font-normal text-gray-400">/{{ total_assigned|default:"0" }}</span></p>
+        <div class="rounded-xl border border-white/10 bg-cbnv-navy-900 p-4 sm:p-5">
+            <p class="text-sm font-medium text-cbnv-text-muted">Revisões concluídas</p>
+            <p class="mt-1 text-3xl font-bold text-cbnv-green-400">{{ completed|default:"0" }}<span class="text-base font-normal text-cbnv-text-muted">/{{ total_assigned|default:"0" }}</span></p>
         </div>
     </div>
 </section>

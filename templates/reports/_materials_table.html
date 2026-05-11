@@ -1,35 +1,35 @@
 <section aria-label="Materiais finais e proceedings">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-        <h2 class="text-lg font-semibold text-cbnv-navy-950">Materiais Finais</h2>
+        <h2 class="text-lg font-semibold text-cbnv-text-primary">Materiais Finais</h2>
         <div class="flex items-center gap-2">
-            <a href="{% url 'reports:export_proceedings' %}?format=csv" class="text-xs text-gray-500 hover:text-gray-700 underline">CSV</a>
-            <span class="text-gray-300">|</span>
-            <a href="{% url 'reports:export_proceedings' %}?format=json" class="text-xs text-gray-500 hover:text-gray-700 underline">JSON</a>
+            <a href="{% url 'reports:export_proceedings' %}?format=csv" class="text-xs text-cbnv-text-muted hover:text-cbnv-text-secondary underline">CSV</a>
+            <span class="text-cbnv-text-muted">|</span>
+            <a href="{% url 'reports:export_proceedings' %}?format=json" class="text-xs text-cbnv-text-muted hover:text-cbnv-text-secondary underline">JSON</a>
         </div>
     </div>
 
-    <div class="overflow-x-auto rounded-xl border border-gray-200">
+    <div class="overflow-x-auto rounded-xl border border-white/10">
         <table class="w-full text-sm">
             <tbody class="divide-y divide-gray-100">
-                <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-2.5 text-gray-700">Total aceitos</td>
-                    <td class="px-4 py-2.5 text-right font-medium text-cbnv-navy-950">{{ total_accepted|default:"0" }}</td>
+                <tr class="hover:bg-cbnv-navy-900/5">
+                    <td class="px-4 py-2.5 text-cbnv-text-secondary">Total aceitos</td>
+                    <td class="px-4 py-2.5 text-right font-medium text-cbnv-text-primary">{{ total_accepted|default:"0" }}</td>
                 </tr>
-                <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-2.5 text-gray-700">Materiais entregues</td>
+                <tr class="hover:bg-cbnv-navy-900/5">
+                    <td class="px-4 py-2.5 text-cbnv-text-secondary">Materiais entregues</td>
                     <td class="px-4 py-2.5 text-right font-medium text-cbnv-green-400">{{ with_materials|default:"0" }}</td>
                 </tr>
-                <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-2.5 text-gray-700">Materiais pendentes</td>
+                <tr class="hover:bg-cbnv-navy-900/5">
+                    <td class="px-4 py-2.5 text-cbnv-text-secondary">Materiais pendentes</td>
                     <td class="px-4 py-2.5 text-right font-medium text-amber-500">{{ pending_materials|default:"0" }}</td>
                 </tr>
-                <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-2.5 text-gray-700">Com vídeo</td>
+                <tr class="hover:bg-cbnv-navy-900/5">
+                    <td class="px-4 py-2.5 text-cbnv-text-secondary">Com vídeo</td>
                     <td class="px-4 py-2.5 text-right font-medium text-cbnv-blue-600">{{ with_video|default:"0" }}</td>
                 </tr>
-                <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-2.5 text-gray-700">Publicados nos anais</td>
-                    <td class="px-4 py-2.5 text-right font-medium text-cbnv-navy-950">{{ published|default:"0" }}</td>
+                <tr class="hover:bg-cbnv-navy-900/5">
+                    <td class="px-4 py-2.5 text-cbnv-text-secondary">Publicados nos anais</td>
+                    <td class="px-4 py-2.5 text-right font-medium text-cbnv-text-primary">{{ published|default:"0" }}</td>
                 </tr>
             </tbody>
         </table>

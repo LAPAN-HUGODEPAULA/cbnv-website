@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Prefetch, Q
 from wagtail.admin.panels import FieldPanel
 from wagtail.models import TranslatableMixin
 from wagtail.snippets.models import register_snippet
@@ -80,6 +81,70 @@ ACTIVITY_BADGE_VARIANT = {
     BREAK: "draft",
 }
 
+PUBLIC_EMPTY_TALK_ACTIVITY_TYPES = {
+    BREAK,
+    RECEPTION,
+    OPENING_CEREMONY,
+    CLOSING_CEREMONY,
+    AWARDS,
+}
+
+
+class PublicProgramQuerySet(models.QuerySet):
+    def public(self):
+        return self.filter(status=PUBLISHED)
+
+    def chronological(self):
+        return self.order_by("day__sort_order", "day__date", "sort_order", "start_time", "title")
+
+
+class PublicTalkQuerySet(models.QuerySet):
+    def public(self):
+        return self.filter(status=CONFIRMED).filter(Q(speaker__isnull=True) | Q(speaker__status=CONFIRMED))
+
+    def ordered(self):
+        return self.order_by("sort_order", "title")
+
+
+class PublicSpeakerQuerySet(models.QuerySet):
+    def public(self):
+        return self.filter(status=CONFIRMED)
+
+    def linked_to_public_program(self):
+        return (
+            self.public()
+            .filter(talks__status=CONFIRMED, talks__session__status=PUBLISHED)
+            .distinct()
+            .order_by("sort_order", "name")
+        )
+
+
+def get_public_program_by_day():
+    public_talks = ProgramTalk.objects.public().select_related("speaker").ordered()
+    days = (
+        ProgramDay.objects.prefetch_related(
+            Prefetch(
+                "sessions",
+                queryset=ProgramSession.objects.public()
+                .chronological()
+                .prefetch_related(Prefetch("talks", queryset=public_talks, to_attr="public_talks")),
+                to_attr="public_sessions",
+            )
+        )
+        .order_by("sort_order", "date", "title")
+    )
+
+    program_data = []
+    for day in days:
+        sessions = []
+        for session in day.public_sessions:
+            talks = list(session.public_talks)
+            if talks or session.activity_type in PUBLIC_EMPTY_TALK_ACTIVITY_TYPES:
+                sessions.append({"session": session, "talks": talks})
+        if sessions:
+            program_data.append({"day": day, "sessions": sessions})
+    return program_data
+
 
 @register_snippet
 class Speaker(TranslatableMixin, models.Model):
@@ -100,6 +165,8 @@ class Speaker(TranslatableMixin, models.Model):
     lattes_url = models.URLField("Lattes", blank=True)
     status = models.CharField("Status", max_length=15, choices=SPEAKER_STATUS_CHOICES, default=PENDING)
     sort_order = models.IntegerField("Ordem", default=0)
+
+    objects = PublicSpeakerQuerySet.as_manager()
 
     panels = [
         FieldPanel("name"),
@@ -186,6 +253,8 @@ class ProgramSession(TranslatableMixin, models.Model):
     status = models.CharField("Status", max_length=15, choices=SESSION_STATUS_CHOICES, default=DRAFT)
     sort_order = models.IntegerField("Ordem", default=0)
 
+    objects = PublicProgramQuerySet.as_manager()
+
     panels = [
         FieldPanel("day"),
         FieldPanel("start_time"),
@@ -238,6 +307,8 @@ class ProgramTalk(TranslatableMixin, models.Model):
     description = models.TextField("Descrição", blank=True)
     status = models.CharField("Status do palestrante", max_length=15, choices=SPEAKER_STATUS_CHOICES, default=PENDING)
     sort_order = models.IntegerField("Ordem", default=0)
+
+    objects = PublicTalkQuerySet.as_manager()
 
     panels = [
         FieldPanel("session"),

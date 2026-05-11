@@ -3,29 +3,29 @@
 {% block wizard_content %}
 <div class="space-y-6">
     <section>
-        <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Metadados</h2>
+        <h2 class="text-sm font-semibold text-cbnv-text-muted uppercase tracking-wider mb-3">Metadados</h2>
         <dl class="grid grid-cols-1 gap-y-3 gap-x-6 sm:grid-cols-2">
             <div>
-                <dt class="text-xs text-gray-500">ID da submissão</dt>
-                <dd class="mt-0.5 text-sm font-mono text-gray-900">{{ submission.submission_id }}</dd>
+                <dt class="text-xs text-cbnv-text-muted">ID da submissão</dt>
+                <dd class="mt-0.5 text-sm font-mono text-cbnv-text-primary">{{ submission.submission_id }}</dd>
             </div>
             <div>
-                <dt class="text-xs text-gray-500">Eixo temático</dt>
-                <dd class="mt-0.5 text-sm text-gray-900">{{ submission.thematic_axis }}</dd>
+                <dt class="text-xs text-cbnv-text-muted">Eixo temático</dt>
+                <dd class="mt-0.5 text-sm text-cbnv-text-primary">{{ submission.thematic_axis }}</dd>
             </div>
             <div class="sm:col-span-2">
-                <dt class="text-xs text-gray-500">Título</dt>
-                <dd class="mt-0.5 text-sm text-gray-900">{{ submission.title }}</dd>
+                <dt class="text-xs text-cbnv-text-muted">Título</dt>
+                <dd class="mt-0.5 text-sm text-cbnv-text-primary">{{ submission.title }}</dd>
             </div>
             <div class="sm:col-span-2">
-                <dt class="text-xs text-gray-500">Resumo</dt>
-                <dd class="mt-0.5 text-sm text-gray-900 whitespace-pre-line">{{ submission.abstract }}</dd>
+                <dt class="text-xs text-cbnv-text-muted">Resumo</dt>
+                <dd class="mt-0.5 text-sm text-cbnv-text-primary whitespace-pre-line">{{ submission.abstract }}</dd>
             </div>
             <div class="sm:col-span-2">
-                <dt class="text-xs text-gray-500">Palavras-chave</dt>
-                <dd class="mt-0.5 text-sm text-gray-900">
+                <dt class="text-xs text-cbnv-text-muted">Palavras-chave</dt>
+                <dd class="mt-0.5 text-sm text-cbnv-text-primary">
                     {% for kw in submission.keywords %}
-                    <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-700 mr-1 mb-1">{{ kw }}</span>
+                    <span class="inline-flex items-center rounded-full bg-white/10 px-2.5 py-0.5 text-xs font-medium text-cbnv-text-secondary mr-1 mb-1">{{ kw }}</span>
                     {% endfor %}
                 </dd>
             </div>
@@ -33,35 +33,35 @@
     </section>
 
     <section>
-        <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Autores</h2>
-        <div class="divide-y divide-gray-100 border border-gray-200 rounded-lg">
+        <h2 class="text-sm font-semibold text-cbnv-text-muted uppercase tracking-wider mb-3">Autores</h2>
+        <div class="divide-y divide-gray-100 border border-white/10 rounded-lg">
             {% for author in authors %}
             <div class="flex items-center justify-between px-4 py-3">
                 <div>
-                    <p class="text-sm font-medium text-gray-900">
+                    <p class="text-sm font-medium text-cbnv-text-primary">
                         {{ author.full_name }}
                         {% if author.is_corresponding %}
                         <span class="ml-1 text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">Correspondente</span>
                         {% endif %}
                     </p>
-                    <p class="text-xs text-gray-500">{{ author.institution }}</p>
-                    <p class="text-xs text-gray-400">{{ author.email }}</p>
+                    <p class="text-xs text-cbnv-text-muted">{{ author.institution }}</p>
+                    <p class="text-xs text-cbnv-text-muted">{{ author.email }}</p>
                 </div>
-                <span class="text-xs text-gray-400">{{ author.order }}</span>
+                <span class="text-xs text-cbnv-text-muted">{{ author.order }}</span>
             </div>
             {% endfor %}
         </div>
     </section>
 
     <section>
-        <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Arquivo</h2>
+        <h2 class="text-sm font-semibold text-cbnv-text-muted uppercase tracking-wider mb-3">Arquivo</h2>
         {% if uploaded_file %}
-        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+        <div class="flex items-center justify-between p-4 border border-white/10 rounded-lg">
             <div class="flex items-center gap-3">
                 <svg class="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zM6 20V4h7v5h5v11H6z"/></svg>
                 <div>
-                    <p class="text-sm font-medium text-gray-900">{{ uploaded_file.filename }}</p>
-                    <p class="text-xs text-gray-500">{{ uploaded_file.filesize }}</p>
+                    <p class="text-sm font-medium text-cbnv-text-primary">{{ uploaded_file.filename }}</p>
+                    <p class="text-xs text-cbnv-text-muted">{{ uploaded_file.filesize }}</p>
                 </div>
             </div>
             <a href="{% url 'submissions:download_file' uploaded_file.pk %}"
@@ -78,14 +78,14 @@
 
 <div class="mt-8 flex justify-between">
     <a href="{% url 'submissions:wizard_step2' submission.pk %}"
-        class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-6 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2">
+        class="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-cbnv-navy-900 px-6 py-2.5 text-sm font-semibold text-cbnv-text-secondary hover:bg-cbnv-navy-900/5 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
         Voltar
     </a>
     <form method="post">
         {% csrf_token %}
         <button type="submit"
-            class="inline-flex items-center gap-2 rounded-lg bg-cbnv-green-400 px-6 py-2.5 text-sm font-semibold text-cbnv-navy-950 hover:bg-cbnv-green-300 transition-colors focus:outline-none focus:ring-2 focus:ring-cbnv-green-400 focus:ring-offset-2">
+            class="inline-flex items-center gap-2 rounded-lg bg-cbnv-green-400 px-6 py-2.5 text-sm font-semibold text-cbnv-text-primary hover:bg-cbnv-green-300 transition-colors focus:outline-none focus:ring-2 focus:ring-cbnv-green-400 focus:ring-offset-2">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
             Enviar trabalho
         </button>

@@ -26,6 +26,8 @@ class CoreSettings(TranslatableMixin, BaseSiteSetting):
     country = models.CharField("País", max_length=80, blank=True, default="Brasil")
     venue_name = models.CharField("Nome do local", max_length=255, blank=True)
     venue_short_name = models.CharField("Nome curto do local", max_length=120, blank=True)
+    venue_address = models.TextField("Endereço oficial do local", blank=True)
+    venue_access_notes = models.TextField("Orientações de acesso", blank=True)
     format_label = models.CharField("Formato", max_length=80, blank=True, default="Presencial")
     contact_email = models.EmailField("E-mail de Contato", blank=True)
     submissions_contact_email = models.EmailField("E-mail para submissões", blank=True)
@@ -95,6 +97,8 @@ class CoreSettings(TranslatableMixin, BaseSiteSetting):
                 FieldPanel("country"),
                 FieldPanel("venue_name"),
                 FieldPanel("venue_short_name"),
+                FieldPanel("venue_address"),
+                FieldPanel("venue_access_notes"),
                 FieldPanel("google_maps_url"),
             ],
             heading="Datas, formato e local",
@@ -157,6 +161,21 @@ class CoreSettings(TranslatableMixin, BaseSiteSetting):
     @property
     def primary_youtube_url(self):
         return self.youtube_channel_url or self.youtube_url
+
+    @property
+    def canonical_venue(self):
+        data = {
+            "name": self.venue_name,
+            "short_name": self.venue_short_name,
+            "address": self.venue_address,
+            "location": self.location,
+            "city": self.city,
+            "state": self.state,
+            "country": self.country,
+            "google_maps_url": self.google_maps_url,
+            "access_notes": self.venue_access_notes,
+        }
+        return {key: value for key, value in data.items() if value}
 
 @register_setting
 class SiteMenu(TranslatableMixin, BaseSiteSetting):

@@ -44,3 +44,19 @@ def test_core_settings_link_status_helpers():
     assert settings.registration_is_available is False
     assert settings.livestream_is_available is True
     assert settings.primary_youtube_url == "https://youtube.com/@cbnv"
+
+
+def test_core_settings_canonical_venue_omits_missing_optional_fields():
+    settings = CoreSettings(
+        venue_name="Centro de Atividades Didáticas 1 (CAD-1), UFMG Campus Pampulha",
+        venue_short_name="CAD-1/UFMG",
+        venue_address="R. Prof. Baeta Viana, s/n - Pampulha, Belo Horizonte - MG, 31270-901",
+        google_maps_url="https://maps.app.goo.gl/xzqJ2LCAHVP4hsFp6",
+        venue_access_notes="",
+        city="Belo Horizonte",
+    )
+
+    assert settings.canonical_venue["name"] == "Centro de Atividades Didáticas 1 (CAD-1), UFMG Campus Pampulha"
+    assert settings.canonical_venue["address"].startswith("R. Prof. Baeta Viana")
+    assert settings.canonical_venue["google_maps_url"] == "https://maps.app.goo.gl/xzqJ2LCAHVP4hsFp6"
+    assert "access_notes" not in settings.canonical_venue

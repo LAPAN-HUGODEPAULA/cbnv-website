@@ -26,7 +26,8 @@ def test_seed_canonical_event_content_creates_settings_if_missing():
     assert settings.country == "Brasil"
     assert settings.venue_name == "Centro de Atividades Didáticas 1 (CAD-1), UFMG Campus Pampulha"
     assert settings.venue_short_name == "CAD-1/UFMG"
-    assert "R. Prof. Baeta Viana" in settings.location
+    assert settings.location == "CAD-1/UFMG, Belo Horizonte, MG"
+    assert settings.venue_address == "R. Prof. Baeta Viana, s/n - Pampulha, Belo Horizonte - MG, 31270-901"
     assert settings.google_maps_url == "https://maps.app.goo.gl/xzqJ2LCAHVP4hsFp6"
     assert "FAPEMIG" in settings.fapemig_text
     assert settings.default_seo_title

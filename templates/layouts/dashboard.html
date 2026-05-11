@@ -82,10 +82,10 @@
         x-cloak>
     </div>
 
-    <div class="flex-1 flex flex-col bg-cbnv-navy-950">
-        <header class="flex h-16 items-center justify-between gap-4 border-b border-white/10 px-4 sm:px-6 bg-cbnv-navy-950">
+    <div class="flex-1 flex flex-col">
+        <header class="flex h-16 items-center justify-between gap-4 border-b border-gray-200 px-4 sm:px-6 bg-white">
             <button
-                class="lg:hidden p-2 rounded-lg text-cbnv-text-muted hover:text-cbnv-text-light hover:bg-white/10 transition-colors"
+                class="lg:hidden p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
                 @click="sidebarOpen = !sidebarOpen"
                 :aria-expanded="sidebarOpen"
                 aria-label="Abrir menu">
@@ -93,14 +93,14 @@
             </button>
 
             <div class="flex items-center gap-2">
-                <span class="font-display text-lg font-semibold text-cbnv-green-400 lg:hidden">CBNV 2026</span>
+                <span class="font-display text-lg font-semibold text-cbnv-navy-950 lg:hidden">CBNV 2026</span>
             </div>
 
             <div class="flex items-center gap-3">
-                <span class="text-sm text-cbnv-text-muted hidden sm:inline">
+                <span class="text-sm text-gray-600 hidden sm:inline">
                     Olá, {{ user.first_name|default:user.username }}
                 </span>
-                <a href="{{ url_profile }}" class="w-8 h-8 rounded-full bg-cbnv-blue-600 text-white flex items-center justify-center text-xs font-bold shadow-cbnv-glow-blue">
+                <a href="{{ url_profile }}" class="w-8 h-8 rounded-full bg-cbnv-blue-600 text-white flex items-center justify-center text-xs font-bold">
                     {{ user.first_name.0|default:user.username.0|upper }}
                 </a>
             </div>

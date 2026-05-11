@@ -10,8 +10,12 @@ FALLBACK_MENU = [
     ("Início", None, "/"),
     ("Sobre", "sobre", None),
     ("Programação", "programacao", None),
+    ("Palestrantes", "palestrantes", None),
     ("Submissões", "submissoes", "/submissoes/"),
+    ("Inscrição", "inscricao", None),
+    ("Patrocínio", "patrocinadores", None),
     ("Edições Anteriores", "edicoes-anteriores", None),
+    ("Contato", "contato", None),
 ]
 
 

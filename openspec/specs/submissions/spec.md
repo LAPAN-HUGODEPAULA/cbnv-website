@@ -1,8 +1,90 @@
 # Submissões (submissions)
 
 ## Purpose
-Gerenciar o ciclo de vida de submissões de trabalhos científicos, incluindo listagem para autores e painel de controle para chairs.
+Gerenciar o ciclo de vida de submissões de trabalhos científicos, incluindo o fluxo inicial de autoria, metadados, arquivos protegidos e o acompanhamento posterior por chairs e revisores.
 ## Requirements
+### Requirement: Initial submission creation
+
+Authenticated authors SHALL be able to create an initial scientific submission.
+
+#### Scenario: Authenticated author creates submission
+
+Given an authenticated user with author role  
+When they submit valid metadata, author information and initial PDF  
+Then a `Submission` SHALL be created or finalized with submitted status.
+
+#### Scenario: Unauthenticated user cannot create submission
+
+Given an unauthenticated visitor  
+When they request the submission creation view  
+Then they SHALL be redirected to login.
+
+### Requirement: Submission metadata
+
+The initial submission SHALL store core scientific metadata.
+
+#### Scenario: Submission metadata is saved
+
+Given an author submits title, abstract, keywords and thematic axis  
+When the submission is saved  
+Then those values SHALL be stored with the submission.
+
+### Requirement: Ordered submission authors
+
+The initial submission SHALL support multiple ordered authors.
+
+#### Scenario: Multiple authors are saved
+
+Given an author enters multiple contributors  
+When the submission is saved  
+Then the contributors SHALL be stored in an explicit order.
+
+### Requirement: Initial submission status
+
+The initial submission SHALL have a status suitable for the pre-review phase.
+
+#### Scenario: Submission is finalized
+
+Given a valid submission is finalized  
+When it is saved  
+Then the status SHALL indicate it has been submitted and is ready for later workflow steps.
+
+### Requirement: Submission status transitions for decision
+
+The submission status machine SHALL support transitions from review states to final decision states.
+
+#### Scenario: Decision to accept as oral
+- **WHEN** a decision is made to accept a submission as oral presentation
+- **THEN** the status SHALL transition to `accepted_oral` and `final_modality` SHALL be set to `oral`.
+
+#### Scenario: Decision to reject
+- **WHEN** a decision is made to reject a submission
+- **THEN** the status SHALL transition to `rejected`.
+
+### Requirement: Decision metadata
+
+Submissions SHALL store the final modality and decision notes provided by the chair.
+
+#### Scenario: Chair provides decision notes
+- **WHEN** a chair issues a decision with notes
+- **THEN** these notes SHALL be stored with the submission and included in the author notification.
+
+### Requirement: Video is not required initially
+
+The initial submission flow SHALL NOT require video.
+
+#### Scenario: Author submits without video
+
+Given an author completes all required initial submission fields and uploads the required PDF  
+When they submit without a video file or video link  
+Then the submission SHALL be accepted if all other validation passes.
+
+#### Scenario: Initial form has no video requirement
+
+Given the initial submission form is displayed  
+When the author reviews required fields  
+Then video SHALL NOT appear as a required field.
+
 ### Requirement: Nenhum fluxo de submissão na base de contas
 A base de contas/dashboard SHALL NOT implementar o fluxo de trabalho de submissão do autor.
 
@@ -153,4 +235,25 @@ Arquivos anexados a submissões (PDF, arquivos complementares) SHALL ser servido
 #### Scenario: Direct media URL returns 404
 - **WHEN** uma requisição é feita para `/media/submissions/<qualquer-caminho>`
 - **THEN** o Nginx SHALL retornar HTTP 404
+
+### Requirement: No submission workflow in account foundation
+
+The accounts/dashboard foundation SHALL not implement the author submission workflow.
+
+#### Scenario: Author dashboard exists before submission flow
+
+Given the author dashboard is implemented
+When the user opens it
+Then it MAY show a future submission placeholder
+And SHALL NOT create, edit, submit or upload scientific submissions.
+
+### Requirement: Future submission integration point
+
+The author dashboard SHALL provide a clear integration point for the later submission-flow proposal.
+
+#### Scenario: Later submission proposal starts
+
+Given the author dashboard shell exists
+When the submission-flow proposal is implemented later
+Then it SHALL be able to attach submission listing/creation behavior without replacing authentication foundation.
 

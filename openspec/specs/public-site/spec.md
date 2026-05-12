@@ -86,7 +86,6 @@ Trabalhos publicados SHALL ter seu PDF final disponível para download público.
 - **WHEN** alguém tenta acessar diretamente o URL do PDF
 - **THEN** o sistema SHALL negar o acesso (403)
 
-
 ### Requirement: Footer FAPEMIG acknowledgement
 O rodape publico SHALL exibir o logotipo da FAPEMIG originado de `_legacy/fapemig-logo.svg` juntamente com o nome "FAPEMIG" ou "Fundacao de Amparo a Pesquisa do Estado de Minas Gerais".
 
@@ -185,7 +184,6 @@ Antes da aprovacao editorial final no CMS, o layout shell publico SHALL usar pla
 - **WHEN** o shell de layout precisar de conteudo temporario
 - **THEN** o texto SHALL usar placeholders neutros e delegar afirmacoes editoriais para blocos/conteudos gerenciados
 
-
 ### Requirement: Páginas públicas podem linkar para pontos de entrada de conta
 O site público SHALL ser capaz de linkar para pontos de entrada de registro de conta, login ou dashboard sem implicar que fluxos de trabalho inacabados estão disponíveis.
 
@@ -202,5 +200,23 @@ Os formulários de conta públicos SHALL usar o sistema de design estabelecido e
 - **WHEN** um usuário visualiza o formulário
 - **THEN** o formulário SHALL ter rótulos, erros visíveis e layout responsivo consistente com o site público.
 
+### Requirement: Public pages can link to account entry points
 
+The public site SHALL be able to link to account registration, login or dashboard entry points without implying unfinished workflows are available.
+
+#### Scenario: Submission CTA before workflow exists
+
+Given the submission workflow is not yet implemented
+When a user follows an account-related submission CTA
+Then the resulting account/dashboard page SHALL clearly state the workflow is not yet available.
+
+### Requirement: Account forms use public design system
+
+Public account forms SHALL use the established design system and layout conventions.
+
+#### Scenario: Registration form renders
+
+Given the registration page renders
+When a user views the form
+Then the form SHALL have labels, visible errors and responsive layout consistent with the public site.
 

@@ -93,3 +93,44 @@ O sistema SHALL enviar email ao autor quando o status da sua submissão mudar pa
 #### Scenario: Author notified of rejection
 - **WHEN** uma decisão é registrada para uma submissão e o status muda para `rejected`
 - **THEN** o autor SHALL receber email com o resultado
+
+### Requirement: Reviewer assigned notification
+
+The system SHALL notify reviewers via e-mail when they are assigned to a submission.
+
+#### Scenario: Reviewer notified of assignment
+- **WHEN** a chair assigns a reviewer to a submission
+- **THEN** an e-mail SHALL be sent to the reviewer with the submission title and a link to the evaluation form.
+
+### Requirement: Decision notification for authors
+
+The system SHALL notify authors via e-mail when a final decision has been issued for their submission.
+
+#### Scenario: Author notified of decision
+- **WHEN** a chair issues a final decision for a submission
+- **THEN** an e-mail SHALL be sent to the corresponding author containing the decision outcome and any public notes from the commission.
+
+### Requirement: Submission confirmation
+
+The platform SHALL provide confirmation after successful initial submission and SHALL send a confirmation e-mail when e-mail is configured.
+
+#### Scenario: Confirmation e-mail sent
+
+Given e-mail backend is configured  
+When an author successfully submits an initial submission  
+Then a confirmation e-mail SHALL be sent to the corresponding author or submitter.
+
+#### Scenario: E-mail failure does not lose submission
+
+Given the submission was saved successfully  
+When confirmation e-mail fails  
+Then the submission SHALL remain saved and the failure SHALL be handled without corrupting submission data.
+
+### Requirement: Confirmation content
+
+The confirmation message SHALL include key submission information.
+
+#### Scenario: Confirmation message content
+
+Given a confirmation e-mail is generated  
+Then it SHALL include submission code, title, submitted timestamp and a reminder that video is not required at the initial stage.

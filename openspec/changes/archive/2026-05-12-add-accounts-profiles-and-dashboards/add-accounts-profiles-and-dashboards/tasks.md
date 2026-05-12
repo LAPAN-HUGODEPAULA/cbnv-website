@@ -164,8 +164,8 @@
 ## PR checklist
 
 - [x] Branch is `change/add-accounts-profiles-and-dashboards`.
-- [ ] PR title starts with `[add-accounts-profiles-and-dashboards]`.
-- [ ] PR body includes `Closes #11`.
+- [x] PR title starts with `[add-accounts-profiles-and-dashboards]`.
+- [x] PR body includes `Closes #11`.
 - [x] PR does not implement submissions.
 - [x] PR does not implement review assignments/forms.
 - [x] PR does not introduce custom user model.

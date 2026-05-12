@@ -33,7 +33,7 @@ def complete_profile_required(view_func=None):
         return user_has_complete_author_profile(u)
     actual_decorator = user_passes_test(
         check,
-        login_url="/conta/perfil/",
+        login_url="/conta/perfil/editar/",
         redirect_field_name=None,
     )
     if view_func:

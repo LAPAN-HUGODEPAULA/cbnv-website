@@ -1,10 +1,11 @@
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseNotAllowed
 from django.shortcuts import redirect, render
-from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, UpdateView
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
 
 from .decorators import author_required, chair_required, reviewer_required
 from .forms import ProfileForm, RegistrationForm
@@ -15,6 +16,15 @@ class RegisterView(CreateView):
     form_class = RegistrationForm
     template_name = "accounts/register.html"
     success_url = reverse_lazy("dashboard:redirect")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.setdefault("title", "Criar conta")
+        context.setdefault(
+            "subtitle",
+            "Preencha seus dados para acessar o painel do CBNV 2026.",
+        )
+        return context
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -32,11 +42,39 @@ register = RegisterView.as_view()
 @login_required
 def dashboard_redirect(request):
     user = request.user
-    if user_has_role(user, "is_chair"):
-        return redirect("dashboard:chair")
-    if user_has_role(user, "is_reviewer"):
-        return redirect("dashboard:reviewer")
-    return redirect("dashboard:author")
+    profile = get_or_create_profile(user)
+    roles = [
+        {
+            "key": "author",
+            "label": "Autor",
+            "description": "Área para acompanhar submissões quando o fluxo científico estiver disponível.",
+            "url": reverse_lazy("dashboard:author"),
+            "enabled": user_has_role(user, "is_author"),
+        },
+        {
+            "key": "reviewer",
+            "label": "Revisor",
+            "description": "Área reservada para futuras avaliações atribuídas pela comissão.",
+            "url": reverse_lazy("dashboard:reviewer"),
+            "enabled": user_has_role(user, "is_reviewer"),
+        },
+        {
+            "key": "chair",
+            "label": "Comissão científica",
+            "description": "Área reservada para futuras ferramentas de coordenação científica.",
+            "url": reverse_lazy("dashboard:chair"),
+            "enabled": user_has_role(user, "is_chair"),
+        },
+    ]
+    return render(
+        request,
+        "dashboard/index.html",
+        {
+            "profile": profile,
+            "roles": roles,
+            "available_roles": [role for role in roles if role["enabled"]],
+        },
+    )
 
 
 @login_required
@@ -77,45 +115,32 @@ def reviewer_dashboard(request):
 @login_required
 @chair_required
 def chair_dashboard(request):
-    from submissions.models import Submission
-
-    total = Submission.objects.count()
-    in_review = Submission.objects.filter(
-        status__in=[
-            "admin_screening", "assigned_to_reviewers",
-            "under_review", "reviews_completed", "decision_pending",
-        ]
-    ).count()
-    decisions = Submission.objects.filter(
-        status__in=["accepted_oral", "accepted_poster", "accepted_video", "rejected"]
-    ).count()
-    pending_materials = Submission.objects.filter(status="final_materials_pending").count()
-    validated = Submission.objects.filter(status="ready_for_proceedings").count()
-    published = Submission.objects.filter(status="published_in_proceedings").count()
-
-    return render(
-        request,
-        "dashboard/chair.html",
-        {
-            "total": total,
-            "in_review": in_review,
-            "decisions": decisions,
-            "pending_materials": pending_materials,
-            "validated": validated,
-            "published": published,
-        },
-    )
+    return render(request, "dashboard/chair.html")
 
 
 @login_required
-@author_required
+def profile_detail(request):
+    profile = get_or_create_profile(request.user)
+    return render(request, "accounts/profile_detail.html", {"profile": profile})
+
+
+@login_required
 def profile_edit(request):
     if request.method == "POST":
         form = ProfileForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, "Perfil atualizado com sucesso.")
-            return redirect("dashboard:author")
+            return redirect("accounts:profile")
     else:
         form = ProfileForm(instance=request.user)
     return render(request, "accounts/profile_edit.html", {"form": form})
+
+
+@login_required
+def logout_view(request):
+    if request.method != "POST":
+        return HttpResponseNotAllowed(["POST"])
+    logout(request)
+    messages.success(request, "Você saiu da sua conta.")
+    return redirect(settings.LOGOUT_REDIRECT_URL)

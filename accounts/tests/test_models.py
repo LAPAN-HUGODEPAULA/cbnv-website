@@ -1,4 +1,4 @@
-from django.core.exceptions import ValidationError
+from django.conf import settings
 from django.test import TestCase
 
 from accounts.models import User, UserProfile
@@ -6,6 +6,10 @@ from accounts.tests.factories import create_user_with_profile
 
 
 class UserModelTest(TestCase):
+    def test_project_uses_default_django_user(self):
+        self.assertEqual(settings.AUTH_USER_MODEL, "auth.User")
+        self.assertEqual(User._meta.label, "auth.User")
+
     def test_create_user_with_profile_fields(self):
         user = create_user_with_profile(
             username="testuser",
@@ -70,7 +74,7 @@ class UserModelTest(TestCase):
 
 
 class UserRoleEnforcementTest(TestCase):
-    def test_user_with_no_role_fails_validation(self):
+    def test_user_with_no_role_is_allowed_for_pending_dashboard_state(self):
         user = User.objects.create_user(
             username="norole",
             email="norole@example.com",
@@ -78,8 +82,10 @@ class UserRoleEnforcementTest(TestCase):
             last_name="Role",
         )
         profile = user.profile
-        with self.assertRaises(ValidationError):
-            profile.clean()
+        profile.clean()
+        self.assertFalse(profile.is_author)
+        self.assertFalse(profile.is_reviewer)
+        self.assertFalse(profile.is_chair)
 
     def test_author_role_passes_validation(self):
         user = User.objects.create_user(username="author1")

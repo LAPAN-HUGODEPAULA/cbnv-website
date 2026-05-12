@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 
 
@@ -19,20 +19,8 @@ class UserProfile(models.Model):
     is_chair = models.BooleanField("Comissão Científica", default=False)
     consent_privacy = models.BooleanField("Consentimento de privacidade", default=False)
     consent_image = models.BooleanField("Consentimento de uso de imagem", default=False)
-
-    def clean(self):
-        super().clean()
-        if not (
-            self.is_author
-            or self.is_reviewer
-            or self.is_chair
-            or self.user.is_staff
-            or self.user.is_superuser
-        ):
-            raise ValidationError(
-                "Todo usuário deve ter pelo menos um papel atribuído "
-                "(autor, revisor, comissão científica, staff ou superuser)."
-            )
+    created_at = models.DateTimeField("Criado em", auto_now_add=True)
+    updated_at = models.DateTimeField("Atualizado em", auto_now=True)
 
     class Meta:
         verbose_name = "Perfil de usuário"

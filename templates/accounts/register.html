@@ -7,19 +7,19 @@
     {% csrf_token %}
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {% include "components/input.html" with id="id_first_name" label="Nome" name="first_name" type="text" required=True value=form.first_name.value|default:'' %}
-        {% include "components/input.html" with id="id_last_name" label="Sobrenome" name="last_name" type="text" required=True value=form.last_name.value|default:'' %}
+        {% include "components/input.html" with id="id_first_name" label="Nome" name="first_name" type="text" required=True value=form.first_name.value|default:'' error=form.first_name.errors.0 %}
+        {% include "components/input.html" with id="id_last_name" label="Sobrenome" name="last_name" type="text" required=True value=form.last_name.value|default:'' error=form.last_name.errors.0 %}
     </div>
 
-    {% include "components/input.html" with id="id_username" label="Usuário" name="username" type="text" required=True placeholder="nome.sobrenome" value=form.username.value|default:'' help_text="Será usado para login." %}
-    {% include "components/input.html" with id="id_email" label="E-mail" name="email" type="email" required=True value=form.email.value|default:'' %}
+    {% include "components/input.html" with id="id_username" label="Usuário" name="username" type="text" required=True placeholder="nome.sobrenome" value=form.username.value|default:'' help_text="Será usado para login." error=form.username.errors.0 %}
+    {% include "components/input.html" with id="id_email" label="E-mail" name="email" type="email" required=True value=form.email.value|default:'' error=form.email.errors.0 %}
 
-    {% include "components/input.html" with id="id_institution" label="Instituição" name="institution" type="text" required=True value=form.institution.value|default:'' %}
-    {% include "components/input.html" with id="id_position" label="Vínculo/Cargo" name="position" type="text" required=True value=form.position.value|default:'' %}
-    {% include "components/input.html" with id="id_country" label="País" name="country" tag="select" required=True choices=form.fields.country.choices value=form.country.value|default:'' %}
+    {% include "components/input.html" with id="id_institution" label="Instituição" name="institution" type="text" required=True value=form.institution.value|default:'' error=form.institution.errors.0 %}
+    {% include "components/input.html" with id="id_position" label="Vínculo/Cargo" name="position" type="text" required=True value=form.position.value|default:'' error=form.position.errors.0 %}
+    {% include "components/input.html" with id="id_country" label="País" name="country" tag="select" required=True choices=form.fields.country.choices value=form.country.value|default:'' error=form.country.errors.0 %}
 
-    {% include "components/input.html" with id="id_password1" label="Senha" name="password1" type="password" required=True help_text="Mínimo 8 caracteres." %}
-    {% include "components/input.html" with id="id_password2" label="Confirmar senha" name="password2" type="password" required=True %}
+    {% include "components/input.html" with id="id_password1" label="Senha" name="password1" type="password" required=True help_text="Mínimo 8 caracteres." error=form.password1.errors.0 %}
+    {% include "components/input.html" with id="id_password2" label="Confirmar senha" name="password2" type="password" required=True error=form.password2.errors.0 %}
 
     <div class="space-y-2 pt-2">
         <label class="flex items-start gap-3 cursor-pointer">
@@ -27,6 +27,9 @@
                 class="mt-0.5 h-4 w-4 rounded border-white/10 bg-cbnv-navy-900 text-cbnv-blue-600 focus:ring-cbnv-blue-600">
             <span class="text-sm text-cbnv-text-muted">{{ form.fields.consent_privacy.label }}</span>
         </label>
+        {% if form.consent_privacy.errors %}
+            <p class="text-xs text-red-300" role="alert">{{ form.consent_privacy.errors.0 }}</p>
+        {% endif %}
         <label class="flex items-start gap-3 cursor-pointer">
             <input type="checkbox" name="consent_image"
                 class="mt-0.5 h-4 w-4 rounded border-white/10 bg-cbnv-navy-900 text-cbnv-blue-600 focus:ring-cbnv-blue-600">

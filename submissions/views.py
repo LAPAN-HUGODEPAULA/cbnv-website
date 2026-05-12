@@ -48,6 +48,17 @@ def download_file(request, file_id):
 
 @login_required
 @complete_profile_required
+def submission_detail(request, pk):
+    submission = get_object_or_404(Submission, pk=pk, submitter=request.user)
+    return render(
+        request,
+        "submissions/submission_detail.html",
+        {"submission": submission, "reviews": submission.get_public_reviews()},
+    )
+
+
+@login_required
+@complete_profile_required
 def wizard_step1(request, submission_pk=None):
     submission = None
     if submission_pk:

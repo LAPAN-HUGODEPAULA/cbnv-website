@@ -184,6 +184,13 @@ class Submission(models.Model):
     def get_corresponding_author(self):
         return self.authors.filter(is_corresponding=True).first()
 
+    def get_public_reviews(self):
+        """Returns anonymized reviews with only public feedback."""
+        from reviews.models import Review
+        return Review.objects.filter(assignment__submission=self).only(
+            "recommendation", "comments"
+        ).order_by("submitted_at")
+
 
 class SubmissionAuthor(models.Model):
     submission = models.ForeignKey(

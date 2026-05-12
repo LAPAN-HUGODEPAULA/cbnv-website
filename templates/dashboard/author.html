@@ -3,9 +3,19 @@
 {% block title %}Painel do Autor — {{ block.super }}{% endblock %}
 
 {% block content %}
-<div class="mb-6">
-    <h1 class="text-2xl font-bold text-cbnv-navy-950">Painel do Autor</h1>
-    <p class="mt-1 text-sm text-gray-500">Acompanhe seus trabalhos e prepare-se para o fluxo científico do CBNV 2026.</p>
+<div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+        <h1 class="text-2xl font-bold text-cbnv-navy-950">Painel do Autor</h1>
+        <p class="mt-1 text-sm text-gray-500">Acompanhe seus trabalhos e prepare-se para o fluxo científico do CBNV 2026.</p>
+    </div>
+    {% if settings.core.CoreSettings.submissions_is_available %}
+    <div>
+        <a href="{% url 'submissions:wizard_new' %}" class="inline-flex items-center justify-center rounded-lg bg-cbnv-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-cbnv-blue-700 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cbnv-blue-600">
+            <svg class="-ml-0.5 mr-1.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" /></svg>
+            Nova submissão
+        </a>
+    </div>
+    {% endif %}
 </div>
 
 {% if submissions %}
@@ -43,6 +53,8 @@
                         <a href="{% url 'submissions:wizard_edit' submission.pk %}" class="text-cbnv-blue-600 hover:text-cbnv-blue-800 font-medium">Editar</a>
                     {% elif submission.status == 'final_materials_pending' %}
                         <a href="{% url 'proceedings:author_upload' submission.pk %}" class="text-cbnv-blue-600 hover:text-cbnv-blue-800 font-medium">Enviar materiais</a>
+                    {% else %}
+                        <a href="{% url 'submissions:detail' submission.pk %}" class="text-cbnv-blue-600 hover:text-cbnv-blue-800 font-medium">Ver detalhes</a>
                     {% endif %}
                 </td>
             </tr>
@@ -54,10 +66,22 @@
 <div class="rounded-xl border border-dashed border-gray-300 p-12 text-center">
     <svg class="mx-auto w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
     <h2 class="text-lg font-semibold text-gray-600">Nenhuma submissão</h2>
-    <p class="mt-1 text-sm text-gray-400">A criação de novas submissões será liberada no fluxo científico próprio. Por enquanto, esta área confirma que seu perfil de autor está ativo.</p>
-    <a href="/submissoes/" class="mt-5 inline-flex items-center justify-center rounded-lg border border-cbnv-blue-600 px-4 py-2 text-sm font-medium text-cbnv-blue-600 transition-colors hover:bg-cbnv-blue-600 hover:text-white">
-        Ver página de submissões
-    </a>
+    <p class="mt-1 text-sm text-gray-400">
+        {% if settings.core.CoreSettings.submissions_is_available %}
+            Você ainda não criou nenhuma submissão para este congresso.
+        {% else %}
+            A criação de novas submissões será liberada no fluxo científico próprio. Por enquanto, esta área confirma que seu perfil de autor está ativo.
+        {% endif %}
+    </p>
+    {% if settings.core.CoreSettings.submissions_is_available %}
+        <a href="{% url 'submissions:wizard_new' %}" class="mt-5 inline-flex items-center justify-center rounded-lg bg-cbnv-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-cbnv-blue-700 transition-colors">
+            Começar submissão
+        </a>
+    {% else %}
+        <a href="/submissoes/" class="mt-5 inline-flex items-center justify-center rounded-lg border border-cbnv-blue-600 px-4 py-2 text-sm font-medium text-cbnv-blue-600 transition-colors hover:bg-cbnv-blue-600 hover:text-white">
+            Ver página de submissões
+        </a>
+    {% endif %}
 </div>
 {% endif %}
 {% endblock %}

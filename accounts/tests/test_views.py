@@ -167,10 +167,13 @@ class DashboardAccessTest(TestCase):
         self.client.login(username="chair_all", password="pass")
         response = self.client.get(reverse("dashboard:author"))
         self.assertEqual(response.status_code, 200)
+        
+        # Now these redirect to scientific workflow views
         response = self.client.get(reverse("dashboard:reviewer"))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
+        
         response = self.client.get(reverse("dashboard:chair"))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
     def test_login_view_loads(self):
         response = self.client.get(reverse("accounts:login"))

@@ -109,13 +109,13 @@ def author_dashboard(request):
 @login_required
 @reviewer_required
 def reviewer_dashboard(request):
-    return render(request, "dashboard/reviewer.html")
+    return redirect("reviews:reviewer_submissions")
 
 
 @login_required
 @chair_required
 def chair_dashboard(request):
-    return render(request, "dashboard/chair.html")
+    return redirect("reviews:manage_submissions")
 
 
 @login_required

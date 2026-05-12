@@ -2,8 +2,23 @@
 
 ## Purpose
 Gerenciar a atribuição de revisões e o acompanhamento do status de avaliações por revisores e chairs.
-
 ## Requirements
+### Requirement: Nenhum fluxo de revisão na base de contas
+A base de contas/dashboard SHALL NOT implementar atribuição de revisão, formulários de revisão ou fluxo de trabalho de decisão.
+
+#### Scenario: Dashboard de revisor existe antes do fluxo de revisão
+- **GIVEN** que o dashboard de revisor está implementado
+- **WHEN** um revisor o abre
+- **THEN** ele PODE exibir um placeholder de revisões atribuídas futuras
+- **AND** SHALL NOT criar atribuições de revisão ou formulários de revisão.
+
+### Requirement: Ponto de integração futuro para revisões
+Os dashboards de revisor e chair SHALL fornecer pontos de integração claros para a implementação posterior do fluxo de trabalho de revisão.
+
+#### Scenario: Proposta de revisão posterior inicia
+- **GIVEN** que os shells de dashboard de revisor e chair existem
+- **WHEN** o fluxo de trabalho de revisão for implementado posteriormente
+- **THEN** ele SHALL ser capaz de anexar comportamento de atribuição de revisão e decisão sem substituir a base de autenticação.
 
 ### Requirement: Review Assignment List for Reviewers
 The system SHALL display a list of all submissions assigned to the authenticated reviewer for evaluation.
@@ -68,3 +83,5 @@ Numeric rating scales (e.g., 1-5) SHALL be implemented using accessible radio gr
 #### Scenario: Rating via keyboard
 - **WHEN** a reviewer uses arrow keys to navigate a rating scale
 - **THEN** the selection SHALL update and be announced by the screen reader
+
+

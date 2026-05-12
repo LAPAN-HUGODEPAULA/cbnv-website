@@ -5,6 +5,43 @@ Estabelecer diretrizes de segurança, gestão de dados sensíveis e configuraç�
 
 ## Requirements
 
+### Requirement: Autenticação segura
+A autenticação de conta SHALL usar primitivas de autenticação do Django.
+
+#### Scenario: Senha é definida
+- **GIVEN** que um usuário se registra
+- **WHEN** sua senha é armazenada
+- **THEN** ela SHALL ser armazenada usando hashing de senha do Django, não texto simples.
+
+#### Scenario: Proteção CSRF está ativa
+- **GIVEN** que um usuário envia formulários de login, registro ou perfil
+- **WHEN** o formulário é processado
+- **THEN** a proteção CSRF do Django SHALL ser aplicada.
+
+### Requirement: Prevenção de escalonamento de privilégios
+Os formulários de conta públicos SHALL NOT expor papéis privilegiados ou campos de staff.
+
+#### Scenario: Formulário de registro público é inspecionado
+- **GIVEN** que o formulário de registro renderiza
+- **WHEN** seus campos são inspecionados
+- **THEN** os campos `is_staff`, `is_superuser` e campos de papel de chair SHALL NOT ser editáveis pelo usuário.
+
+### Requirement: Áreas internas protegidas por papel
+Dashboards específicos de papel SHALL aplicar verificações de papel.
+
+#### Scenario: Usuário carece do papel de revisor
+- **GIVEN** que um usuário carece do papel de revisor
+- **WHEN** ele solicita o dashboard de revisor
+- **THEN** o acesso SHALL ser negado ou redirecionado.
+
+### Requirement: Redirecionamentos seguros
+As views de autenticação SHALL evitar redirecionamentos inseguros.
+
+#### Scenario: Parâmetro next do login é externo
+- **GIVEN** que uma requisição de login inclui uma URL `next` externa insegura
+- **WHEN** o login é bem-sucedido
+- **THEN** o usuário SHALL NOT ser redirecionado para a URL externa insegura.
+
 ### Requirement: Environment-based settings
 Os settings SHALL ser divididos em `settings/base.py` (configuração comum), `settings/development.py` (DEBUG=True, ferramentas de dev), `settings/test.py` (banco em memória, settings mínimos), `settings/production.py` (DEBUG=False, segurança restritiva). Cada ambiente SHALL poder sobrescrever variáveis do base.
 

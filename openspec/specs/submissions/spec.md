@@ -2,8 +2,23 @@
 
 ## Purpose
 Gerenciar o ciclo de vida de submissões de trabalhos científicos, incluindo listagem para autores e painel de controle para chairs.
-
 ## Requirements
+### Requirement: Nenhum fluxo de submissão na base de contas
+A base de contas/dashboard SHALL NOT implementar o fluxo de trabalho de submissão do autor.
+
+#### Scenario: Dashboard do autor existe antes do fluxo de submissão
+- **GIVEN** que o dashboard do autor está implementado
+- **WHEN** o usuário o abre
+- **THEN** ele PODE exibir um placeholder de submissão futura
+- **AND** SHALL NOT criar, editar, enviar ou fazer upload de submissões científicas.
+
+### Requirement: Ponto de integração futuro para submissões
+O dashboard do autor SHALL fornecer um ponto de integração claro para a proposta posterior de fluxo de submissão.
+
+#### Scenario: Proposta de fluxo de submissão posterior inicia
+- **GIVEN** que o shell do dashboard do autor existe
+- **WHEN** a proposta de fluxo de submissão for implementada posteriormente
+- **THEN** ele SHALL ser capaz de anexar comportamento de listagem/criação de submissão sem substituir a base de autenticação.
 
 ### Requirement: Submission List for Authors
 The system SHALL display a list of all submissions owned by the authenticated author in their dashboard.
@@ -139,6 +154,3 @@ Arquivos anexados a submissões (PDF, arquivos complementares) SHALL ser servido
 - **WHEN** uma requisição é feita para `/media/submissions/<qualquer-caminho>`
 - **THEN** o Nginx SHALL retornar HTTP 404
 
-## Notes
-
-- `SubmissionAuthor.full_name` is intentionally separate from `User.first_name`/`last_name`. Co-authors on a submission may not have user accounts, so their names are stored as plain text on the submission model, not linked to the User model.

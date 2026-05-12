@@ -69,6 +69,15 @@ def _fallback_menu_items(site):
 
 
 @register.simple_tag(takes_context=True)
+def root_page_url(context):
+    request = context.get("request")
+    site = Site.find_for_request(request) if request else Site.objects.filter(is_default_site=True).first()
+    if site:
+        return site.root_page.url
+    return "/"
+
+
+@register.simple_tag(takes_context=True)
 def public_menu_items(context):
     request = context.get("request")
     site = Site.find_for_request(request) if request else Site.objects.filter(is_default_site=True).first()
@@ -78,6 +87,12 @@ def public_menu_items(context):
 
     configured_items = _streamfield_menu_items(site)
     if configured_items:
+        from pages.models import RegistrationPage
+        labels_lower = [i["label"].lower() for i in configured_items]
+        if not any("inscrição" in label for label in labels_lower):
+            reg_page = RegistrationPage.objects.live().first()
+            if reg_page:
+                configured_items.append({"label": "Inscrição", "url": reg_page.url})
         return configured_items
 
     return _fallback_menu_items(site)

@@ -18,3 +18,5 @@ INTERNAL_IPS = [
 ]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+CSRF_TRUSTED_ORIGINS = ["http://localhost:9000", "http://localhost:8001"]

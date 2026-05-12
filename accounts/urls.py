@@ -12,11 +12,14 @@ urlpatterns = [
         auth_views.LoginView.as_view(
             template_name="accounts/login.html",
             redirect_authenticated_user=True,
-            extra_context={"title": "Entrar", "subtitle": "Acesse sua conta do CBNV 2026."},
         ),
         name="login",
     ),
-    path("sair/", views.logout_view, name="logout"),
+    path(
+        "sair/",
+        auth_views.LogoutView.as_view(next_page="/"),
+        name="logout",
+    ),
     path(
         "recuperar-senha/",
         auth_views.PasswordResetView.as_view(
@@ -48,6 +51,5 @@ urlpatterns = [
         ),
         name="password_reset_complete",
     ),
-    path("perfil/", views.profile_detail, name="profile"),
-    path("perfil/editar/", views.profile_edit, name="profile_edit"),
+    path("perfil/", views.profile_edit, name="profile_edit"),
 ]

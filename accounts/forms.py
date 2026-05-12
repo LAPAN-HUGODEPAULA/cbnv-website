@@ -77,10 +77,6 @@ class RegistrationForm(UserCreationForm):
             )
         return user
 
-    @property
-    def role_fields(self):
-        return ("is_author",)
-
 
 class ProfileForm(forms.Form):
     first_name = forms.CharField(label="Nome", max_length=150, required=True)

@@ -63,6 +63,13 @@ class CoreSettings(TranslatableMixin, BaseSiteSetting):
         blank=True,
         help_text="Informações adicionais exibidas na página de inscrição.",
     )
+    submissions_status = models.CharField(
+        "Status das submissões",
+        max_length=20,
+        choices=LinkStatus.choices,
+        default=LinkStatus.COMING_SOON,
+        help_text="Controla se a criação de novas submissões está aberta, em breve ou fechada.",
+    )
     livestream_link = models.URLField("Link de Transmissão", blank=True)
     livestream_status = models.CharField(
         "Status da transmissão",
@@ -142,6 +149,7 @@ class CoreSettings(TranslatableMixin, BaseSiteSetting):
                 FieldPanel("registration_early_bird_label"),
                 FieldPanel("registration_late_label"),
                 FieldPanel("registration_notes"),
+                FieldPanel("submissions_status"),
                 FieldPanel("livestream_status"),
                 FieldPanel("livestream_link"),
                 FieldPanel("instagram_url"),
@@ -180,6 +188,10 @@ class CoreSettings(TranslatableMixin, BaseSiteSetting):
     @property
     def registration_is_available(self):
         return self.registration_status == self.LinkStatus.AVAILABLE and bool(self.registration_link)
+
+    @property
+    def submissions_is_available(self):
+        return self.submissions_status == self.LinkStatus.AVAILABLE
 
     @property
     def livestream_is_available(self):

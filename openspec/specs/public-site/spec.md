@@ -370,3 +370,27 @@ The platform SHALL provide a public Contact page type.
 Given the public site is configured
 When a visitor uses the main navigation
 Then they SHALL be able to access a public contact page.
+
+### Requirement: Page-by-page public-site review
+The UI/UX review SHALL cover all public MVP pages.
+
+#### Scenario: Required pages are reviewed
+- **GIVEN** the review report exists
+- **WHEN** the page-by-page section is inspected
+- **THEN** Home, About, Program, Speakers, Submissions, Registration, Sponsorship, Previous Editions and Contact SHALL be covered.
+
+### Requirement: Navigation review
+The review SHALL evaluate public navigation and CTAs.
+
+#### Scenario: Navigation is evaluated
+- **GIVEN** the review report exists
+- **WHEN** navigation findings are inspected
+- **THEN** the review SHALL identify whether main public pages are discoverable from the primary navigation.
+
+### Requirement: Responsive review
+The review SHALL evaluate mobile, tablet and desktop behavior.
+
+#### Scenario: Mobile viewport is reviewed
+- **GIVEN** the review report exists
+- **WHEN** viewport metadata is inspected
+- **THEN** at least one mobile viewport SHALL be documented.

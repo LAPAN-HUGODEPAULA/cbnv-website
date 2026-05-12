@@ -2,7 +2,7 @@ import pytest
 from django.test import TestCase, Client
 from django.urls import reverse
 
-from accounts.models import User
+from accounts.models import User, UserProfile
 from accounts.tests.factories import create_user_with_profile
 
 
@@ -35,6 +35,8 @@ class RegistrationTest(TestCase):
         self.assertTrue(user.is_author)
         self.assertEqual(user.first_name, "Maria")
         self.assertEqual(user.get_full_name(), "Maria Silva")
+        self.assertTrue(hasattr(user, "profile"))
+        self.assertEqual(user.profile.institution, "USP")
 
     def test_registration_without_consents_fails(self):
         response = self.client.post(
@@ -56,6 +58,33 @@ class RegistrationTest(TestCase):
         self.assertEqual(User.objects.filter(username="noconsent").count(), 0)
         self.assertEqual(response.status_code, 200)
 
+    def test_registration_ignores_privileged_role_fields(self):
+        self.client.post(
+            reverse("accounts:register"),
+            {
+                "username": "privileged",
+                "email": "privileged@example.com",
+                "first_name": "Priv",
+                "last_name": "User",
+                "password1": "SecurePass123!",
+                "password2": "SecurePass123!",
+                "institution": "UFMG",
+                "country": "BR",
+                "position": "Pesquisador",
+                "consent_privacy": "on",
+                "is_reviewer": "on",
+                "is_chair": "on",
+                "is_staff": "on",
+                "is_superuser": "on",
+            },
+        )
+        user = User.objects.get(username="privileged")
+        self.assertTrue(user.profile.is_author)
+        self.assertFalse(user.profile.is_reviewer)
+        self.assertFalse(user.profile.is_chair)
+        self.assertFalse(user.is_staff)
+        self.assertFalse(user.is_superuser)
+
     def test_registration_login_redirects_to_dashboard(self):
         self.client.post(
             reverse("accounts:register"),
@@ -76,8 +105,8 @@ class RegistrationTest(TestCase):
         )
         user = User.objects.get(username="autoauthor")
         response = self.client.get(reverse("dashboard:redirect"))
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.endswith("/painel/autor/"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Painel de Autor")
 
 
 class DashboardAccessTest(TestCase):
@@ -98,20 +127,20 @@ class DashboardAccessTest(TestCase):
     def test_dashboard_redirect_for_author(self):
         self.client.login(username="author", password="pass")
         response = self.client.get(reverse("dashboard:redirect"))
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.endswith("/painel/autor/"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Painel de Autor")
 
     def test_dashboard_redirect_for_reviewer(self):
         self.client.login(username="reviewer", password="pass")
         response = self.client.get(reverse("dashboard:redirect"))
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.endswith("/painel/revisor/"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Painel de Revisor")
 
     def test_dashboard_redirect_for_chair(self):
         self.client.login(username="chair", password="pass")
         response = self.client.get(reverse("dashboard:redirect"))
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.endswith("/painel/comissao/"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Painel de Comissão científica")
 
     def test_redirect_to_login_when_anonymous(self):
         response = self.client.get(reverse("dashboard:redirect"))
@@ -155,6 +184,21 @@ class DashboardAccessTest(TestCase):
         )
         self.assertEqual(response.status_code, 302)
 
+    def test_login_rejects_external_next_redirect(self):
+        response = self.client.post(
+            f"{reverse('accounts:login')}?next=https://example.com/steal",
+            {"username": "author", "password": "pass"},
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertNotEqual(response.url, "https://example.com/steal")
+        self.assertTrue(response.url.endswith("/painel/"))
+
+    def test_logout(self):
+        self.client.login(username="author", password="pass")
+        response = self.client.post(reverse("accounts:logout"))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/")
+
     def test_profile_edit_requires_login(self):
         response = self.client.get(reverse("accounts:profile_edit"))
         self.assertEqual(response.status_code, 302)
@@ -164,6 +208,62 @@ class DashboardAccessTest(TestCase):
         self.client.login(username="author", password="pass")
         response = self.client.get(reverse("accounts:profile_edit"))
         self.assertEqual(response.status_code, 200)
+
+    def test_profile_detail_for_author(self):
+        self.client.login(username="author", password="pass")
+        response = self.client.get(reverse("accounts:profile"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Papéis")
+
+    def test_profile_edit_updates_profile_without_role_flags(self):
+        self.client.login(username="author", password="pass")
+        response = self.client.post(
+            reverse("accounts:profile_edit"),
+            {
+                "first_name": "Autor",
+                "last_name": "Atualizado",
+                "email": "author-updated@example.com",
+                "institution": "LAPAN",
+                "country": "BR",
+                "position": "Pesquisador",
+                "is_chair": "on",
+                "is_reviewer": "on",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        self.author.refresh_from_db()
+        self.author.profile.refresh_from_db()
+        self.assertEqual(self.author.last_name, "Atualizado")
+        self.assertEqual(self.author.profile.institution, "LAPAN")
+        self.assertFalse(self.author.profile.is_reviewer)
+        self.assertFalse(self.author.profile.is_chair)
+
+    def test_dashboard_no_role_state(self):
+        user = create_user_with_profile(username="norole", password="pass")
+        self.client.login(username="norole", password="pass")
+        response = self.client.get(reverse("dashboard:redirect"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Nenhum papel de painel atribuído")
+
+    def test_dashboard_multi_role_state(self):
+        create_user_with_profile(
+            username="multi", password="pass",
+            is_author=True, is_reviewer=True,
+            first_name="Multi", last_name="Role",
+            institution="UFMG", country="BR",
+        )
+        self.client.login(username="multi", password="pass")
+        response = self.client.get(reverse("dashboard:redirect"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Painel de Autor")
+        self.assertContains(response, "Painel de Revisor")
+
+    def test_missing_profile_is_recreated(self):
+        self.author.profile.delete()
+        self.client.login(username="author", password="pass")
+        response = self.client.get(reverse("dashboard:redirect"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(UserProfile.objects.filter(user=self.author).exists())
 
 
 @pytest.mark.django_db
@@ -223,7 +323,7 @@ class TestProfileCompletenessRedirect:
         client.force_login(user)
         response = client.get("/painel/autor/")
         assert response.status_code == 302
-        assert response.url == "/conta/perfil/"
+        assert response.url == "/conta/perfil/editar/"
 
     def test_dashboard_allows_complete(self):
         user = create_user_with_profile(

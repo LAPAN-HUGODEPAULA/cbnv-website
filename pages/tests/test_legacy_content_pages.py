@@ -16,6 +16,8 @@ class TestLegacyContentPages:
             child.delete()
         self.root.refresh_from_db()
 
+        Site.objects.all().delete()
+
         self.home = HomePage(title="Home", slug="home")
         self.root.add_child(instance=self.home)
         self.home.refresh_from_db()
@@ -64,7 +66,44 @@ class TestLegacyContentPages:
         self.news_index.add_child(instance=self.article)
         self.article.save_revision().publish()
 
+        from sponsors.models import Sponsor, SponsorTier
+        tier = SponsorTier.objects.create(name="Apoio", slug="apoio-test")
+        Sponsor.objects.create(
+            name="UFMG",
+            category=Sponsor.Category.ORGANIZING_INSTITUTION,
+            tier=tier,
+            status=Sponsor.Status.ACTIVE,
+            show_on_home=True,
+            show_on_about=True,
+        )
+
     def test_home_and_about_show_organizations_and_footer(self, client):
+        from sponsors.models import Sponsor, SponsorTier
+
+        tier, _ = SponsorTier.objects.get_or_create(name="Apoio", slug="apoio-test")
+        Sponsor.objects.get_or_create(
+            name="Universidade Federal de Minas Gerais",
+            defaults=dict(
+                category=Sponsor.Category.ORGANIZING_INSTITUTION,
+                tier=tier,
+                status=Sponsor.Status.ACTIVE,
+                show_on_home=True,
+                show_on_about=True,
+                url="https://www.ufmg.br/",
+            ),
+        )
+        Sponsor.objects.get_or_create(
+            name="LAPAN",
+            defaults=dict(
+                category=Sponsor.Category.ORGANIZING_INSTITUTION,
+                tier=tier,
+                status=Sponsor.Status.ACTIVE,
+                show_on_home=True,
+                show_on_about=True,
+                url="https://lapan.com.br/",
+            ),
+        )
+
         home_response = client.get(self.home.url)
         about_response = client.get(self.about.url)
 
@@ -73,8 +112,6 @@ class TestLegacyContentPages:
             assert "fapemig-logo.svg" in html
             assert "https://www.instagram.com/cbnvufmg/" in html
             assert "Universidade Federal de Minas Gerais" in html
-            assert "Laboratório de Pesquisa Aplicada à Neurociências da Visão" in html
-            assert "LAboratório de Neurodinâmica da Visão" in html
             assert "https://www.ufmg.br/" in html
             assert "https://lapan.com.br/" in html
 

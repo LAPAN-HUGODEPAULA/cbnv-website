@@ -1,5 +1,4 @@
-{% load static supporting_entities wagtailimages_tags %}
-{% footer_supporting_entities as footer_entities %}
+{% load static wagtailimages_tags %}
 {% with instagram_url=settings.core.CoreSettings.instagram_url|default:"https://www.instagram.com/cbnvufmg/" youtube_url=settings.core.CoreSettings.primary_youtube_url %}
 <footer class="bg-cbnv-navy-950 text-cbnv-text-muted border-t border-white/10" role="contentinfo">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -15,11 +14,7 @@
                     <li><a href="/sobre/" class="text-cbnv-text-secondary hover:text-cbnv-text-primary transition-colors">Sobre</a></li>
                     <li><a href="/noticias/" class="text-cbnv-text-secondary hover:text-cbnv-text-primary transition-colors">Notícias</a></li>
                     <li><a href="/edicoes-anteriores/" class="text-cbnv-text-secondary hover:text-cbnv-text-primary transition-colors">Edições anteriores</a></li>
-                    {% if settings.core.CoreSettings.registration_is_available %}
-                    <li><a href="{{ settings.core.CoreSettings.registration_link }}" class="text-cbnv-text-secondary hover:text-cbnv-text-primary transition-colors">Inscrição</a></li>
-                    {% elif settings.core.CoreSettings.registration_status == "coming_soon" %}
-                    <li><span class="text-cbnv-text-muted">Inscrição em breve</span></li>
-                    {% endif %}
+                    <li><a href="/inscricao/" class="text-cbnv-text-secondary hover:text-cbnv-text-primary transition-colors">Inscrição</a></li>
                 </ul>
             </div>
             <div>
@@ -28,9 +23,9 @@
                     {% if settings.core.CoreSettings.contact_email %}
                     <li><a href="mailto:{{ settings.core.CoreSettings.contact_email }}" class="text-cbnv-text-secondary hover:text-cbnv-text-primary transition-colors">{{ settings.core.CoreSettings.contact_email }}</a></li>
                     {% endif %}
+                    <li><a href="/contato/" class="text-cbnv-text-secondary hover:text-cbnv-text-primary transition-colors">Página de Contato</a></li>
                     <li class="flex items-center gap-2">
                         {% include "components/icon_link.html" with href=instagram_url icon="instagram" label="Siga-nos no Instagram" external=True %}
-                        <a href="{{ instagram_url }}" target="_blank" rel="noopener noreferrer" class="text-cbnv-text-secondary hover:text-cbnv-text-primary transition-colors">Instagram</a>
                     </li>
                     {% if youtube_url %}
                     <li class="flex items-center gap-2">
@@ -50,32 +45,11 @@
                     {% else %}
                         <img src="{% static 'images/organizations/fapemig-logo.svg' %}" alt="Logotipo FAPEMIG" class="h-8 w-auto">
                     {% endif %}
-                    <div class="text-sm">
-                        <p class="text-cbnv-text-primary font-medium">FAPEMIG</p>
-                        <p class="text-xs text-cbnv-text-secondary">Fundação de Amparo à Pesquisa do Estado de Minas Gerais</p>
-                    </div>
                 </div>
                 <div class="flex items-center gap-3 text-sm">
-                    {% include "components/icon_link.html" with href=instagram_url icon="instagram" label="Siga-nos no Instagram" external=True %}
                     <span class="text-cbnv-text-secondary">© 2026 CBNV</span>
                 </div>
             </div>
-            {% if settings.core.CoreSettings.fapemig_text %}
-            <p class="text-xs text-cbnv-text-secondary">{{ settings.core.CoreSettings.fapemig_text }}</p>
-            {% endif %}
-            {% if footer_entities %}
-            <ul class="flex flex-wrap gap-3 text-xs text-cbnv-text-secondary">
-                {% for entity in footer_entities %}
-                <li>
-                    {% if entity.url %}
-                    <a href="{{ entity.url }}" target="_blank" rel="noopener noreferrer" class="text-cbnv-text-secondary hover:text-cbnv-text-primary transition-colors">{{ entity.name }}</a>
-                    {% else %}
-                    <span class="text-cbnv-text-secondary">{{ entity.name }}</span>
-                    {% endif %}
-                </li>
-                {% endfor %}
-            </ul>
-            {% endif %}
         </div>
     </div>
 </footer>

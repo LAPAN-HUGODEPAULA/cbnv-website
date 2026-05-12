@@ -39,16 +39,6 @@
                             {% endif %}
                         </a>
                 {% endfor %}
-
-                {% if settings.core.CoreSettings.registration_is_available %}
-                <a href="{{ settings.core.CoreSettings.registration_link }}" class="ml-4 px-6 py-2.5 bg-cbnv-blue-600 text-white rounded-full text-sm font-bold hover:bg-cbnv-blue-500 transition-colors shadow-cbnv-glow-blue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cbnv-green-400">
-                    Inscrição
-                </a>
-                {% elif settings.core.CoreSettings.registration_status == "coming_soon" %}
-                <span class="ml-4 px-6 py-2.5 bg-cbnv-navy-900/10 text-cbnv-text-secondary rounded-full text-sm font-bold">
-                    Inscrição em breve
-                </span>
-                {% endif %}
             </nav>
 
             <button
@@ -62,7 +52,7 @@
             </button>
         </div>
 
-        {% include "components/mobile_nav.html" with menu_items=menu_items cta_url=settings.core.CoreSettings.registration_link cta_available=settings.core.CoreSettings.registration_is_available cta_status=settings.core.CoreSettings.registration_status %}
+        {% include "components/mobile_nav.html" with menu_items=menu_items %}
     </div>
 </header>
 

@@ -20,22 +20,57 @@
 
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <div class="lg:col-span-7 rounded-2xl border border-white/10 bg-white/5 p-6 lg:p-8">
-                <h2 class="font-display text-3xl font-bold text-white">Status Das Inscrições</h2>
-                <div class="mt-5">
-                    {% include "components/badge.html" with label=settings.core.CoreSettings.get_registration_status_display variant="info" %}
+            <div class="lg:col-span-7 space-y-6">
+                <div class="rounded-2xl border border-white/10 bg-white/5 p-6 lg:p-8">
+                    <h2 class="font-display text-3xl font-bold text-white">Períodos de Inscrição</h2>
+                    <div class="mt-6 space-y-0 divide-y divide-white/10">
+                        <div class="flex items-center gap-4 py-4 first:pt-0">
+                            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-cbnv-green-400/10 border border-cbnv-green-400/30 text-sm font-bold text-cbnv-green-400">1</div>
+                            <div class="flex-1">
+                                <p class="font-semibold text-white">{{ settings.core.CoreSettings.registration_early_bird_label|default:"Lote 1" }}</p>
+                                {% if settings.core.CoreSettings.registration_early_bird_deadline %}
+                                <p class="text-sm text-cbnv-text-muted">Até {{ settings.core.CoreSettings.registration_early_bird_deadline|date:"d/m/Y" }}</p>
+                                {% else %}
+                                <p class="text-sm text-cbnv-text-muted">Datas a confirmar</p>
+                                {% endif %}
+                            </div>
+                            <p class="text-sm text-cbnv-text-muted">Valores a definir</p>
+                        </div>
+                        <div class="flex items-center gap-4 py-4 last:pb-0">
+                            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 border border-white/10 text-sm font-bold text-cbnv-text-muted">2</div>
+                            <div class="flex-1">
+                                <p class="font-semibold text-white">{{ settings.core.CoreSettings.registration_late_label|default:"Lote 2" }}</p>
+                                {% if settings.core.CoreSettings.registration_early_bird_deadline %}
+                                <p class="text-sm text-cbnv-text-muted">A partir de {{ settings.core.CoreSettings.registration_early_bird_deadline|date:"d/m/Y" }}</p>
+                                {% else %}
+                                <p class="text-sm text-cbnv-text-muted">Após o lote 1</p>
+                                {% endif %}
+                            </div>
+                            <p class="text-sm text-cbnv-text-muted">Valores a definir</p>
+                        </div>
+                    </div>
+                    {% if settings.core.CoreSettings.registration_notes %}
+                    <p class="mt-6 text-sm text-cbnv-text-muted leading-relaxed">{{ settings.core.CoreSettings.registration_notes }}</p>
+                    {% endif %}
                 </div>
-                <div class="mt-6 space-y-4 text-cbnv-text-muted leading-relaxed">
-                    <p>O cadastro e a eventual emissão de comprovantes ocorrerão fora deste site, em plataforma indicada pela organização quando o período estiver aberto.</p>
-                    <p>Esta página não processa pagamento, certificado ou QR code. Ela apenas informa o status público e direciona para o canal oficial quando disponível.</p>
+
+                <div class="rounded-2xl border border-white/10 bg-white/5 p-6 lg:p-8">
+                    <h2 class="font-display text-2xl font-bold text-white">Status Das Inscrições</h2>
+                    <div class="mt-5">
+                        {% include "components/badge.html" with label=settings.core.CoreSettings.get_registration_status_display variant="info" %}
+                    </div>
+                    <div class="mt-6 space-y-4 text-cbnv-text-muted leading-relaxed">
+                        <p>O cadastro e a eventual emissão de comprovantes ocorrerão fora deste site, em plataforma indicada pela organização quando o período estiver aberto.</p>
+                        <p>Esta página não processa pagamento, certificado ou QR code. Ela apenas informa o status público e direciona para o canal oficial quando disponível.</p>
+                    </div>
+                    {% if page.body %}
+                    <div class="prose prose-invert mt-8 max-w-none">
+                        {% for block in page.body %}
+                        {% include_block block %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
-                {% if page.body %}
-                <div class="prose prose-invert mt-8 max-w-none">
-                    {% for block in page.body %}
-                    {% include_block block %}
-                    {% endfor %}
-                </div>
-                {% endif %}
             </div>
 
             <aside class="lg:col-span-5 rounded-2xl border border-white/10 bg-cbnv-navy-900/70 p-6 lg:p-8">

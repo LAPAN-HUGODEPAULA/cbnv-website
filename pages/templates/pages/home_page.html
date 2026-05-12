@@ -33,27 +33,6 @@
                         <dd class="mt-2 text-base font-semibold text-white">{{ settings.core.CoreSettings.format_label|default:"Presencial" }}</dd>
                     </div>
                 </dl>
-                <div class="flex flex-col sm:flex-row gap-3">
-                    {% if settings.core.CoreSettings.registration_is_available %}
-                    <a href="{{ settings.core.CoreSettings.registration_link }}" class="inline-flex items-center justify-center rounded-lg bg-cbnv-blue-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-cbnv-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cbnv-green-400">
-                        Fazer Inscrição
-                    </a>
-                    {% elif registration_page %}
-                    <a href="{{ registration_page.url }}" class="inline-flex items-center justify-center rounded-lg border border-white/15 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cbnv-green-400">
-                        Inscrição Em Breve
-                    </a>
-                    {% endif %}
-                    {% if submissions_page %}
-                    <a href="{{ submissions_page.url }}" class="inline-flex items-center justify-center rounded-lg border border-white/15 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cbnv-green-400">
-                        Ver Submissões
-                    </a>
-                    {% endif %}
-                    {% if program_page %}
-                    <a href="{{ program_page.url }}" class="inline-flex items-center justify-center rounded-lg border border-white/15 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cbnv-green-400">
-                        Programação
-                    </a>
-                    {% endif %}
-                </div>
             </div>
             <div class="lg:col-span-5">
                 <div class="rounded-2xl border border-white/10 bg-cbnv-navy-900/70 p-8">
@@ -62,9 +41,6 @@
                         <p class="text-base text-cbnv-text-light">{{ page.intro|default:"Site oficial do CBNV 2026, com informações públicas sobre programação, inscrições, submissões, palestrantes e apoio institucional." }}</p>
                         {% if settings.core.CoreSettings.venue_short_name or settings.core.CoreSettings.venue_name %}
                         <p><span class="font-semibold text-white">Local:</span> {{ settings.core.CoreSettings.venue_short_name|default:settings.core.CoreSettings.venue_name }}</p>
-                        {% endif %}
-                        {% if contact_page %}
-                        <a href="{{ contact_page.url }}" class="inline-flex text-cbnv-green-400 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cbnv-green-400">Informações de contato e acesso</a>
                         {% endif %}
                     </div>
                 </div>
@@ -110,7 +86,7 @@
             <a href="{{ program_page.url }}" class="text-sm font-semibold text-cbnv-green-400 hover:text-white transition-colors">Ver Programação Completa</a>
             {% endif %}
         </div>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {% for day_data in program_preview %}
             <article class="rounded-2xl border border-white/10 bg-white/5 p-6">
                 <h3 class="font-display text-2xl font-semibold text-white">{{ day_data.day.title }}</h3>
@@ -157,30 +133,7 @@
     </section>
     {% endif %}
 
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <article class="rounded-2xl border border-white/10 bg-white/5 p-6 lg:p-8">
-                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-cbnv-green-400">Submissões</p>
-                <h2 class="mt-3 font-display text-3xl font-bold text-white">Trabalhos Científicos</h2>
-                <p class="mt-4 text-cbnv-text-muted">A submissão inicial não exige vídeo. Informações públicas sobre fases, modalidades finais e status serão mantidas nesta área.</p>
-                {% if submissions_page %}
-                <a href="{{ submissions_page.url }}" class="mt-6 inline-flex rounded-lg border border-white/15 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10">Ver Orientações</a>
-                {% endif %}
-            </article>
-            <article class="rounded-2xl border border-white/10 bg-white/5 p-6 lg:p-8">
-                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-cbnv-green-400">Inscrição</p>
-                <h2 class="mt-3 font-display text-3xl font-bold text-white">{{ settings.core.CoreSettings.get_registration_status_display }}</h2>
-                <p class="mt-4 text-cbnv-text-muted">A inscrição será feita por plataforma externa quando o link oficial estiver disponível.</p>
-                {% if settings.core.CoreSettings.registration_is_available %}
-                <a href="{{ settings.core.CoreSettings.registration_link }}" class="mt-6 inline-flex rounded-lg bg-cbnv-blue-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-cbnv-blue-500">Acessar Inscrição</a>
-                {% elif registration_page %}
-                <a href="{{ registration_page.url }}" class="mt-6 inline-flex rounded-lg border border-white/15 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10">Detalhes da Inscrição</a>
-                {% endif %}
-            </article>
-        </div>
-    </section>
-
-    {% if supporting_entities or organizations %}
+    {% if supporting_entities %}
     <section class="border-t border-white/10 bg-cbnv-navy-900/40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div class="mb-8">
@@ -190,21 +143,22 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {% for sponsor in supporting_entities %}
                 <article class="rounded-xl border border-white/10 bg-white/5 p-5">
-                    <p class="font-semibold text-white">{{ sponsor.name }}</p>
-                    <p class="mt-1 text-sm text-cbnv-text-muted">{{ sponsor.get_category_display }}</p>
-                </article>
-                {% endfor %}
-                {% for org in organizations %}
-                <article class="rounded-xl border border-white/10 bg-white/5 p-5">
-                    {% if org.url %}
-                    <a href="{{ org.url }}" target="_blank" rel="noopener noreferrer" class="block space-y-3">
-                        <img src="{% static org.logo %}" alt="{{ org.alt }}" width="160" height="48" loading="lazy" class="h-12 w-auto object-contain">
-                        <p class="text-sm font-semibold text-white leading-snug">{{ org.name }}</p>
-                    </a>
+                    {% if sponsor.url %}
+                    <a href="{{ sponsor.url }}" target="_blank" rel="noopener noreferrer" class="block space-y-3">
                     {% else %}
                     <div class="space-y-3">
-                        <img src="{% static org.logo %}" alt="{{ org.alt }}" width="160" height="48" loading="lazy" class="h-12 w-auto object-contain">
-                        <p class="text-sm font-semibold text-white leading-snug">{{ org.name }}</p>
+                    {% endif %}
+                        {% if sponsor.logo %}
+                            {% image sponsor.logo height-48 as logo_img %}
+                            <img src="{{ logo_img.url }}" alt="{{ sponsor.logo_alt_text|default:sponsor.name }}" width="{{ logo_img.width }}" height="{{ logo_img.height }}" loading="lazy" class="h-12 w-auto object-contain">
+                        {% endif %}
+                        <p class="text-sm font-semibold text-white leading-snug">{{ sponsor.name }}</p>
+                        {% if not sponsor.logo %}
+                        <p class="text-sm text-cbnv-text-muted">{{ sponsor.get_category_display }}</p>
+                        {% endif %}
+                    {% if sponsor.url %}
+                    </a>
+                    {% else %}
                     </div>
                     {% endif %}
                 </article>

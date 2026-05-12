@@ -1,7 +1,9 @@
+{% load navigation %}
 <nav aria-label="Breadcrumb" class="mb-8">
     <ol class="flex flex-wrap items-center gap-2 text-sm text-cbnv-text-muted">
         <li>
-            <a href="{% pageurl request.site.root_page %}" class="text-cbnv-green-400 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cbnv-green-400">
+            {% root_page_url as home_url %}
+            <a href="{{ home_url }}" class="text-cbnv-green-400 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cbnv-green-400">
                 Início
             </a>
         </li>

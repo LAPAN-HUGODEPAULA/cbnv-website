@@ -119,8 +119,8 @@
 ## PR checklist
 
 - [x] Branch is `change/review-public-site-ui-ux-round-1`.
-- [ ] PR title starts with `[review-public-site-ui-ux-round-1]`.
-- [ ] PR body includes `Closes #7`.
+- [x] PR title starts with `[review-public-site-ui-ux-round-1]`.
+- [x] PR body includes `Closes #7`.
 - [x] PR includes review report.
 - [x] PR includes prioritized backlog.
 - [x] PR does not implement UI/layout/content fixes.

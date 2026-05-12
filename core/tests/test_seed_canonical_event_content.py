@@ -20,7 +20,7 @@ def test_seed_canonical_event_content_creates_settings_if_missing():
     assert settings.theme == "Neurovisão na Era da Inteligência Artificial"
     assert settings.start_date.isoformat() == "2026-11-11"
     assert settings.end_date.isoformat() == "2026-11-13"
-    assert settings.format_label == "Presencial com transmissão híbrida"
+    assert settings.format_label == "Presencial com transmissão on-line"
     assert settings.city == "Belo Horizonte"
     assert settings.state == "Minas Gerais"
     assert settings.country == "Brasil"
@@ -70,10 +70,15 @@ def test_seed_canonical_event_content_creates_supporting_entities_once():
 
     expected_names = {
         "UFMG",
+        "LAPAN — Laboratório de Pesquisa Aplicada a Neurociências da Visão",
+        "LANEV — Laboratório de Neurodinâmica da Visão",
+        "Programa de Pós-Graduação em Neurociências — UFMG",
+        "LAFISC — Laboratório de Fisiologia Sensorial e Comportamental",
         "FUNDEP",
         "FAPEMIG",
         "Sociedade Brasileira de Neurovisão",
-        "Hospital de Olhos de Minas Gerais / HOLHOS",
+        "Hospital de Olhos de Minas Gerais",
+        "Fundação Hospital de Olhos",
         "UFRJ",
         "USP",
         "UFRN",

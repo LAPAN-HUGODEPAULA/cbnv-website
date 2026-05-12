@@ -1,7 +1,11 @@
+import os
+
 from datetime import date
 
+from django.core.files import File
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
+from wagtail.images.models import Image as WagtailImage
 from wagtail.models import Site
 
 from core.models import CoreSettings
@@ -21,7 +25,10 @@ CANONICAL_SETTINGS = {
     "dates": "11 a 13 de novembro de 2026",
     "start_date": date(2026, 11, 11),
     "end_date": date(2026, 11, 13),
-    "format_label": "Presencial com transmissão híbrida",
+    "format_label": "Presencial com transmissão on-line",
+    "registration_early_bird_deadline": date(2026, 9, 30),
+    "registration_early_bird_label": "Lote 1",
+    "registration_late_label": "Lote 2",
     "location": "CAD-1/UFMG, Belo Horizonte, MG",
     "city": "Belo Horizonte",
     "state": "Minas Gerais",
@@ -60,6 +67,47 @@ SUPPORTING_ENTITIES = [
         "show_in_footer": True,
         "show_on_about": True,
         "show_on_sponsorship": False,
+        "url": "https://www.ufmg.br/",
+    },
+    {
+        "name": "LAPAN — Laboratório de Pesquisa Aplicada a Neurociências da Visão",
+        "category": Sponsor.Category.ORGANIZING_INSTITUTION,
+        "sort_order": 15,
+        "show_on_home": True,
+        "show_in_footer": False,
+        "show_on_about": True,
+        "show_on_sponsorship": False,
+        "url": "https://lapan.com.br/",
+    },
+    {
+        "name": "LANEV — Laboratório de Neurodinâmica da Visão",
+        "category": Sponsor.Category.ORGANIZING_INSTITUTION,
+        "sort_order": 16,
+        "show_on_home": True,
+        "show_in_footer": False,
+        "show_on_about": True,
+        "show_on_sponsorship": False,
+        "url": "",
+    },
+    {
+        "name": "Programa de Pós-Graduação em Neurociências — UFMG",
+        "category": Sponsor.Category.ORGANIZING_INSTITUTION,
+        "sort_order": 17,
+        "show_on_home": True,
+        "show_in_footer": False,
+        "show_on_about": True,
+        "show_on_sponsorship": False,
+        "url": "https://neurociencias.icb.ufmg.br/",
+    },
+    {
+        "name": "LAFISC — Laboratório de Fisiologia Sensorial e Comportamental",
+        "category": Sponsor.Category.ORGANIZING_INSTITUTION,
+        "sort_order": 18,
+        "show_on_home": True,
+        "show_in_footer": False,
+        "show_on_about": True,
+        "show_on_sponsorship": False,
+        "url": "",
     },
     {
         "name": "FUNDEP",
@@ -89,13 +137,24 @@ SUPPORTING_ENTITIES = [
         "show_on_sponsorship": False,
     },
     {
-        "name": "Hospital de Olhos de Minas Gerais / HOLHOS",
+        "name": "Hospital de Olhos de Minas Gerais",
         "category": Sponsor.Category.INSTITUTIONAL_PARTNER,
         "sort_order": 50,
         "show_on_home": True,
         "show_in_footer": True,
         "show_on_about": True,
         "show_on_sponsorship": False,
+        "url": "https://holhos.com.br",
+    },
+    {
+        "name": "Fundação Hospital de Olhos",
+        "category": Sponsor.Category.INSTITUTIONAL_PARTNER,
+        "sort_order": 55,
+        "show_on_home": True,
+        "show_in_footer": False,
+        "show_on_about": True,
+        "show_on_sponsorship": False,
+        "url": "https://fundacaoholhos.com.br/",
     },
     {
         "name": "UFRJ",
@@ -134,6 +193,17 @@ SUPPORTING_ENTITIES = [
         "show_on_sponsorship": False,
     },
 ]
+
+LOGO_MAP = {
+    "UFMG": "images/organizations/ufmg-logo.svg",
+    "LAPAN — Laboratório de Pesquisa Aplicada a Neurociências da Visão": "images/organizations/logo-lapan-branco.png",
+    "LANEV — Laboratório de Neurodinâmica da Visão": "images/organizations/logo-lanev-em-branco-com-legenda.png",
+    "Programa de Pós-Graduação em Neurociências — UFMG": "images/organizations/logo-neuro.png",
+    "LAFISC — Laboratório de Fisiologia Sensorial e Comportamental": "images/organizations/logo-lafisc.png",
+    "FAPEMIG": "images/organizations/fapemig-logo.svg",
+    "Hospital de Olhos de Minas Gerais": "images/organizations/logo-holhos.png",
+    "Fundação Hospital de Olhos": "images/organizations/logo-fundaco-hospital-dos-olhos.png",
+}
 
 
 class Command(BaseCommand):
@@ -245,26 +315,57 @@ class Command(BaseCommand):
         skipped = 0
 
         for entity in SUPPORTING_ENTITIES:
+            lookup_name = entity["name"]
+            defaults = {k: v for k, v in entity.items() if k != "name"}
+            defaults["tier"] = tier
+            defaults["status"] = Sponsor.Status.ACTIVE
+
             sponsor, sponsor_created = Sponsor.objects.get_or_create(
-                name=entity["name"],
-                defaults={**entity, "tier": tier, "status": Sponsor.Status.ACTIVE},
+                name=lookup_name,
+                defaults=defaults,
             )
             if sponsor_created:
                 created += 1
-                continue
-
-            changed_fields = []
-            expected = {**entity, "tier": tier, "status": Sponsor.Status.ACTIVE}
-            for field, value in expected.items():
-                if getattr(sponsor, field) != value:
-                    setattr(sponsor, field, value)
-                    changed_fields.append(field)
-
-            if changed_fields:
-                updated += 1
-                if not dry_run:
-                    sponsor.save(update_fields=changed_fields)
             else:
-                skipped += 1
+                changed_fields = []
+                expected = {**defaults}
+                for field, value in expected.items():
+                    if getattr(sponsor, field) != value:
+                        setattr(sponsor, field, value)
+                        changed_fields.append(field)
+
+                if changed_fields:
+                    updated += 1
+                    if not dry_run:
+                        sponsor.save(update_fields=changed_fields)
+                else:
+                    skipped += 1
+
+            if not dry_run:
+                self._assign_logo(sponsor, lookup_name)
 
         return tier_created, created, updated, skipped
+
+    def _assign_logo(self, sponsor, name):
+        if sponsor.logo:
+            return
+
+        logo_path = LOGO_MAP.get(name)
+        if not logo_path:
+            return
+
+        full_path = os.path.join("static", logo_path)
+        if not os.path.isfile(full_path):
+            self.stderr.write(f"  Logo file not found: {full_path}")
+            return
+
+        with open(full_path, "rb") as f:
+            img = WagtailImage(
+                title=f"Logo {name}",
+                file=File(f, name=os.path.basename(full_path)),
+            )
+            img.save()
+
+        sponsor.logo = img
+        sponsor.logo_alt_text = f"Logo {name}"
+        sponsor.save(update_fields=["logo", "logo_alt_text"])

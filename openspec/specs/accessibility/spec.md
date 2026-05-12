@@ -38,3 +38,29 @@ Then the schedule SHALL remain readable without horizontal scrolling.
 Given a status or activity badge is displayed  
 When the badge is read without color information  
 Then the text SHALL still convey the meaning.
+
+### Requirement: Accessibility baseline review
+The UI/UX review SHALL include a baseline accessibility assessment.
+
+#### Scenario: Keyboard navigation is considered
+- **GIVEN** the review report exists
+- **WHEN** accessibility observations are inspected
+- **THEN** keyboard navigation and focus visibility SHALL be addressed.
+
+#### Scenario: Heading structure is considered
+- **GIVEN** the review report exists
+- **WHEN** accessibility observations are inspected
+- **THEN** heading structure SHALL be addressed.
+
+#### Scenario: Icon-only labels are considered
+- **GIVEN** the review report exists
+- **WHEN** accessibility observations are inspected
+- **THEN** icon-only links or buttons SHALL be checked for accessible labels.
+
+### Requirement: Schedule accessibility review
+The review SHALL assess public program schedule readability.
+
+#### Scenario: Program accessibility is reviewed
+- **GIVEN** the Program page exists
+- **WHEN** the accessibility observations are inspected
+- **THEN** the review SHALL address whether the schedule is readable on mobile and understandable without relying on color alone.

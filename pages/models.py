@@ -13,7 +13,6 @@ from wagtail.snippets.models import register_snippet
 from core.blocks import BentoGridBlock, StatBlock, TimelineBlock
 from pages.content import (
     ABOUT_CONTENT,
-    ORGANIZATIONS,
     ORGANIZING_COMMITTEE,
     PREVIOUS_EDITIONS_FALLBACK,
     dedupe_editions,
@@ -193,8 +192,7 @@ class HomePage(Page):
         from sponsors.models import Sponsor
 
         ctx["program_preview"] = get_public_program_by_day()[:2]
-        ctx["supporting_entities"] = Sponsor.objects.for_home().select_related("tier")[:8]
-        ctx["organizations"] = ORGANIZATIONS
+        ctx["supporting_entities"] = Sponsor.objects.for_home().select_related("tier", "logo")[:8]
 
         news_index = NewsIndexPage.objects.live().first()
         if news_index:
@@ -224,10 +222,9 @@ class AboutPage(Page):
     def get_context(self, request, *args, **kwargs):
         ctx = super().get_context(request, *args, **kwargs)
         ctx["about_content"] = ABOUT_CONTENT
-        ctx["organizations"] = ORGANIZATIONS
         from sponsors.models import Sponsor
 
-        ctx["supporting_entities"] = Sponsor.objects.for_about().select_related("tier")
+        ctx["supporting_entities"] = Sponsor.objects.for_about().select_related("tier", "logo")
         ctx["committee_members"] = ORGANIZING_COMMITTEE
         return ctx
 
@@ -466,3 +463,33 @@ class ContactPage(Page):
 
     parent_page_types = ["pages.HomePage"]
     subpage_types = []
+
+    def serve(self, request):
+        from core.models import CoreSettings
+        from django.core.mail import send_mail
+        from django.template.response import TemplateResponse
+        from pages.forms import ContactForm
+
+        ctx = self.get_context(request)
+        ctx["form"] = ContactForm()
+
+        if request.method == "POST":
+            form = ContactForm(request.POST)
+            ctx["form"] = form
+            if form.is_valid():
+                site = self.get_site()
+                settings = CoreSettings.for_site(site) if site else CoreSettings.objects.first()
+                recipient = settings.contact_email if settings else None
+                if recipient:
+                    subject_map = dict(ContactForm.SUBJECT_CHOICES)
+                    subject = f"[CBNV Contato] {subject_map.get(form.cleaned_data['subject'], 'Geral')} — {form.cleaned_data['name']}"
+                    body = (
+                        f"Nome: {form.cleaned_data['name']}\n"
+                        f"E-mail: {form.cleaned_data['email']}\n"
+                        f"Assunto: {subject_map.get(form.cleaned_data['subject'], 'Geral')}\n\n"
+                        f"{form.cleaned_data['message']}"
+                    )
+                    send_mail(subject, body, form.cleaned_data["email"], [recipient], fail_silently=True)
+                ctx["form_submitted"] = True
+
+        return TemplateResponse(request, self.get_template(request), ctx)

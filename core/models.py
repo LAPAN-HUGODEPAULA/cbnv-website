@@ -40,6 +40,29 @@ class CoreSettings(TranslatableMixin, BaseSiteSetting):
         default=LinkStatus.COMING_SOON,
         help_text="Controla se o CTA de inscrição deve aparecer como link ativo ou como 'em breve'.",
     )
+    registration_early_bird_deadline = models.DateField(
+        "Prazo lote 1 (early bird)",
+        null=True,
+        blank=True,
+        help_text="Data limite para o lote 1 de inscrição.",
+    )
+    registration_early_bird_label = models.CharField(
+        "Rótulo lote 1",
+        max_length=60,
+        blank=True,
+        default="Lote 1",
+    )
+    registration_late_label = models.CharField(
+        "Rótulo lote 2",
+        max_length=60,
+        blank=True,
+        default="Lote 2",
+    )
+    registration_notes = models.TextField(
+        "Observações sobre inscrição",
+        blank=True,
+        help_text="Informações adicionais exibidas na página de inscrição.",
+    )
     livestream_link = models.URLField("Link de Transmissão", blank=True)
     livestream_status = models.CharField(
         "Status da transmissão",
@@ -115,6 +138,10 @@ class CoreSettings(TranslatableMixin, BaseSiteSetting):
             [
                 FieldPanel("registration_status"),
                 FieldPanel("registration_link"),
+                FieldPanel("registration_early_bird_deadline"),
+                FieldPanel("registration_early_bird_label"),
+                FieldPanel("registration_late_label"),
+                FieldPanel("registration_notes"),
                 FieldPanel("livestream_status"),
                 FieldPanel("livestream_link"),
                 FieldPanel("instagram_url"),

@@ -1,5 +1,5 @@
 {% extends "layouts/public.html" %}
-{% load static %}
+{% load static wagtailimages_tags %}
 
 {% block title %}Sobre{% endblock %}
 
@@ -60,26 +60,31 @@
 
                 <article class="rounded-2xl border border-white/10 bg-white/5 p-6 lg:p-8">
                     <p class="text-xs font-semibold uppercase tracking-[0.2em] text-cbnv-green-400 mb-4">Local e acesso</p>
-                    <div class="space-y-4 text-cbnv-text-muted leading-relaxed">
-                        <p>{{ settings.core.CoreSettings.location }}</p>
-                        {% if settings.core.CoreSettings.venue_address %}
-                        <p>{{ settings.core.CoreSettings.venue_address|linebreaksbr }}</p>
-                        {% endif %}
-                        {% if settings.core.CoreSettings.venue_access_notes %}
-                        <p>{{ settings.core.CoreSettings.venue_access_notes }}</p>
-                        {% endif %}
-                        {% if settings.core.CoreSettings.google_maps_url %}
-                        <a class="inline-flex text-cbnv-green-400 hover:text-white transition-colors" href="{{ settings.core.CoreSettings.google_maps_url }}" target="_blank" rel="noopener noreferrer">
-                            Abrir no Google Maps
-                        </a>
-                        {% endif %}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-4 text-cbnv-text-muted leading-relaxed">
+                            <p>{{ settings.core.CoreSettings.location }}</p>
+                            {% if settings.core.CoreSettings.venue_address %}
+                            <p>{{ settings.core.CoreSettings.venue_address|linebreaksbr }}</p>
+                            {% endif %}
+                            {% if settings.core.CoreSettings.venue_access_notes %}
+                            <p>{{ settings.core.CoreSettings.venue_access_notes }}</p>
+                            {% endif %}
+                            {% if settings.core.CoreSettings.google_maps_url %}
+                            <a class="inline-flex text-cbnv-green-400 hover:text-white transition-colors" href="{{ settings.core.CoreSettings.google_maps_url }}" target="_blank" rel="noopener noreferrer">
+                                Abrir no Google Maps
+                            </a>
+                            {% endif %}
+                        </div>
+                        <div class="rounded-xl overflow-hidden border border-white/10">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3824.6316091462695!2d-43.96658609104678!3d-19.86626348517799!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xa690f5cd6fa2db%3A0xa63066267bf8fe3f!2sCentro%20de%20Atividades%20Did%C3%A1ticas%201%20-%20CAD%201!5e0!3m2!1spt-BR!2sbr!4v1778478173257!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="w-full h-64 md:h-full" title="Mapa do CAD-1 UFMG"></iframe>
+                        </div>
                     </div>
                 </article>
             </div>
         </div>
     </section>
 
-    {% if supporting_entities or organizations %}
+    {% if supporting_entities %}
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <div class="lg:col-span-3">
@@ -89,21 +94,22 @@
             <div class="lg:col-span-9 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                 {% for sponsor in supporting_entities %}
                 <article class="rounded-xl border border-white/10 bg-white/5 p-4">
-                    <p class="text-sm font-semibold text-white leading-snug">{{ sponsor.name }}</p>
-                    <p class="mt-1 text-xs text-cbnv-text-muted">{{ sponsor.get_category_display }}</p>
-                </article>
-                {% endfor %}
-                {% for org in organizations %}
-                <article class="rounded-xl border border-white/10 bg-white/5 p-4">
-                    {% if org.url %}
-                    <a href="{{ org.url }}" target="_blank" rel="noopener noreferrer" class="block space-y-3">
-                        <img src="{% static org.logo %}" alt="{{ org.alt }}" width="160" height="48" loading="lazy" class="h-12 w-auto object-contain">
-                        <p class="text-sm text-white leading-snug">{{ org.name }}</p>
-                    </a>
+                    {% if sponsor.url %}
+                    <a href="{{ sponsor.url }}" target="_blank" rel="noopener noreferrer" class="block space-y-3">
                     {% else %}
                     <div class="space-y-3">
-                        <img src="{% static org.logo %}" alt="{{ org.alt }}" width="160" height="48" loading="lazy" class="h-12 w-auto object-contain">
-                        <p class="text-sm text-white leading-snug">{{ org.name }}</p>
+                    {% endif %}
+                        {% if sponsor.logo %}
+                            {% image sponsor.logo height-48 as logo_img %}
+                            <img src="{{ logo_img.url }}" alt="{{ sponsor.logo_alt_text|default:sponsor.name }}" width="{{ logo_img.width }}" height="{{ logo_img.height }}" loading="lazy" class="h-12 w-auto object-contain">
+                        {% endif %}
+                        <p class="text-sm text-white leading-snug">{{ sponsor.name }}</p>
+                        {% if not sponsor.logo %}
+                        <p class="text-xs text-cbnv-text-muted">{{ sponsor.get_category_display }}</p>
+                        {% endif %}
+                    {% if sponsor.url %}
+                    </a>
+                    {% else %}
                     </div>
                     {% endif %}
                 </article>

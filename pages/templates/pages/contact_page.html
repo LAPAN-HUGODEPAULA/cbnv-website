@@ -19,6 +19,36 @@
 
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-7">
+                {% if form_submitted %}
+                <div class="rounded-2xl border border-cbnv-green-400/30 bg-cbnv-green-400/10 p-6 lg:p-8">
+                    <h2 class="font-display text-2xl font-semibold text-white">Mensagem enviada</h2>
+                    <p class="mt-3 text-cbnv-text-muted">Sua mensagem foi recebida. Retornaremos o contato o mais breve possível.</p>
+                    <a href="{{ page.url }}" class="mt-6 inline-flex rounded-lg border border-white/15 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10">Enviar outra mensagem</a>
+                </div>
+                {% else %}
+                <div class="rounded-2xl border border-white/10 bg-white/5 p-6 lg:p-8">
+                    <h2 class="font-display text-2xl font-semibold text-white">Enviar Mensagem</h2>
+                    <p class="mt-2 text-sm text-cbnv-text-muted">Sua mensagem será encaminhada à organização do congresso sem expor informações de contato direto.</p>
+                    <form method="post" class="mt-6 space-y-5">
+                        {% csrf_token %}
+                        {% for field in form %}
+                        <div>
+                            <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-cbnv-text-light mb-2">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                            <p class="mt-1 text-sm text-red-400">{{ field.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                        <button type="submit" class="w-full rounded-lg bg-cbnv-blue-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-cbnv-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cbnv-green-400">
+                            Enviar Mensagem
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+
             <div class="lg:col-span-5 space-y-5">
                 <article class="rounded-2xl border border-white/10 bg-white/5 p-6">
                     <h2 class="font-display text-2xl font-semibold text-white">Canais De Contato</h2>
@@ -46,30 +76,18 @@
                     <p class="mt-6 text-cbnv-text-muted">Os canais públicos de contato serão informados em breve.</p>
                     {% endif %}
                 </article>
-            </div>
 
-            <div class="lg:col-span-7">
-                <article class="rounded-2xl border border-white/10 bg-cbnv-navy-900/70 p-6 lg:p-8">
+                <article class="rounded-2xl border border-white/10 bg-cbnv-navy-900/70 p-6">
                     <h2 class="font-display text-2xl font-semibold text-white">Local Do Evento</h2>
-                    <div class="mt-6 space-y-4 text-cbnv-text-muted">
-                        <p class="text-lg font-semibold text-white">
-                            {{ settings.core.CoreSettings.venue_name|default:settings.core.CoreSettings.location }}
-                        </p>
-                        {% if settings.core.CoreSettings.venue_short_name %}
-                        <p>{{ settings.core.CoreSettings.venue_short_name }}</p>
-                        {% endif %}
+                    <div class="mt-4 space-y-2 text-cbnv-text-muted text-sm">
+                        <p class="text-white font-semibold">{{ settings.core.CoreSettings.venue_name|default:settings.core.CoreSettings.location }}</p>
                         {% if settings.core.CoreSettings.venue_address %}
                         <p>{{ settings.core.CoreSettings.venue_address|linebreaksbr }}</p>
                         {% endif %}
-                        <p>{{ settings.core.CoreSettings.city }}{% if settings.core.CoreSettings.state %}, {{ settings.core.CoreSettings.state }}{% endif %}{% if settings.core.CoreSettings.country %}, {{ settings.core.CoreSettings.country }}{% endif %}</p>
-                        {% if settings.core.CoreSettings.venue_access_notes %}
-                        <p>{{ settings.core.CoreSettings.venue_access_notes }}</p>
-                        {% endif %}
+                        <p>{{ settings.core.CoreSettings.city }}{% if settings.core.CoreSettings.state %}, {{ settings.core.CoreSettings.state }}{% endif %}</p>
                     </div>
                     {% if settings.core.CoreSettings.google_maps_url %}
-                    <a href="{{ settings.core.CoreSettings.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="mt-8 inline-flex rounded-lg bg-cbnv-blue-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-cbnv-blue-500">
-                        Abrir No Google Maps
-                    </a>
+                    <a href="{{ settings.core.CoreSettings.google_maps_url }}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex text-sm font-semibold text-cbnv-green-400 hover:text-white transition-colors">Abrir no Google Maps</a>
                     {% endif %}
                 </article>
             </div>

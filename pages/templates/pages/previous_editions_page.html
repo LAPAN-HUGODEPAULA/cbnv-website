@@ -1,4 +1,5 @@
 {% extends "layouts/public.html" %}
+{% load wagtailimages_tags %}
 
 {% block title %}Edições Anteriores{% endblock %}
 
@@ -22,14 +23,24 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {% for edition in editions %}
             <article class="rounded-2xl border border-white/10 bg-white/5 p-6 lg:p-8 flex flex-col gap-6">
-                <div class="flex items-start justify-between gap-4">
-                    <div>
-                        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-cbnv-green-400">CBNV {{ edition.edition_number }}</p>
-                        <h2 class="mt-1 font-display text-2xl font-semibold text-white">{{ edition.year }}</h2>
+                <div class="flex items-start gap-5">
+                    {% if edition.photo %}
+                        {% image edition.photo fill-120x120 as edition_img %}
+                        <img src="{{ edition_img.url }}" alt="Foto da {{ edition.edition_number }}ª edição" width="{{ edition_img.width }}" height="{{ edition_img.height }}" class="h-24 w-24 rounded-xl object-cover flex-none">
+                    {% endif %}
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="min-w-0">
+                                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-cbnv-green-400">{{ edition.year }}</p>
+                                <h2 class="mt-1 font-display text-xl font-semibold text-white leading-snug">{{ edition.edition_number }}o Congresso Brasileiro de Neurociências da Visão</h2>
+                            </div>
+                        </div>
+                        {% if edition.dates %}
+                        <span class="mt-2 inline-block rounded-full border border-white/10 bg-cbnv-navy-900 px-3 py-1 text-xs uppercase tracking-[0.16em] text-cbnv-text-muted">
+                            {{ edition.dates }}
+                        </span>
+                        {% endif %}
                     </div>
-                    <span class="rounded-full border border-white/10 bg-cbnv-navy-900 px-3 py-1 text-xs uppercase tracking-[0.16em] text-cbnv-text-muted">
-                        {{ edition.dates }}
-                    </span>
                 </div>
 
                 <div class="space-y-3 text-cbnv-text-muted">

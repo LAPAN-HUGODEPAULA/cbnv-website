@@ -84,6 +84,14 @@ class Edition(models.Model):
     location = models.CharField("Local", max_length=255, blank=True)
     proceedings_url = models.URLField("Link dos Anais", blank=True, help_text="URL externa para os anais em PDF")
     playlist_url = models.URLField("Link da Playlist (YouTube)", blank=True)
+    photo = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name="Foto",
+    )
 
     panels = [
         FieldPanel("edition_number"),
@@ -93,6 +101,7 @@ class Edition(models.Model):
         FieldPanel("location"),
         FieldPanel("proceedings_url"),
         FieldPanel("playlist_url"),
+        FieldPanel("photo"),
     ]
 
     class Meta:

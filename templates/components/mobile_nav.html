@@ -25,18 +25,4 @@ Usage: {% include "components/mobile_nav.html" with menu_items=menu_items %}
             {{ link.label }}
         </a>
     {% endfor %}
-
-    {% if cta_available and cta_url %}
-    <div class="pt-4 px-4">
-        <a href="{{ cta_url }}" class="block w-full text-center py-4 bg-cbnv-blue-600 text-white rounded-xl text-base font-bold shadow-cbnv-glow-blue hover:bg-cbnv-blue-500 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cbnv-green-400">
-            {{ cta_label|default:'Inscrição' }}
-        </a>
-    </div>
-    {% elif cta_status == "coming_soon" %}
-    <div class="pt-4 px-4">
-        <span class="block w-full text-center py-4 bg-cbnv-navy-900/10 text-cbnv-text-secondary rounded-xl text-base font-bold">
-            Inscrição em breve
-        </span>
-    </div>
-    {% endif %}
 </nav>

@@ -2,9 +2,7 @@
 
 ## Purpose
 Definir como as páginas públicas passam a consumir conteúdo dinâmico do CMS mantendo consistência visual com os shells e componentes do design system.
-
 ## Requirements
-
 ### Requirement: Layout consistency
 As páginas do site público SHALL usar o layout `templates/layouts/public.html` para garantir consistência visual e navegação institucional uniforme. Metadados dinâmicos (títulos de página, descrição SEO) SHALL ser extraídos dos modelos de página do CMS.
 
@@ -236,6 +234,7 @@ Public pages SHALL be able to query featured news/announcements and supporting e
 #### Scenario: Footer requests supporting entities
 - **WHEN** the footer queries CMS content
 - **THEN** it SHALL be able to retrieve active entities marked for footer display
+
 ### Requirement: Public pages use seeded canonical values
 Future public pages SHALL use seeded canonical values for repeated event facts.
 
@@ -394,3 +393,50 @@ The review SHALL evaluate mobile, tablet and desktop behavior.
 - **GIVEN** the review report exists
 - **WHEN** viewport metadata is inspected
 - **THEN** at least one mobile viewport SHALL be documented.
+
+### Requirement: Page-specific content coverage
+
+Round-1 content SHALL cover every MVP public page.
+
+#### Scenario: Home content is produced
+
+Given the content document exists  
+When the Home section is inspected  
+Then it SHALL include hero copy, short event description, CTA/microcopy and section guidance.
+
+#### Scenario: About content is produced
+
+Given the content document exists  
+When the About section is inspected  
+Then it SHALL include expanded institutional/scientific copy and 2026 theme context.
+
+#### Scenario: Program content is produced
+
+Given the content document exists  
+When the Program section is inspected  
+Then it SHALL include introductory and status/pending-participant language consistent with the current program.
+
+#### Scenario: Registration content is produced
+
+Given the content document exists  
+When the Registration section is inspected  
+Then it SHALL explain that registration is external and may be unavailable or coming soon.
+
+### Requirement: Previous editions framed as archive
+
+Previous-edition content SHALL be framed as archive/history.
+
+#### Scenario: Previous editions copy is inspected
+
+Given the Previous Editions copy is read  
+Then it SHALL NOT present legacy facts as current 2026 event facts.
+
+### Requirement: Footer content is concise
+
+Footer copy SHALL be concise and avoid redundant long slogans.
+
+#### Scenario: Footer copy is inspected
+
+Given footer content exists  
+Then it SHALL include institutional acknowledgement needs without repeating the full event pitch unnecessarily.
+

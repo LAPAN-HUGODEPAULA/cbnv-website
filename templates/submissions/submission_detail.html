@@ -1,0 +1,110 @@
+{% extends "layouts/dashboard.html" %}
+
+{% block title %}Submissão {{ submission.submission_id }} — {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="mb-6">
+    <a href="{% url 'dashboard:author' %}" class="text-sm text-cbnv-blue-600 hover:underline">&larr; Voltar para o painel</a>
+    <h1 class="mt-2 text-2xl font-bold text-cbnv-navy-950">Detalhes da submissão</h1>
+</div>
+
+<div class="space-y-6">
+    <!-- Basic Info -->
+    <div class="rounded-xl border border-gray-200 bg-white overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-gray-900">{{ submission.submission_id }}</h2>
+            <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium
+                {% if submission.status == 'draft' %}bg-gray-100 text-gray-700
+                {% elif submission.status == 'submitted' %}bg-blue-100 text-blue-700
+                {% elif submission.status in 'accepted_oral,accepted_poster,accepted_video' %}bg-green-100 text-green-700
+                {% elif submission.status == 'rejected' %}bg-red-100 text-red-700
+                {% else %}bg-blue-50 text-blue-700{% endif %}">
+                {{ submission.status_label }}
+            </span>
+        </div>
+        <div class="p-6">
+            <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6">
+                <div class="sm:col-span-2">
+                    <dt class="text-sm font-medium text-gray-500">Título</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ submission.title }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Eixo temático</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ submission.thematic_axis }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Data de envio</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ submission.created_at|date:"d/m/Y H:i" }}</dd>
+                </div>
+                {% if submission.final_modality %}
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Modalidade final</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ submission.get_final_modality_display }}</dd>
+                </div>
+                {% endif %}
+            </dl>
+        </div>
+    </div>
+
+    <!-- Feedback Section -->
+    {% if submission.status in 'accepted_oral,accepted_poster,accepted_video,rejected' or submission.decision_notes or reviews %}
+    <div class="rounded-xl border border-gray-200 bg-white overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-900">Parecer da Comissão Científica</h2>
+        </div>
+        <div class="p-6 space-y-6">
+            {% if submission.decision_notes %}
+            <div>
+                <h3 class="text-sm font-medium text-gray-900 mb-2">Comentários gerais</h3>
+                <div class="prose prose-sm text-gray-600">
+                    {{ submission.decision_notes|linebreaks }}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if reviews %}
+            <div class="space-y-4">
+                <h3 class="text-sm font-medium text-gray-900">Avaliações dos revisores</h3>
+                {% for review in reviews %}
+                <div class="rounded-lg bg-gray-50 p-4 border border-gray-100">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Revisor {{ forloop.counter }}</span>
+                        <span class="text-xs font-medium text-gray-900">{{ review.get_recommendation_display }}</span>
+                    </div>
+                    {% if review.comments %}
+                    <div class="text-sm text-gray-600">
+                        {{ review.comments|linebreaks }}
+                    </div>
+                    {% else %}
+                    <p class="text-sm text-gray-400 italic">Sem comentários qualitativos.</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Authors -->
+    <div class="rounded-xl border border-gray-200 bg-white overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-900">Autores</h2>
+        </div>
+        <div class="p-6">
+            <ul class="divide-y divide-gray-100">
+                {% for author in submission.authors.all %}
+                <li class="py-3 flex items-center justify-between">
+                    <div class="text-sm">
+                        <span class="font-medium text-gray-900">{{ author.full_name }}</span>
+                        {% if author.is_corresponding %}<span class="ml-2 text-xs text-cbnv-blue-600 font-medium">(Correspondente)</span>{% endif %}
+                        <p class="text-gray-500">{{ author.institution }}</p>
+                    </div>
+                    <span class="text-xs text-gray-400">#{{ author.order }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

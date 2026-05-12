@@ -242,3 +242,39 @@ class TestSecureFileDownload:
             reverse("submissions:download_file", args=[sf.pk])
         )
         assert response.status_code == 302
+
+class TestSubmissionDetailView:
+    def test_owner_can_view_detail(self, auth_client, db_setup):
+        client, user = auth_client
+        _, axis = db_setup
+        sub = Submission.objects.create(
+            submitter=user,
+            title="Test Title Detail",
+            abstract="Test Abstract",
+            keywords=["a", "b", "c"],
+            thematic_axis=axis,
+            status="submitted"
+        )
+        response = client.get(reverse("submissions:detail", args=[sub.pk]))
+        assert response.status_code == 200
+        assert "Test Title Detail" in response.content.decode()
+
+    def test_non_owner_cannot_view_detail(self, db_setup):
+        user1, axis = db_setup
+        user2 = create_user_with_profile(
+            username="other2", password="p", is_author=True,
+            first_name="O", last_name="U",
+            institution="X", country="BR",
+        )
+        sub = Submission.objects.create(
+            submitter=user1,
+            title="Other Title",
+            abstract="Other Abstract",
+            keywords=["a", "b", "c"],
+            thematic_axis=axis,
+            status="submitted"
+        )
+        client = Client()
+        client.force_login(user2)
+        response = client.get(reverse("submissions:detail", args=[sub.pk]))
+        assert response.status_code == 404

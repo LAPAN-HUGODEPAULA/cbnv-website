@@ -1,11 +1,13 @@
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 
 from accounts.models import User
 from accounts.tests.factories import create_user_with_profile
 from proceedings.models import FinalMaterial
 from submissions.models import Submission, SubmissionAuthor, ThematicAxis
+from videos.models import PUBLIC, VideoResource
 
 
 class _SubmissionMixin:
@@ -73,7 +75,11 @@ class AuthorUploadTest(_SubmissionMixin, TestCase):
         self.client.login(username="author", password="pass")
         response = self.client.post(
             reverse("proceedings:author_upload", args=[sub.pk]),
-            {"final_pdf": self._pdf_file(), "presentation_file": self._pptx_file()},
+            {
+                "final_pdf": self._pdf_file(),
+                "presentation_file": self._pptx_file(),
+                "publication_authorized": "on",
+            },
             format="multipart",
             follow=True,
         )
@@ -83,7 +89,20 @@ class AuthorUploadTest(_SubmissionMixin, TestCase):
         self.assertIsNotNone(material)
         self.assertTrue(bool(material.final_pdf))
         self.assertTrue(bool(material.presentation_file))
+        self.assertTrue(material.publication_authorized)
         self.assertIsNotNone(material.received_at)
+
+    def test_upload_without_authorization_is_rejected(self):
+        sub = self._create_submission(status="final_materials_pending")
+        self.client.login(username="author", password="pass")
+        response = self.client.post(
+            reverse("proceedings:author_upload", args=[sub.pk]),
+            {"final_pdf": self._pdf_file()},
+            format="multipart",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "A autorização de publicação é obrigatória.")
+        self.assertFalse(sub.final_material.publication_authorized)
 
     def test_invalid_file_type_rejected(self):
         sub = self._create_submission(status="final_materials_pending")
@@ -102,13 +121,21 @@ class AuthorUploadTest(_SubmissionMixin, TestCase):
         self.client.login(username="author", password="pass")
         self.client.post(
             reverse("proceedings:author_upload", args=[sub.pk]),
-            {"final_pdf": self._pdf_file(), "presentation_file": self._pptx_file()},
+            {
+                "final_pdf": self._pdf_file(),
+                "presentation_file": self._pptx_file(),
+                "publication_authorized": "on",
+            },
             format="multipart",
         )
         first_received = sub.final_material.received_at
         self.client.post(
             reverse("proceedings:author_upload", args=[sub.pk]),
-            {"final_pdf": self._pdf_file("updated.pdf"), "presentation_file": self._pptx_file()},
+            {
+                "final_pdf": self._pdf_file("updated.pdf"),
+                "presentation_file": self._pptx_file(),
+                "publication_authorized": "on",
+            },
             format="multipart",
         )
         sub.refresh_from_db()
@@ -162,6 +189,7 @@ class CommissionValidationTest(_SubmissionMixin, TestCase):
             submission=sub,
             final_pdf=self._pdf_file(),
             presentation_file=self._pptx_file(),
+            publication_authorized=True,
         )
         self.client.login(username="chair", password="pass")
         response = self.client.post(
@@ -174,6 +202,18 @@ class CommissionValidationTest(_SubmissionMixin, TestCase):
         material = sub.final_material
         self.assertIsNotNone(material.validated_at)
         self.assertEqual(material.validated_by, self.chair)
+
+    def test_validate_materials_requires_publication_authorization(self):
+        sub = self._create_submission(status="final_materials_pending")
+        FinalMaterial.objects.create(submission=sub, final_pdf=self._pdf_file())
+        self.client.login(username="chair", password="pass")
+        response = self.client.post(
+            reverse("proceedings:validate_materials", args=[sub.pk]),
+            {"notes": "OK"},
+        )
+        self.assertEqual(response.status_code, 302)
+        sub.refresh_from_db()
+        self.assertEqual(sub.status, "final_materials_pending")
 
     def test_publish_proceedings_transitions(self):
         sub = self._create_submission(status="ready_for_proceedings")
@@ -202,23 +242,42 @@ class PublicProceedingsTest(_SubmissionMixin, TestCase):
         self.unpublished = self._create_submission(
             status="ready_for_proceedings", axis=self.other_axis, title="Trabalho não publicado",
         )
+        self.ready = self._create_submission(
+            status="ready_for_proceedings", axis=self.axis, title="Trabalho pronto",
+        )
+        FinalMaterial.objects.create(
+            submission=self.published,
+            final_pdf=self._pdf_file(),
+            publication_authorized=True,
+            validated_at=timezone.now(),
+        )
+        FinalMaterial.objects.create(
+            submission=self.ready,
+            final_pdf=self._pdf_file("ready.pdf"),
+            publication_authorized=True,
+            validated_at=timezone.now(),
+        )
 
-    def test_proceedings_list_shows_published_only(self):
+    def test_proceedings_list_shows_validated_authorized_items_only(self):
         response = self.client.get("/anais/")
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.published.title)
+        self.assertContains(response, self.ready.title)
         self.assertNotContains(response, self.unpublished.title)
 
     def test_proceedings_detail_for_published(self):
         response = self.client.get(reverse("proceedings:proceedings_detail", args=[self.published.submission_id]))
         self.assertEqual(response.status_code, 200)
 
-    def test_proceedings_detail_for_unpublished_404(self):
+    def test_proceedings_detail_for_ready_material(self):
+        response = self.client.get(reverse("proceedings:proceedings_detail", args=[self.ready.submission_id]))
+        self.assertEqual(response.status_code, 200)
+
+    def test_proceedings_detail_for_unvalidated_404(self):
         response = self.client.get(reverse("proceedings:proceedings_detail", args=[self.unpublished.submission_id]))
         self.assertEqual(response.status_code, 404)
 
     def test_pdf_download_for_published(self):
-        material = FinalMaterial.objects.create(submission=self.published, final_pdf=self._pdf_file())
         response = self.client.get(reverse("proceedings:proceedings_download_pdf", args=[self.published.submission_id]))
         self.assertEqual(response.status_code, 200)
 
@@ -226,6 +285,28 @@ class PublicProceedingsTest(_SubmissionMixin, TestCase):
         FinalMaterial.objects.create(submission=self.unpublished, final_pdf=self._pdf_file())
         response = self.client.get(reverse("proceedings:proceedings_download_pdf", args=[self.unpublished.submission_id]))
         self.assertEqual(response.status_code, 403)
+
+    def test_ready_pdf_is_not_downloadable_until_published(self):
+        response = self.client.get(reverse("proceedings:proceedings_download_pdf", args=[self.ready.submission_id]))
+        self.assertEqual(response.status_code, 403)
+
+    def test_submitted_video_url_does_not_render_without_public_resource(self):
+        self.published.final_material.video_url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        self.published.final_material.save()
+        response = self.client.get(reverse("proceedings:proceedings_detail", args=[self.published.submission_id]))
+        self.assertNotContains(response, "youtube.com/embed")
+
+    def test_explicit_public_video_resource_renders(self):
+        video = VideoResource.objects.create(
+            title="Vídeo público",
+            youtube_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            status=PUBLIC,
+        )
+        self.published.final_material.video_url = video.youtube_url
+        self.published.final_material.video_resource = video
+        self.published.final_material.save()
+        response = self.client.get(reverse("proceedings:proceedings_detail", args=[self.published.submission_id]))
+        self.assertContains(response, "youtube.com/embed/dQw4w9WgXcQ")
 
     def test_filter_by_modality(self):
         response = self.client.get("/anais/?modality=oral")

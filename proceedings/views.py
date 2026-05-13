@@ -4,12 +4,25 @@ from django.core.exceptions import PermissionDenied
 from django.http import FileResponse, Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
+import logging
 
 from accounts.decorators import author_required, chair_required
 from submissions.models import Submission
 
 from .forms import FinalMaterialForm
 from .models import FinalMaterial
+
+logger = logging.getLogger(__name__)
+
+
+def _safe_notify(notification_func, submission):
+    try:
+        notification_func(submission)
+    except Exception:
+        logger.exception(
+            "Final-material notification failed for submission %s",
+            submission.submission_id,
+        )
 
 
 @login_required
@@ -28,7 +41,7 @@ def request_materials(request, submission_id):
 
             from notifications.services import notify_materials_requested
 
-            notify_materials_requested(submission)
+            _safe_notify(notify_materials_requested, submission)
             messages.success(request, f"Materiais finais solicitados para {submission.submission_id}.")
         except Exception as e:
             messages.error(request, str(e))
@@ -79,6 +92,13 @@ def validate_materials(request, submission_id):
     material = get_object_or_404(FinalMaterial, submission=submission)
 
     if request.method == "POST":
+        if not material.is_ready_for_validation:
+            messages.error(
+                request,
+                "Materiais finais só podem ser validados com PDF final e autorização de publicação.",
+            )
+            return redirect("proceedings:validate_materials", submission.pk)
+
         notes = request.POST.get("notes", "")
         material.notes = notes
         material.validated_at = timezone.now()
@@ -89,7 +109,7 @@ def validate_materials(request, submission_id):
 
         from notifications.services import notify_materials_validated
 
-        notify_materials_validated(submission)
+        _safe_notify(notify_materials_validated, submission)
         messages.success(request, f"Materiais de {submission.submission_id} validados com sucesso.")
         return redirect("proceedings:commission_materials")
 
@@ -110,7 +130,7 @@ def publish_proceedings(request, submission_id):
 
         from notifications.services import notify_proceedings_published
 
-        notify_proceedings_published(submission)
+        _safe_notify(notify_proceedings_published, submission)
         messages.success(request, f"Trabalho {submission.submission_id} publicado nos anais.")
         return redirect("proceedings:commission_materials")
 
@@ -142,7 +162,7 @@ def author_upload_materials(request, submission_id):
 
             from notifications.services import notify_materials_received
 
-            notify_materials_received(submission)
+            _safe_notify(notify_materials_received, submission)
             messages.success(request, "Materiais enviados com sucesso!")
             return redirect("proceedings:author_upload", submission.pk)
     else:
@@ -157,7 +177,11 @@ def author_upload_materials(request, submission_id):
 
 def proceedings_list(request):
     submissions = (
-        Submission.objects.filter(status="published_in_proceedings")
+        Submission.objects.filter(
+            status__in=["ready_for_proceedings", "published_in_proceedings"],
+            final_material__publication_authorized=True,
+            final_material__validated_at__isnull=False,
+        )
         .select_related("final_material", "thematic_axis")
         .prefetch_related("authors")
         .order_by("title")
@@ -191,7 +215,9 @@ def proceedings_detail(request, submission_id):
     submission = get_object_or_404(
         Submission.objects.select_related("thematic_axis").prefetch_related("authors"),
         submission_id=submission_id,
-        status="published_in_proceedings",
+        status__in=["ready_for_proceedings", "published_in_proceedings"],
+        final_material__publication_authorized=True,
+        final_material__validated_at__isnull=False,
     )
     material = getattr(submission, "final_material", None)
     return render(
@@ -206,7 +232,11 @@ def proceedings_download_pdf(request, submission_id):
         Submission.objects.select_related("final_material"),
         submission_id=submission_id,
     )
-    if submission.status != "published_in_proceedings":
+    if (
+        submission.status != "published_in_proceedings"
+        or not submission.final_material.publication_authorized
+        or not submission.final_material.validated_at
+    ):
         raise PermissionDenied("Este trabalho não está publicado nos anais.")
 
     material = get_object_or_404(FinalMaterial, submission=submission)

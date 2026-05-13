@@ -45,12 +45,12 @@
         </div>
         {% endif %}
 
-        {% if material and material.video_url %}
+        {% if material and material.video_resource and material.video_resource.status == "public" %}
         <div class="mb-6">
             <h2 class="text-sm font-semibold text-cbnv-text-muted uppercase tracking-wide mb-2">Vídeo</h2>
             <div class="aspect-video rounded-lg overflow-hidden">
                 <iframe
-                    src="{{ material.video_url|youtube_embed_url }}"
+                    src="{{ material.video_resource.youtube_url|youtube_embed_url }}"
                     title="{{ submission.title }}"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

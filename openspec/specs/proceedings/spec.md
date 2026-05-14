@@ -2,9 +2,7 @@
 
 ## Purpose
 Definir a gestão inicial de edições anteriores e materiais históricos do congresso, incluindo links externos para anais e playlists.
-
 ## Requirements
-
 ### Requirement: Previous Editions Management
 O sistema SHALL permitir o cadastro de edições anteriores do congresso para preservação do acervo histórico. Os campos MUST incluir: Número da Edição, Ano, Tema, Datas, Local, Link dos Anais (externo) e Link da Playlist (YouTube). O Manager de proceedings SHALL fornecer método `materials_status()` para consultar status de materiais finais (entregues vs. pendentes).
 
@@ -104,3 +102,28 @@ O conteudo publico de `https://lapan.com.br/eventos/` MAY ser usado como fonte s
 - **GIVEN** a fonte externa nao esta acessivel durante testes ou desenvolvimento local
 - **WHEN** a pagina "Edicoes Anteriores" e renderizada
 - **THEN** SHALL continuar exibindo os dados locais disponiveis sem erro
+
+### Requirement: Final material submission
+
+The platform SHALL allow authors of accepted submissions to upload final materials.
+
+#### Scenario: Author uploads final materials
+- **WHEN** an author of an accepted submission uploads a final PDF, presentation, and video link
+- **THEN** a `FinalMaterial` record SHALL be created or updated.
+
+### Requirement: Admin validation of materials
+
+The scientific committee SHALL be able to validate received final materials.
+
+#### Scenario: Admin validates materials
+- **WHEN** an admin reviews and validates a `FinalMaterial` record
+- **THEN** the validation timestamp and user SHALL be recorded, and the author SHALL be notified.
+
+### Requirement: Previous editions management
+
+The system SHALL support the management of previous congress editions and their external links.
+
+#### Scenario: Admin registers previous edition
+- **WHEN** an admin creates an `Edition` snippet in Wagtail
+- **THEN** it SHALL be available to be listed in the public site.
+

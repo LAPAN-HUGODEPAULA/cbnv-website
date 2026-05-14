@@ -1,4 +1,8 @@
-# videos Delta
+# videos
+
+# Purpose
+
+The purpose of this capability is to handle the integration and validation of video content, specifically YouTube links, for submissions and other congress materials.
 
 ## ADDED Requirements
 

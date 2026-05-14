@@ -2,9 +2,11 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
         <h2 class="text-lg font-semibold text-cbnv-text-primary">Materiais Finais</h2>
         <div class="flex items-center gap-2">
-            <a href="{% url 'reports:export_proceedings' %}?format=csv" class="text-xs text-cbnv-text-muted hover:text-cbnv-text-secondary underline">CSV</a>
+            <a href="{% url 'reports:export_proceedings' %}?format=xlsx{% if filter_querystring %}&{{ filter_querystring }}{% endif %}" class="text-xs text-cbnv-text-muted hover:text-cbnv-text-secondary underline">XLSX</a>
             <span class="text-cbnv-text-muted">|</span>
-            <a href="{% url 'reports:export_proceedings' %}?format=json" class="text-xs text-cbnv-text-muted hover:text-cbnv-text-secondary underline">JSON</a>
+            <a href="{% url 'reports:export_proceedings' %}?format=csv{% if filter_querystring %}&{{ filter_querystring }}{% endif %}" class="text-xs text-cbnv-text-muted hover:text-cbnv-text-secondary underline">CSV</a>
+            <span class="text-cbnv-text-muted">|</span>
+            <a href="{% url 'reports:export_proceedings' %}?format=json{% if filter_querystring %}&{{ filter_querystring }}{% endif %}" class="text-xs text-cbnv-text-muted hover:text-cbnv-text-secondary underline">JSON</a>
         </div>
     </div>
 
@@ -24,8 +26,20 @@
                     <td class="px-4 py-2.5 text-right font-medium text-amber-500">{{ pending_materials|default:"0" }}</td>
                 </tr>
                 <tr class="hover:bg-cbnv-navy-900/5">
+                    <td class="px-4 py-2.5 text-cbnv-text-secondary">Validados</td>
+                    <td class="px-4 py-2.5 text-right font-medium text-cbnv-green-400">{{ validated|default:"0" }}</td>
+                </tr>
+                <tr class="hover:bg-cbnv-navy-900/5">
+                    <td class="px-4 py-2.5 text-cbnv-text-secondary">Sem autorização</td>
+                    <td class="px-4 py-2.5 text-right font-medium text-red-500">{{ missing_authorization|default:"0" }}</td>
+                </tr>
+                <tr class="hover:bg-cbnv-navy-900/5">
                     <td class="px-4 py-2.5 text-cbnv-text-secondary">Com vídeo</td>
                     <td class="px-4 py-2.5 text-right font-medium text-cbnv-blue-600">{{ with_video|default:"0" }}</td>
+                </tr>
+                <tr class="hover:bg-cbnv-navy-900/5">
+                    <td class="px-4 py-2.5 text-cbnv-text-secondary">Na galeria</td>
+                    <td class="px-4 py-2.5 text-right font-medium text-cbnv-blue-600">{{ promoted_videos|default:"0" }}</td>
                 </tr>
                 <tr class="hover:bg-cbnv-navy-900/5">
                     <td class="px-4 py-2.5 text-cbnv-text-secondary">Publicados nos anais</td>

@@ -2,9 +2,11 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
         <h2 class="text-lg font-semibold text-cbnv-text-primary">Revisões</h2>
         <div class="flex items-center gap-2">
-            <a href="{% url 'reports:export_reviews' %}?format=csv" class="text-xs text-cbnv-text-muted hover:text-cbnv-text-secondary underline">CSV</a>
+            <a href="{% url 'reports:export_reviews' %}?format=xlsx{% if filter_querystring %}&{{ filter_querystring }}{% endif %}" class="text-xs text-cbnv-text-muted hover:text-cbnv-text-secondary underline">XLSX</a>
             <span class="text-cbnv-text-muted">|</span>
-            <a href="{% url 'reports:export_reviews' %}?format=json" class="text-xs text-cbnv-text-muted hover:text-cbnv-text-secondary underline">JSON</a>
+            <a href="{% url 'reports:export_reviews' %}?format=csv{% if filter_querystring %}&{{ filter_querystring }}{% endif %}" class="text-xs text-cbnv-text-muted hover:text-cbnv-text-secondary underline">CSV</a>
+            <span class="text-cbnv-text-muted">|</span>
+            <a href="{% url 'reports:export_reviews' %}?format=json{% if filter_querystring %}&{{ filter_querystring }}{% endif %}" class="text-xs text-cbnv-text-muted hover:text-cbnv-text-secondary underline">JSON</a>
         </div>
     </div>
 

@@ -5,24 +5,29 @@
 {% block content %}
 <div class="mb-6">
     <h1 class="text-2xl font-bold text-cbnv-navy-950">Painel da Comissão Científica</h1>
-    <p class="mt-1 text-sm text-gray-500">Área reservada para futuras ferramentas de coordenação científica.</p>
+    <p class="mt-1 text-sm text-gray-500">Acesse as principais rotinas científicas e editoriais do evento.</p>
 </div>
 
-<div class="grid gap-4 md:grid-cols-3">
-    <section class="rounded-xl border border-gray-200 bg-white p-5">
-        <span class="rounded-full bg-gray-900/10 px-3 py-1 text-sm font-medium text-gray-800">Comissão científica</span>
-        <h2 class="mt-4 text-lg font-semibold text-cbnv-navy-950">Credencial ativa</h2>
-        <p class="mt-2 text-sm text-gray-500">Seu perfil está autorizado para a área da comissão.</p>
-    </section>
-    <section class="rounded-xl border border-gray-200 bg-white p-5">
-        <span class="rounded-full bg-cbnv-blue-600/10 px-3 py-1 text-sm font-medium text-cbnv-blue-700">Em breve</span>
-        <h2 class="mt-4 text-lg font-semibold text-cbnv-navy-950">Ferramentas científicas</h2>
-        <p class="mt-2 text-sm text-gray-500">Atribuições, decisões e relatórios científicos serão conectados por propostas posteriores.</p>
-    </section>
-    <section class="rounded-xl border border-gray-200 bg-white p-5">
-        <span class="rounded-full bg-cbnv-green-400/20 px-3 py-1 text-sm font-medium text-cbnv-green-700">Integração futura</span>
-        <h2 class="mt-4 text-lg font-semibold text-cbnv-navy-950">Fluxo de revisão</h2>
-        <p class="mt-2 text-sm text-gray-500">Esta página não implementa decisões, atribuições ou formulários de revisão nesta etapa.</p>
-    </section>
+<div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+    <a href="{% url 'reviews:manage_submissions' %}" class="rounded-xl border border-gray-200 bg-white p-5 transition-colors hover:border-cbnv-blue-600">
+        <span class="rounded-full bg-cbnv-blue-600/10 px-3 py-1 text-sm font-medium text-cbnv-blue-700">Submissões</span>
+        <h2 class="mt-4 text-lg font-semibold text-cbnv-navy-950">Gerenciar submissões</h2>
+        <p class="mt-2 text-sm text-gray-500">Acompanhar avaliação, decisões e solicitações de materiais.</p>
+    </a>
+    <a href="{% url 'proceedings:commission_materials' %}" class="rounded-xl border border-gray-200 bg-white p-5 transition-colors hover:border-cbnv-blue-600">
+        <span class="rounded-full bg-cbnv-green-400/20 px-3 py-1 text-sm font-medium text-cbnv-green-700">Materiais</span>
+        <h2 class="mt-4 text-lg font-semibold text-cbnv-navy-950">Gerenciar materiais finais</h2>
+        <p class="mt-2 text-sm text-gray-500">Validar materiais recebidos e preparar anais.</p>
+    </a>
+    <a href="{% url 'proceedings:proceedings_list' %}" class="rounded-xl border border-gray-200 bg-white p-5 transition-colors hover:border-cbnv-blue-600">
+        <span class="rounded-full bg-gray-900/10 px-3 py-1 text-sm font-medium text-gray-800">Anais</span>
+        <h2 class="mt-4 text-lg font-semibold text-cbnv-navy-950">Ver anais</h2>
+        <p class="mt-2 text-sm text-gray-500">Conferir trabalhos elegíveis e publicados.</p>
+    </a>
+    <a href="/videos/" class="rounded-xl border border-gray-200 bg-white p-5 transition-colors hover:border-cbnv-blue-600">
+        <span class="rounded-full bg-cbnv-blue-600/10 px-3 py-1 text-sm font-medium text-cbnv-blue-700">Vídeos</span>
+        <h2 class="mt-4 text-lg font-semibold text-cbnv-navy-950">Galeria de vídeos</h2>
+        <p class="mt-2 text-sm text-gray-500">Revisar recursos públicos do acervo audiovisual.</p>
+    </a>
 </div>
 {% endblock %}

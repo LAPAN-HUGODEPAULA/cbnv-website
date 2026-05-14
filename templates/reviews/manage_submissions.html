@@ -62,6 +62,10 @@
                     <a href="{% url 'reviews:issue_decision' sub.pk %}"
                        class="text-xs text-cbnv-blue-600 hover:underline">Decidir</a>
                     {% endif %}
+                    {% if sub.status in 'accepted_oral,accepted_poster,accepted_video' %}
+                    <a href="{% url 'proceedings:request_materials' sub.pk %}"
+                       class="text-xs text-cbnv-green-600 hover:underline">Solicitar materiais</a>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}

@@ -76,6 +76,20 @@
             </div>
         </div>
 
+        <div class="mb-6 rounded-lg border border-white/10 bg-cbnv-navy-950/40 p-4">
+            <label for="id_publication_authorized" class="flex gap-3 text-sm text-cbnv-text-secondary">
+                <input type="checkbox" id="id_publication_authorized" name="publication_authorized"
+                    class="mt-1 h-4 w-4 rounded border-white/20 text-cbnv-blue-600 focus:ring-cbnv-blue-600"
+                    {% if form.publication_authorized.value %}checked{% endif %}>
+                <span>Autorizo a publicação do trabalho nos anais do evento, conforme as orientações da organização.</span>
+            </label>
+            {% if form.publication_authorized.errors %}
+            {% for error in form.publication_authorized.errors %}
+            <p class="mt-2 text-xs text-red-600">{{ error }}</p>
+            {% endfor %}
+            {% endif %}
+        </div>
+
         <div class="flex gap-3">
             <a href="{% url 'dashboard:author' %}" class="rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-cbnv-text-secondary hover:bg-cbnv-navy-900/5 transition-colors">Cancelar</a>
             <button type="submit" class="rounded-lg bg-cbnv-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-cbnv-blue-700 transition-colors">Enviar materiais</button>

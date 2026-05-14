@@ -47,6 +47,14 @@
         {% if material.received_at %}
         <p class="mt-2 text-xs text-cbnv-text-muted">Recebidos em {{ material.received_at|date:"d/m/Y H:i" }}</p>
         {% endif %}
+        <div class="mt-4 flex items-center gap-2 text-sm {% if material.publication_authorized %}text-cbnv-green-600{% else %}text-red-600{% endif %}">
+            {% if material.publication_authorized %}
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            Autorização de publicação registrada.
+            {% else %}
+            Autorização de publicação pendente. A validação para anais fica bloqueada.
+            {% endif %}
+        </div>
     </div>
 
     <form method="post" class="rounded-xl border border-white/10 bg-cbnv-navy-900 p-6">
@@ -60,7 +68,7 @@
         </div>
         <div class="flex gap-3">
             <a href="{% url 'proceedings:commission_materials' %}" class="rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-cbnv-text-secondary hover:bg-cbnv-navy-900/5 transition-colors">Cancelar</a>
-            <button type="submit" class="rounded-lg bg-cbnv-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-cbnv-blue-700 transition-colors">Validar materiais</button>
+            <button type="submit" {% if not material.is_ready_for_validation %}disabled{% endif %} class="rounded-lg bg-cbnv-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-cbnv-blue-700 transition-colors disabled:cursor-not-allowed disabled:opacity-50">Validar materiais</button>
         </div>
     </form>
 </div>

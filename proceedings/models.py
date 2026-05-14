@@ -24,6 +24,19 @@ class FinalMaterial(models.Model):
         "Apresentação", storage=protected_storage, blank=True
     )
     video_url = models.URLField("Link do vídeo (YouTube)", blank=True)
+    publication_authorized = models.BooleanField(
+        "Autorizo a publicação nos anais",
+        default=False,
+        help_text="Obrigatório para publicação do trabalho nos anais do evento.",
+    )
+    video_resource = models.ForeignKey(
+        "videos.VideoResource",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="final_materials",
+        verbose_name="Recurso de vídeo publicado",
+    )
     received_at = models.DateTimeField("Recebido em", null=True, blank=True)
     validated_at = models.DateTimeField("Validado em", null=True, blank=True)
     validated_by = models.ForeignKey(
@@ -73,6 +86,10 @@ class FinalMaterial(models.Model):
     @property
     def has_files(self):
         return bool(self.final_pdf or self.presentation_file or self.video_url)
+
+    @property
+    def is_ready_for_validation(self):
+        return bool(self.final_pdf and self.publication_authorized)
 
 
 @register_snippet

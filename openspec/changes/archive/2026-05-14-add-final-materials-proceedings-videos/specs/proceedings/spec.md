@@ -1,4 +1,8 @@
-# proceedings Delta
+# proceedings
+
+# Purpose
+
+The purpose of this capability is to manage the final materials for accepted submissions, including the upload, validation, and integration of these materials into the congress proceedings, as well as managing information about previous editions.
 
 ## ADDED Requirements
 

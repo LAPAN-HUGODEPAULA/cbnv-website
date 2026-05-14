@@ -6,6 +6,7 @@ from accounts.models import User
 from accounts.tests.factories import create_user_with_profile
 from proceedings.models import FinalMaterial
 from submissions.models import Submission, SubmissionAuthor, ThematicAxis
+from videos.models import VideoResource, PUBLIC
 
 
 class FinalMaterialModelTest(TestCase):
@@ -36,6 +37,8 @@ class FinalMaterialModelTest(TestCase):
         material = FinalMaterial.objects.create(submission=self.submission)
         self.assertEqual(str(material), f"Materiais finais — {self.submission.submission_id}")
         self.assertFalse(material.has_files)
+        self.assertFalse(material.publication_authorized)
+        self.assertFalse(material.is_ready_for_validation)
 
     def test_one_to_one_constraint(self):
         FinalMaterial.objects.create(submission=self.submission)
@@ -46,6 +49,14 @@ class FinalMaterialModelTest(TestCase):
         material = FinalMaterial.objects.create(submission=self.submission)
         material.final_pdf = self._fake_file("doc.pdf", b"%PDF-1.4")
         self.assertTrue(material.has_files)
+
+    def test_authorized_pdf_is_ready_for_validation(self):
+        material = FinalMaterial.objects.create(
+            submission=self.submission,
+            publication_authorized=True,
+        )
+        material.final_pdf = self._fake_file("doc.pdf", b"%PDF-1.4")
+        self.assertTrue(material.is_ready_for_validation)
 
     def test_has_files_with_video_url(self):
         material = FinalMaterial.objects.create(submission=self.submission, video_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ")
@@ -105,6 +116,19 @@ class FinalMaterialModelTest(TestCase):
     def test_blank_video_url_is_valid(self):
         material = FinalMaterial(submission=self.submission, video_url="")
         material.clean()
+
+    def test_can_associate_video_resource_explicitly(self):
+        video = VideoResource.objects.create(
+            title="Vídeo público",
+            youtube_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            status=PUBLIC,
+        )
+        material = FinalMaterial.objects.create(
+            submission=self.submission,
+            video_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            video_resource=video,
+        )
+        self.assertEqual(material.video_resource, video)
 
     def _fake_file(self, name, content):
         from django.core.files.base import File

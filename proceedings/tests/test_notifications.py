@@ -2,6 +2,7 @@ from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
+from unittest.mock import patch
 
 from accounts.models import User
 from accounts.tests.factories import create_user_with_profile
@@ -48,6 +49,7 @@ class NotificationTest(TestCase):
             {
                 "final_pdf": SimpleUploadedFile("doc.pdf", b"%PDF-1.4", content_type="application/pdf"),
                 "presentation_file": SimpleUploadedFile("s.pptx", b"PK", content_type="application/vnd.openxmlformats-officedocument.presentationml.presentation"),
+                "publication_authorized": "on",
             },
             format="multipart",
         )
@@ -58,6 +60,7 @@ class NotificationTest(TestCase):
         FinalMaterial.objects.create(
             submission=sub,
             final_pdf=SimpleUploadedFile("doc.pdf", b"%PDF-1.4", content_type="application/pdf"),
+            publication_authorized=True,
         )
         self.client.login(username="chair", password="pass")
         mail.outbox.clear()
@@ -81,3 +84,12 @@ class NotificationTest(TestCase):
         mail.outbox.clear()
         self.client.post(reverse("proceedings:request_materials", args=[sub.pk]))
         self.assertEqual(len(mail.outbox), 0)
+
+    def test_notification_failure_does_not_corrupt_request_state(self):
+        sub = self._create_submission()
+        self.client.login(username="chair", password="pass")
+        with patch("notifications.services.send_transactional_email", side_effect=RuntimeError("SMTP off")):
+            response = self.client.post(reverse("proceedings:request_materials", args=[sub.pk]))
+        self.assertEqual(response.status_code, 302)
+        sub.refresh_from_db()
+        self.assertEqual(sub.status, "final_materials_pending")

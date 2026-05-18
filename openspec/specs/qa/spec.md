@@ -1,94 +1,75 @@
-# Review QA (qa)
+# qa
 
 ## Purpose
-Define quality gates for the platform, including authentication, authorization, and scientific workflows.
-## Requirements
-### Requirement: Testes de conta e dashboard
-A base de conta/perfil/dashboard SHALL incluir testes para o comportamento central de autenticação e autorização.
 
-#### Scenario: Teste de registro existe
-- **GIVEN** que a suíte de testes executa
-- **THEN** ela SHALL verificar que o registro cria um usuário e perfil.
+Define test and validation expectations for reports, exports, indicators, permissions and privacy boundaries.
 
-#### Scenario: Teste de autenticação do dashboard existe
-- **GIVEN** que a suíte de testes executa
-- **THEN** ela SHALL verificar que o acesso ao dashboard não autenticado redireciona para o login.
+## ADDED Requirements
 
-#### Scenario: Testes de acesso por papel existem
-- **GIVEN** que a suíte de testes executa
-- **THEN** ela SHALL verificar o acesso ao dashboard específico de papel para os papéis de autor, revisor e chair.
+### Requirement: Report access tests
 
-### Requirement: Comandos de validação
-A mudança SHALL passar pelos comandos de validação do projeto.
+The test suite MUST cover report access permissions.
 
-#### Scenario: Validação está completa
-- **GIVEN** que a implementação está completa
-- **WHEN** a validação é executada
-- **THEN** `openspec validate <change-id> --strict`, `uv run python manage.py check`, `uv run python manage.py makemigrations --check --dry-run` e `uv run pytest` SHALL passar.
+#### Scenario: Chair access test
 
-### Requirement: Account and dashboard tests
+Given tests run  
+Then there MUST be coverage proving chair users can access reports.
 
-The account/profile/dashboard foundation SHALL include tests for core authentication and authorization behavior.
+#### Scenario: Unauthorized access test
 
-#### Scenario: Registration test exists
+Given tests run  
+Then there MUST be coverage proving unauthorized users cannot access reports.
 
-Given the test suite runs
-Then it SHALL verify that registration creates a user and profile.
+### Requirement: Indicator tests
 
-#### Scenario: Dashboard auth test exists
+The test suite MUST cover indicator calculations.
 
-Given the test suite runs
-Then it SHALL verify that unauthenticated dashboard access redirects to login.
+#### Scenario: Submission indicator test
 
-#### Scenario: Role access tests exist
+Given test submissions exist  
+When indicators are calculated  
+Then tests MUST verify counts by status, thematic axis or modality.
 
-Given the test suite runs
-Then it SHALL verify role-specific dashboard access for author, reviewer and chair roles.
+#### Scenario: Proceedings indicator test
 
-### Requirement: Review workflow tests
+Given final-material/proceedings records exist  
+When indicators are calculated  
+Then tests MUST verify proceedings readiness counts.
 
-The initial submission flow SHALL include tests for core workflow behavior.
+### Requirement: Export structure tests
 
-#### Scenario: Valid submission test
+The test suite MUST cover export headers and deterministic structure.
 
-Given the test suite runs  
-Then it SHALL verify an authenticated author can create a valid initial submission with PDF.
+#### Scenario: CSV header test
 
-#### Scenario: Video not required test
+Given a CSV export is generated  
+Then tests MUST verify the expected header order.
 
-Given the test suite runs  
-Then it SHALL verify initial submission succeeds without video.
+#### Scenario: XLSX structure test
 
-#### Scenario: File validation tests
+Given XLSX export is implemented  
+Then tests MUST verify expected sheet names and columns.
 
-Given the test suite runs  
-Then it SHALL verify non-PDF and oversized files are rejected.
+### Requirement: Export privacy tests
 
-#### Scenario: Permission tests
+The test suite MUST verify privacy-sensitive export behavior.
 
-Given the test suite runs  
-Then it SHALL verify users cannot view or download another user's submissions/files.
+#### Scenario: Protected file URL test
 
-### Requirement: Review workflow testing
+Given exports include final material metadata  
+Then tests MUST verify protected direct file URLs are not exported.
 
-The platform SHALL include automated tests for the full review and decision cycle.
+#### Scenario: Unauthorized review export test
 
-#### Scenario: Review cycle test
-- **WHEN** the test suite runs
-- **THEN** it SHALL verify that a chair can assign a reviewer, the reviewer can submit an evaluation, and the chair can issue a final decision.
-
-#### Scenario: Review permission test
-- **WHEN** the test suite runs
-- **THEN** it SHALL verify that unauthorized users cannot perform review or decision actions.
+Given an unauthorized user requests review export  
+Then tests MUST verify access is denied.
 
 ### Requirement: Validation commands
 
+The change MUST pass project validation commands.
 
-The change SHALL pass project validation commands.
+#### Scenario: Validation commands pass
 
-#### Scenario: Validation is complete
-
-Given the implementation is complete  
+Given implementation is complete  
 When validation is run  
-Then `openspec validate add-author-submission-initial-flow --strict`, `uv run python manage.py check`, `uv run python manage.py makemigrations --check --dry-run`, and `uv run pytest` SHALL pass.
-
+Then `openspec validate add-reports-exports-and-indicators --strict`, `uv run python manage.py check`, `uv run python manage.py makemigrations --check --dry-run`, and `uv run pytest` MUST pass.

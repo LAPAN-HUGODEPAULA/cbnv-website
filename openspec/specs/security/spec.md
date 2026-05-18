@@ -1,111 +1,63 @@
-# security Specification
+# security
 
 ## Purpose
-Define authentication, authorization, CSRF, object-level permission, and private-file security requirements for the core platform and scientific flows.
-## Requirements
-### Requirement: Safe authentication
 
-Account authentication SHALL use Django authentication primitives.
+Define access control, privacy, and protected-data rules for reports, exports and indicators.
 
-#### Scenario: Password is set
+## ADDED Requirements
 
-Given a user registers
-When their password is stored
-Then it SHALL be stored using Django's password hashing, not plain text.
+### Requirement: Reports require committee permission
 
-#### Scenario: CSRF protection is active
+Reports and exports MUST require chair/scientific committee permission by default.
 
-Given a user submits login, registration or profile forms
-When the form is processed
-Then Django CSRF protection SHALL apply.
+#### Scenario: Chair accesses reports
 
-### Requirement: Privilege escalation prevention
+Given an authenticated chair user  
+When they request reports dashboard  
+Then access MUST be allowed.
 
-Public account forms SHALL not expose privileged role or staff fields.
+#### Scenario: Author accesses reports
 
-#### Scenario: Public registration form is inspected
+Given an authenticated author without committee permission  
+When they request reports dashboard  
+Then access MUST be denied.
 
-Given the registration form is rendered
-When its fields are inspected
-Then `is_staff`, `is_superuser` and chair role fields SHALL NOT be user-editable.
+### Requirement: Exports require permission
 
-### Requirement: Role-protected internal areas
+Export endpoints MUST enforce permission checks.
 
-Role-specific dashboards SHALL enforce role checks.
+#### Scenario: Unauthorized export request
 
-#### Scenario: User lacks reviewer role
+Given a user without committee permission  
+When they request any global export  
+Then access MUST be denied.
 
-Given a user lacks reviewer role
-When they request the reviewer dashboard
-Then access SHALL be denied or redirected.
+### Requirement: Sensitive fields protected
 
-### Requirement: Safe redirects
+Sensitive fields MUST only appear in exports for authorized users.
 
-Authentication views SHALL avoid unsafe redirects.
+#### Scenario: Export includes e-mail fields
 
-#### Scenario: Login next parameter is external
+Given an export includes author e-mail fields  
+When the export is generated  
+Then the requesting user MUST have documented permission to access those fields.
 
-Given a login request includes an unsafe external `next` URL
-When login succeeds
-Then the user SHALL NOT be redirected to the unsafe external URL.
+### Requirement: Protected files excluded from exports
 
-### Requirement: Object-level submission permissions
+Protected file paths and direct file URLs MUST NOT be included in exports.
 
-Submission detail, edit and file views SHALL enforce object-level ownership checks.
+#### Scenario: Export includes final material data
 
-#### Scenario: User requests another user's submission
+Given final materials have protected files  
+When an export is generated  
+Then direct protected file paths and URLs MUST be excluded.
 
-Given a submission belongs to another user  
-When the current user requests its detail page  
-Then access SHALL be denied.
+### Requirement: Public data separation
 
-### Requirement: CSRF protection
+Public proceedings data MUST be distinguished from internal reports.
 
-Submission forms SHALL use Django CSRF protection.
+#### Scenario: Public proceedings export is generated
 
-#### Scenario: Submission form posted
-
-Given an author posts the submission form  
-When CSRF validation fails  
-Then the submission SHALL NOT be accepted.
-
-### Requirement: No public exposure of private files
-
-Submission files SHALL remain private by default.
-
-#### Scenario: File URL is rendered
-
-Given a submission file exists  
-When public pages render  
-Then they SHALL NOT expose direct public file URLs.
-
-### Requirement: Submitted records protected from accidental modification
-
-Submitted records SHALL be read-only to authors by default unless reopened by an explicit later workflow.
-
-#### Scenario: Author edits submitted submission
-
-Given a submission is submitted  
-When the author attempts to edit it  
-Then the system SHALL deny editing or show read-only state unless the submission has been reopened.
-
-### Requirement: Review access control
-
-Access to reviewer-only and chair-only views SHALL be strictly enforced based on user roles.
-
-#### Scenario: Unauthorized access to assignment
-- **WHEN** a non-chair user attempts to access the reviewer assignment view
-- **THEN** access SHALL be denied (403 Forbidden).
-
-#### Scenario: Unauthorized access to review form
-- **WHEN** a user who is not the assigned reviewer attempts to access a specific evaluation form
-- **THEN** access SHALL be denied (403 Forbidden).
-
-### Requirement: Single-blind anonymity
-
-Reviewer identities SHALL NOT be exposed to authors.
-
-#### Scenario: Author views submission details
-- **WHEN** an author views the decision or feedback on their submission
-- **THEN** the names of the reviewers SHALL NOT be displayed.
-
+Given an export is intended for public proceedings support  
+When fields are selected  
+Then the export MUST include only publication-approved data unless explicitly marked internal.

@@ -6,41 +6,66 @@ class SubmissionQuerySet(models.QuerySet):
     def for_user(self, user):
         return self.filter(submitter=user)
 
-    def by_status(self):
+    def by_status(self, filters=None):
+        qs = self
+        if filters:
+            qs = qs.filter(**filters)
         return (
-            self.values("status")
-            .annotate(count=Count("id"))
+            qs.values("status")
+            .annotate(count=Count("id", distinct=True))
             .order_by("-count")
         )
 
-    def by_topic(self):
+    def by_topic(self, filters=None):
+        qs = self
+        if filters:
+            qs = qs.filter(**filters)
         return (
-            self.values("thematic_axis__name", "thematic_axis__id")
-            .annotate(count=Count("id"))
+            qs.values("thematic_axis__name", "thematic_axis__id")
+            .annotate(count=Count("id", distinct=True))
             .order_by("-count")
         )
 
-    def by_modality(self):
+    def by_modality(self, filters=None):
+        qs = self
+        if filters:
+            qs = qs.filter(**filters)
         return (
-            self.values("final_modality")
-            .annotate(count=Count("id"))
+            qs.values("final_modality")
+            .annotate(count=Count("id", distinct=True))
             .order_by("-count")
         )
 
-    def by_institution(self):
+    def by_institution(self, filters=None):
+        qs = self
+        if filters:
+            qs = qs.filter(**filters)
         return (
-            self.values("authors__institution")
-            .annotate(count=Count("id"))
+            qs.values("authors__institution")
+            .annotate(count=Count("id", distinct=True))
             .order_by("-count")
         )
 
-    def summary_stats(self):
-        agg = self.aggregate(
-            total=Count("id"),
+    def by_country(self, filters=None):
+        qs = self
+        if filters:
+            qs = qs.filter(**filters)
+        return (
+            qs.values("submitter__profile__country")
+            .annotate(count=Count("id", distinct=True))
+            .order_by("-count")
+        )
+
+    def summary_stats(self, filters=None):
+        qs = self
+        if filters:
+            qs = qs.filter(**filters)
+        agg = qs.aggregate(
+            total=Count("id", distinct=True),
             first_created=Min("created_at"),
             last_created=Max("created_at"),
         )
-        by_status = dict(self.by_status().values_list("status", "count"))
+        by_status = dict(qs.by_status().values_list("status", "count"))
         agg["by_status"] = by_status
         return agg
 
@@ -50,7 +75,7 @@ class SubmissionQuerySet(models.QuerySet):
         )
         if filters:
             qs = qs.filter(**filters)
-        return qs
+        return qs.distinct()
 
 
 SubmissionManager = SubmissionQuerySet.as_manager

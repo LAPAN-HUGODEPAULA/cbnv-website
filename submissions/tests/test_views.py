@@ -53,7 +53,7 @@ class TestDashboardAccess:
         client.force_login(incomplete_user)
         response = client.get("/painel/autor/")
         assert response.status_code == 302
-        assert response.url == "/conta/perfil/editar/"
+        assert response.url == "/conta/perfil/"
 
     def test_non_author_redirected(self, db):
         user = create_user_with_profile(
@@ -88,7 +88,7 @@ class TestWizardAccess:
         client.force_login(incomplete_user)
         response = client.get(reverse("submissions:wizard_step1"))
         assert response.status_code == 302
-        assert response.url == "/conta/perfil/editar/"
+        assert response.url == "/conta/perfil/"
 
     def test_author_can_access_wizard(self, auth_client):
         client, _ = auth_client

@@ -17,15 +17,6 @@ class RegisterView(CreateView):
     template_name = "accounts/register.html"
     success_url = reverse_lazy("dashboard:redirect")
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.setdefault("title", "Criar conta")
-        context.setdefault(
-            "subtitle",
-            "Preencha seus dados para acessar o painel do CBNV 2026.",
-        )
-        return context
-
     def form_valid(self, form):
         response = super().form_valid(form)
         login(self.request, self.object, backend=settings.AUTHENTICATION_BACKENDS[0])
@@ -47,21 +38,21 @@ def dashboard_redirect(request):
         {
             "key": "author",
             "label": "Autor",
-            "description": "Área para acompanhar submissões quando o fluxo científico estiver disponível.",
+            "description": "Área para acompanhar submissões.",
             "url": reverse_lazy("dashboard:author"),
             "enabled": user_has_role(user, "is_author"),
         },
         {
             "key": "reviewer",
             "label": "Revisor",
-            "description": "Área reservada para futuras avaliações atribuídas pela comissão.",
+            "description": "Área para avaliações atribuídas pela comissão.",
             "url": reverse_lazy("dashboard:reviewer"),
             "enabled": user_has_role(user, "is_reviewer"),
         },
         {
             "key": "chair",
             "label": "Comissão científica",
-            "description": "Área reservada para futuras ferramentas de coordenação científica.",
+            "description": "Área para coordenação, indicadores e relatórios.",
             "url": reverse_lazy("dashboard:chair"),
             "enabled": user_has_role(user, "is_chair"),
         },
@@ -115,13 +106,34 @@ def reviewer_dashboard(request):
 @login_required
 @chair_required
 def chair_dashboard(request):
-    return redirect("reviews:manage_submissions")
+    from submissions.models import Submission
 
+    total = Submission.objects.count()
+    in_review = Submission.objects.filter(
+        status__in=[
+            "admin_screening", "assigned_to_reviewers",
+            "under_review", "reviews_completed", "decision_pending",
+        ]
+    ).count()
+    decisions = Submission.objects.filter(
+        status__in=["accepted_oral", "accepted_poster", "accepted_video", "rejected"]
+    ).count()
+    pending_materials = Submission.objects.filter(status="final_materials_pending").count()
+    validated = Submission.objects.filter(status="ready_for_proceedings").count()
+    published = Submission.objects.filter(status="published_in_proceedings").count()
 
-@login_required
-def profile_detail(request):
-    profile = get_or_create_profile(request.user)
-    return render(request, "accounts/profile_detail.html", {"profile": profile})
+    return render(
+        request,
+        "dashboard/chair.html",
+        {
+            "total": total,
+            "in_review": in_review,
+            "decisions": decisions,
+            "pending_materials": pending_materials,
+            "validated": validated,
+            "published": published,
+        },
+    )
 
 
 @login_required
@@ -131,7 +143,7 @@ def profile_edit(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Perfil atualizado com sucesso.")
-            return redirect("accounts:profile")
+            return redirect("dashboard:redirect")
     else:
         form = ProfileForm(instance=request.user)
     return render(request, "accounts/profile_edit.html", {"form": form})

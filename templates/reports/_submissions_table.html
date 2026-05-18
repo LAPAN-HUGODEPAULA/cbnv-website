@@ -2,9 +2,11 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
         <h2 class="text-lg font-semibold text-cbnv-text-primary">Submissões</h2>
         <div class="flex items-center gap-2">
-            <a href="{% url 'reports:export_submissions' %}?format=csv" class="text-xs text-cbnv-text-muted hover:text-cbnv-text-secondary underline">CSV</a>
+            <a href="{% url 'reports:export_submissions' %}?format=xlsx{% if filter_querystring %}&{{ filter_querystring }}{% endif %}" class="text-xs text-cbnv-text-muted hover:text-cbnv-text-secondary underline">XLSX</a>
             <span class="text-cbnv-text-muted">|</span>
-            <a href="{% url 'reports:export_submissions' %}?format=json" class="text-xs text-cbnv-text-muted hover:text-cbnv-text-secondary underline">JSON</a>
+            <a href="{% url 'reports:export_submissions' %}?format=csv{% if filter_querystring %}&{{ filter_querystring }}{% endif %}" class="text-xs text-cbnv-text-muted hover:text-cbnv-text-secondary underline">CSV</a>
+            <span class="text-cbnv-text-muted">|</span>
+            <a href="{% url 'reports:export_submissions' %}?format=json{% if filter_querystring %}&{{ filter_querystring }}{% endif %}" class="text-xs text-cbnv-text-muted hover:text-cbnv-text-secondary underline">JSON</a>
         </div>
     </div>
 
@@ -48,6 +50,22 @@
                     {% for row in by_modality %}
                     <tr class="hover:bg-cbnv-navy-900/5 transition-colors">
                         <td class="px-4 py-2.5 text-cbnv-text-secondary">{{ row.final_modality|default:"—" }}</td>
+                        <td class="px-4 py-2.5 text-right font-medium text-cbnv-text-primary">{{ row.count }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td class="px-4 py-6 text-center text-cbnv-text-muted" colspan="2">Sem dados</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border border-white/10">
+            <h3 class="px-4 py-3 bg-cbnv-navy-900/5 border-b border-white/10 text-sm font-medium text-cbnv-text-muted">Por país</h3>
+            <table class="w-full text-sm">
+                <tbody class="divide-y divide-gray-100">
+                    {% for row in by_country %}
+                    <tr class="hover:bg-cbnv-navy-900/5 transition-colors">
+                        <td class="px-4 py-2.5 text-cbnv-text-secondary">{{ row.submitter__profile__country|default:"—" }}</td>
                         <td class="px-4 py-2.5 text-right font-medium text-cbnv-text-primary">{{ row.count }}</td>
                     </tr>
                     {% empty %}

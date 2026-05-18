@@ -5,9 +5,50 @@
 {% block content %}
 <div class="mb-6">
     <h1 class="text-2xl font-bold text-cbnv-navy-950">Painel da Comissão Científica</h1>
-    <p class="mt-1 text-sm text-gray-500">Acesse as principais rotinas científicas e editoriais do evento.</p>
+    <p class="mt-1 text-sm text-gray-500">Visão geral das submissões, revisões e indicadores do evento.</p>
 </div>
 
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+    <div class="rounded-xl border border-gray-200 bg-white p-5">
+        <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Submissões</p>
+        <p class="mt-1 text-3xl font-bold text-cbnv-navy-950">{{ total }}</p>
+    </div>
+    <div class="rounded-xl border border-gray-200 bg-white p-5">
+        <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Em avaliação</p>
+        <p class="mt-1 text-3xl font-bold text-cbnv-blue-600">{{ in_review }}</p>
+    </div>
+    <div class="rounded-xl border border-gray-200 bg-white p-5">
+        <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Decisões</p>
+        <p class="mt-1 text-3xl font-bold text-cbnv-green-600">{{ decisions }}</p>
+    </div>
+</div>
+
+<h2 class="text-lg font-semibold text-cbnv-navy-950 mb-3">Progresso dos anais</h2>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+    <div class="rounded-xl border border-gray-200 bg-white p-5">
+        <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Materiais pendentes</p>
+        <p class="mt-1 text-3xl font-bold text-yellow-600">{{ pending_materials }}</p>
+        {% if pending_materials > 0 %}
+        <a href="{% url 'proceedings:commission_materials' %}" class="mt-2 text-xs text-cbnv-blue-600 hover:underline">Gerenciar</a>
+        {% endif %}
+    </div>
+    <div class="rounded-xl border border-gray-200 bg-white p-5">
+        <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Validados</p>
+        <p class="mt-1 text-3xl font-bold text-cbnv-blue-600">{{ validated }}</p>
+        {% if validated > 0 %}
+        <a href="{% url 'proceedings:commission_materials' %}" class="mt-2 text-xs text-cbnv-blue-600 hover:underline">Publicar</a>
+        {% endif %}
+    </div>
+    <div class="rounded-xl border border-gray-200 bg-white p-5">
+        <p class="text-xs text-gray-500 uppercase tracking-wide font-medium">Publicados</p>
+        <p class="mt-1 text-3xl font-bold text-cbnv-green-600">{{ published }}</p>
+        {% if published > 0 %}
+        <a href="{% url 'proceedings:proceedings_list' %}" class="mt-2 text-xs text-cbnv-green-600 hover:underline">Ver anais</a>
+        {% endif %}
+    </div>
+</div>
+
+<h2 class="text-lg font-semibold text-cbnv-navy-950 mb-3">Acesso rápido</h2>
 <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
     <a href="{% url 'reviews:manage_submissions' %}" class="rounded-xl border border-gray-200 bg-white p-5 transition-colors hover:border-cbnv-blue-600">
         <span class="rounded-full bg-cbnv-blue-600/10 px-3 py-1 text-sm font-medium text-cbnv-blue-700">Submissões</span>
@@ -19,10 +60,10 @@
         <h2 class="mt-4 text-lg font-semibold text-cbnv-navy-950">Gerenciar materiais finais</h2>
         <p class="mt-2 text-sm text-gray-500">Validar materiais recebidos e preparar anais.</p>
     </a>
-    <a href="{% url 'proceedings:proceedings_list' %}" class="rounded-xl border border-gray-200 bg-white p-5 transition-colors hover:border-cbnv-blue-600">
-        <span class="rounded-full bg-gray-900/10 px-3 py-1 text-sm font-medium text-gray-800">Anais</span>
-        <h2 class="mt-4 text-lg font-semibold text-cbnv-navy-950">Ver anais</h2>
-        <p class="mt-2 text-sm text-gray-500">Conferir trabalhos elegíveis e publicados.</p>
+    <a href="{% url 'reports:dashboard' %}" class="rounded-xl border border-gray-200 bg-white p-5 transition-colors hover:border-cbnv-blue-600">
+        <span class="rounded-full bg-amber-100 px-3 py-1 text-sm font-medium text-amber-700">Relatórios</span>
+        <h2 class="mt-4 text-lg font-semibold text-cbnv-navy-950">Relatórios e indicadores</h2>
+        <p class="mt-2 text-sm text-gray-500">Acompanhar estatísticas, filtros e exportar dados.</p>
     </a>
     <a href="/videos/" class="rounded-xl border border-gray-200 bg-white p-5 transition-colors hover:border-cbnv-blue-600">
         <span class="rounded-full bg-cbnv-blue-600/10 px-3 py-1 text-sm font-medium text-cbnv-blue-700">Vídeos</span>

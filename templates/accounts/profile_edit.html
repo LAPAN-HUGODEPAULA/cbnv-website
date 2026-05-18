@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="max-w-2xl">
-    <h1 class="text-2xl font-bold text-cbnv-navy-950 mb-6">Editar perfil</h1>
+    <h1 class="text-2xl font-bold text-cbnv-text-primary mb-6">Editar perfil</h1>
 
     {% if messages %}
         {% for message in messages %}
@@ -17,22 +17,23 @@
         {% endfor %}
     {% endif %}
 
-    <form method="post" class="space-y-5 rounded-xl border border-gray-200 bg-white p-6">
+    <form method="post" class="space-y-5 bg-cbnv-navy-900 rounded-xl border border-white/10 p-6">
         {% csrf_token %}
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {% include "components/input.html" with id="id_first_name" label="Nome" name="first_name" required=True value=form.first_name.value|default:'' error=form.first_name.errors.0 %}
-            {% include "components/input.html" with id="id_last_name" label="Sobrenome" name="last_name" required=True value=form.last_name.value|default:'' error=form.last_name.errors.0 %}
+            {% include "components/input.html" with id="id_first_name" label="Nome" name="first_name" required=True value=form.first_name.value|default:'' %}
+            {% include "components/input.html" with id="id_last_name" label="Sobrenome" name="last_name" required=True value=form.last_name.value|default:'' %}
         </div>
 
-        {% include "components/input.html" with id="id_email" label="E-mail" name="email" type="email" required=True value=form.email.value|default:'' error=form.email.errors.0 %}
-        {% include "components/input.html" with id="id_institution" label="Instituição" name="institution" required=True value=form.institution.value|default:'' error=form.institution.errors.0 %}
-        {% include "components/input.html" with id="id_position" label="Vínculo/Cargo" name="position" required=True value=form.position.value|default:'' error=form.position.errors.0 %}
-        {% include "components/input.html" with id="id_country" label="País" name="country" tag="select" required=True choices=form.fields.country.choices value=form.country.value|default:'' error=form.country.errors.0 %}
+        {% include "components/input.html" with id="id_email" label="E-mail" name="email" type="email" required=True value=form.email.value|default:'' %}
+        {% include "components/input.html" with id="id_institution" label="Instituição" name="institution" required=True value=form.institution.value|default:'' %}
+        {% include "components/input.html" with id="id_position" label="Vínculo/Cargo" name="position" required=True value=form.position.value|default:'' %}
+        {% include "components/input.html" with id="id_country" label="País" name="country" tag="select" required=True choices=form.fields.country.choices value=form.country.value|default:'' %}
 
         <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
-            {% url 'accounts:profile' as profile_url %}
-            {% include "components/button.html" with label="Cancelar" variant="ghost" tag="a" href=profile_url %}
+            <a href="{% url 'dashboard:redirect' %}">
+                {% include "components/button.html" with label="Cancelar" variant="ghost" tag="a" href='/painel/' %}
+            </a>
             <button type="submit">
                 {% include "components/button.html" with label="Salvar" variant="primary" tag="button" %}
             </button>

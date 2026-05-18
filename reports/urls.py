@@ -33,4 +33,9 @@ urlpatterns = [
         views.AuthorsExportView.as_view(),
         name="export_authors",
     ),
+    path(
+        "instituicoes/exportar/",
+        views.InstitutionsExportView.as_view(),
+        name="export_institutions",
+    ),
 ]

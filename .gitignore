@@ -110,3 +110,8 @@ Thumbs.db
 # _legacy/ # Legacy data is currently used for migration reference
 hts-cache/
 *.tmp
+
+# --- AI Agent Instructions ---
+AGENTS.md
+GEMINI.md
+CLAUDE.md

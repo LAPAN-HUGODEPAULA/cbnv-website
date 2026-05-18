@@ -1,10 +1,11 @@
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseNotAllowed
 from django.shortcuts import redirect, render
-from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, UpdateView
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
 
 from .decorators import author_required, chair_required, reviewer_required
 from .forms import ProfileForm, RegistrationForm
@@ -32,11 +33,39 @@ register = RegisterView.as_view()
 @login_required
 def dashboard_redirect(request):
     user = request.user
-    if user_has_role(user, "is_chair"):
-        return redirect("dashboard:chair")
-    if user_has_role(user, "is_reviewer"):
-        return redirect("dashboard:reviewer")
-    return redirect("dashboard:author")
+    profile = get_or_create_profile(user)
+    roles = [
+        {
+            "key": "author",
+            "label": "Autor",
+            "description": "Área para acompanhar submissões.",
+            "url": reverse_lazy("dashboard:author"),
+            "enabled": user_has_role(user, "is_author"),
+        },
+        {
+            "key": "reviewer",
+            "label": "Revisor",
+            "description": "Área para avaliações atribuídas pela comissão.",
+            "url": reverse_lazy("dashboard:reviewer"),
+            "enabled": user_has_role(user, "is_reviewer"),
+        },
+        {
+            "key": "chair",
+            "label": "Comissão científica",
+            "description": "Área para coordenação, indicadores e relatórios.",
+            "url": reverse_lazy("dashboard:chair"),
+            "enabled": user_has_role(user, "is_chair"),
+        },
+    ]
+    return render(
+        request,
+        "dashboard/index.html",
+        {
+            "profile": profile,
+            "roles": roles,
+            "available_roles": [role for role in roles if role["enabled"]],
+        },
+    )
 
 
 @login_required
@@ -108,14 +137,22 @@ def chair_dashboard(request):
 
 
 @login_required
-@author_required
 def profile_edit(request):
     if request.method == "POST":
         form = ProfileForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, "Perfil atualizado com sucesso.")
-            return redirect("dashboard:author")
+            return redirect("dashboard:redirect")
     else:
         form = ProfileForm(instance=request.user)
     return render(request, "accounts/profile_edit.html", {"form": form})
+
+
+@login_required
+def logout_view(request):
+    if request.method != "POST":
+        return HttpResponseNotAllowed(["POST"])
+    logout(request)
+    messages.success(request, "Você saiu da sua conta.")
+    return redirect(settings.LOGOUT_REDIRECT_URL)

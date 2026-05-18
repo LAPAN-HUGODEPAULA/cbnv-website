@@ -76,8 +76,8 @@ class RegistrationTest(TestCase):
         )
         user = User.objects.get(username="autoauthor")
         response = self.client.get(reverse("dashboard:redirect"))
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.endswith("/painel/autor/"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Painel de Autor")
 
 
 class DashboardAccessTest(TestCase):
@@ -98,20 +98,20 @@ class DashboardAccessTest(TestCase):
     def test_dashboard_redirect_for_author(self):
         self.client.login(username="author", password="pass")
         response = self.client.get(reverse("dashboard:redirect"))
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.endswith("/painel/autor/"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Painel de Autor")
 
     def test_dashboard_redirect_for_reviewer(self):
         self.client.login(username="reviewer", password="pass")
         response = self.client.get(reverse("dashboard:redirect"))
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.endswith("/painel/revisor/"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Painel de Revisor")
 
     def test_dashboard_redirect_for_chair(self):
         self.client.login(username="chair", password="pass")
         response = self.client.get(reverse("dashboard:redirect"))
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(response.url.endswith("/painel/comissao/"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Painel de Comissão científica")
 
     def test_redirect_to_login_when_anonymous(self):
         response = self.client.get(reverse("dashboard:redirect"))
@@ -139,12 +139,12 @@ class DashboardAccessTest(TestCase):
         response = self.client.get(reverse("dashboard:author"))
         self.assertEqual(response.status_code, 200)
         
-        # Now these redirect to scientific workflow views
+        # Reviewer routes still redirect to workflow views; chair dashboard renders indicators.
         response = self.client.get(reverse("dashboard:reviewer"))
         self.assertEqual(response.status_code, 302)
         
         response = self.client.get(reverse("dashboard:chair"))
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
     def test_login_view_loads(self):
         response = self.client.get(reverse("accounts:login"))
@@ -158,6 +158,17 @@ class DashboardAccessTest(TestCase):
         )
         self.assertEqual(response.status_code, 302)
 
+    def test_logout_requires_post(self):
+        self.client.login(username="author", password="pass")
+        response = self.client.get(reverse("accounts:logout"))
+        self.assertEqual(response.status_code, 405)
+
+    def test_logout_post(self):
+        self.client.login(username="author", password="pass")
+        response = self.client.post(reverse("accounts:logout"))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/")
+
     def test_profile_edit_requires_login(self):
         response = self.client.get(reverse("accounts:profile_edit"))
         self.assertEqual(response.status_code, 302)
@@ -167,6 +178,25 @@ class DashboardAccessTest(TestCase):
         self.client.login(username="author", password="pass")
         response = self.client.get(reverse("accounts:profile_edit"))
         self.assertEqual(response.status_code, 200)
+
+    def test_profile_edit_for_reviewer(self):
+        self.client.login(username="reviewer", password="pass")
+        response = self.client.get(reverse("accounts:profile_edit"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_dashboard_no_role_state(self):
+        user = create_user_with_profile(username="norole", password="pass")
+        self.client.login(username="norole", password="pass")
+        response = self.client.get(reverse("dashboard:redirect"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Nenhum papel de painel atribuído")
+
+    def test_dashboard_staff_without_role_state(self):
+        user = create_user_with_profile(username="staff", password="pass", is_staff=True)
+        self.client.login(username="staff", password="pass")
+        response = self.client.get(reverse("dashboard:redirect"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Nenhum papel de painel atribuído")
 
 
 @pytest.mark.django_db

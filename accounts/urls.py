@@ -17,7 +17,7 @@ urlpatterns = [
     ),
     path(
         "sair/",
-        auth_views.LogoutView.as_view(next_page="/"),
+        views.logout_view,
         name="logout",
     ),
     path(
